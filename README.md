@@ -18,7 +18,7 @@ AMFlamingo is an iOS UI component library providing common UI extension function
 In Xcode, select File > Swift Packages > Add Package Dependency, and enter:
 
 ```
-https://github.com/your-username/AMFlamingo.git
+https://github.com/owlivendy/AMFlamingo.git
 ```
 
 ### CocoaPods
