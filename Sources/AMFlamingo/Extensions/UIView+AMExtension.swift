@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 /// 流式布局配置类
 public class AMFlowlayoutConfig {

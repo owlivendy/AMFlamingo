@@ -1,0 +1,6 @@
+framework module AMFlamingo {
+  umbrella header "AMFlamingo-umbrella.h"
+
+  export *
+  module * { export * }
+}
