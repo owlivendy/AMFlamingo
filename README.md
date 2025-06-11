@@ -57,9 +57,9 @@ button.AM_imagePositionStyle(.right, spacing: 10)
 
 ## Requirements
 
-- iOS 13.0+
-- Xcode 13.0+
-- Swift 5.5+
+- iOS 10.0+
+- Swift 5.0+
+- Xcode 12.0+
 
 ## Dependencies
 

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-               BuildableName = "AMTest_Example.app"
-               BlueprintName = "AMTest_Example"
-               ReferencedContainer = "container:AMTest.xcodeproj">
+               BuildableName = "AMFlamingo_Example.app"
+               BlueprintName = "AMFlamingo_Example"
+               ReferencedContainer = "container:AMFlamingo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "AMTest_Tests.xctest"
-               BlueprintName = "AMTest_Tests"
-               ReferencedContainer = "container:AMTest.xcodeproj">
+               BuildableName = "AMFlamingo_Tests.xctest"
+               BlueprintName = "AMFlamingo_Tests"
+               ReferencedContainer = "container:AMFlamingo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -48,9 +48,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "AMTest_Tests.xctest"
-               BlueprintName = "AMTest_Tests"
-               ReferencedContainer = "container:AMTest.xcodeproj">
+               BuildableName = "AMFlamingo_Tests.xctest"
+               BlueprintName = "AMFlamingo_Tests"
+               ReferencedContainer = "container:AMFlamingo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -58,9 +58,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "AMTest_Example.app"
-            BlueprintName = "AMTest_Example"
-            ReferencedContainer = "container:AMTest.xcodeproj">
+            BuildableName = "AMFlamingo_Example.app"
+            BlueprintName = "AMFlamingo_Example"
+            ReferencedContainer = "container:AMFlamingo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -82,9 +82,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "AMTest_Example.app"
-            BlueprintName = "AMTest_Example"
-            ReferencedContainer = "container:AMTest.xcodeproj">
+            BuildableName = "AMFlamingo_Example.app"
+            BlueprintName = "AMFlamingo_Example"
+            ReferencedContainer = "container:AMFlamingo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -101,9 +101,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "AMTest_Example.app"
-            BlueprintName = "AMTest_Example"
-            ReferencedContainer = "container:AMTest.xcodeproj">
+            BuildableName = "AMFlamingo_Example.app"
+            BlueprintName = "AMFlamingo_Example"
+            ReferencedContainer = "container:AMFlamingo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -1,11 +1,11 @@
 use_frameworks!
 
-platform :ios, '13.0'
+platform :ios, '10.0'
 
-target 'AMTest_Example' do
+target 'AMFlamingo_Example' do
   pod 'AMFlamingo', :path => '../'
 
-  target 'AMTest_Tests' do
+  target 'AMFlamingo_Tests' do
     inherit! :search_paths
 
     

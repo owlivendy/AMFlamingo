@@ -1,29 +1,29 @@
 {
   "name": "AMFlamingo",
   "version": "0.1.0",
-  "summary": "AMFlamingo is an iOS UI component library providing common UI extension functionalities.",
-  "description": "AMFlamingo is an iOS UI component library providing common UI extension functionalities:\n- UIView Extensions: Flow layout support, Nib loading support\n- UIButton Extensions: Customizable image position, Customizable text position",
-  "homepage": "https://github.com/owlivendy/AMFlamingo",
+  "summary": "A short description of AMFlamingo.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/sxf/AMFlamingo",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "owlivendy": "owlivendy@gmail.com"
+    "sxf": "146811+owls@user.noreply.gitee.com"
   },
   "source": {
-    "git": "https://github.com/owlivendy/AMFlamingo.git",
+    "git": "https://github.com/sxf/AMFlamingo.git",
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "13.0"
+    "ios": "10.0"
   },
-  "swift_versions": "5.5",
+  "swift_versions": "5.0",
   "source_files": "Sources/AMFlamingo/**/*",
   "dependencies": {
     "SnapKit": [
       "~> 5.0.0"
     ]
   },
-  "swift_version": "5.5"
+  "swift_version": "5.0"
 }

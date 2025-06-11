@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_AMTest_ExampleVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_AMTest_ExampleVersionString[];
+FOUNDATION_EXPORT double Pods_AMFlamingo_ExampleVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_AMFlamingo_ExampleVersionString[];
 
