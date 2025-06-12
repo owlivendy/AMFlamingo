@@ -5,23 +5,20 @@ import SnapKit
 public class AMFlowlayoutConfig {
     /// 最大宽度
     public var maxWidth: CGFloat
-    /// 行高
-    public var rowHeight: CGFloat
     /// 水平间距
     public var spacing: CGFloat
     /// 垂直间距
     public var verticalSpacing: CGFloat
-    /// 行起始X坐标
-    public var lineStartX: CGFloat
+    /// 内边距
+    public var padding: UIEdgeInsets
     
     /// 初始化流式布局配置
     /// - Parameter maxWidth: 最大宽度
     public init(maxWidth: CGFloat) {
         self.maxWidth = maxWidth
-        self.rowHeight = 16
         self.spacing = 5
         self.verticalSpacing = 5
-        self.lineStartX = 0
+        self.padding = .zero
     }
 }
 
@@ -37,7 +34,9 @@ public extension UIView {
     
     /// 执行流式布局
     /// - Parameters:
-    ///   - viewsToLayout: 需要布局的视图数组
+    ///   - viewsToLayout: 需要布局的视图数组。数组中的每个视图必须能够通过 systemLayoutSizeFitting 方法计算出其内容大小。
+    ///                    建议使用 UILabel、UIButton 等支持内容自适应的视图，或者自定义视图时实现合适的约束。
+    ///                    如果视图没有正确设置约束，可能会导致布局计算错误。
     ///   - container: 容器视图，如果为 nil 则只计算高度
     ///   - config: 布局配置
     /// - Returns: 布局所需的总高度
@@ -48,17 +47,16 @@ public extension UIView {
         
         // 布局 container 内部的子视图
         var previousView: UIView? = nil // 在 container 内部布局，第一个视图相对于其左侧
-        let rowHeight = config.rowHeight //固定行高
+        var rowHeight: CGFloat = 0 //固定行高
         let spacing = config.spacing // 视图之间的水平间距
         let verticalSpacing = config.verticalSpacing // 行之间的垂直间距
-        let lineStartX = config.lineStartX // 当前行的起始 X 坐标
-        var currentX: CGFloat = 0 // 相对于 container 的 x 坐标
-        var currentLineY: CGFloat = 0 // 当前行的布局的 Y 坐标
-        var currentMaxY = rowHeight + verticalSpacing // 当前行的最大 Y 坐标
+        var currentX: CGFloat = config.padding.left // 相对于 container 的 x 坐标
+        var currentLineY: CGFloat = config.padding.top // 当前行的布局的 Y 坐标
+        var currentMaxY: CGFloat = config.padding.top // 当前行的最大 Y 坐标
         
         let maxwidth = config.maxWidth
         
-        for currentView in viewsToLayout {
+        for (index, currentView) in viewsToLayout.enumerated() {
             if currentView.isHidden { continue } // 如果视图隐藏则跳过布局
             if needLayout {
                 container?.addSubview(currentView)
@@ -67,10 +65,16 @@ public extension UIView {
             let viewSize = currentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
             let requiredWidth = viewSize.width
             
+            if (index == 0) {
+                rowHeight = viewSize.height
+                currentMaxY += rowHeight + verticalSpacing
+            }
+            
             // 判断是否需要换行
-            if currentX + requiredWidth > maxwidth && currentX > 0 {
+            if currentX + requiredWidth + config.padding.right > maxwidth && currentX > config.padding.left {
                 // 换行
-                currentX = lineStartX // 回到行的起始 X 坐标
+                rowHeight = viewSize.height
+                currentX = config.padding.left // 回到行的起始 X 坐标
                 currentLineY += verticalSpacing + rowHeight // 增加垂直间距
                 previousView = nil // 换行后相对于 container 的左边布局
                 currentMaxY += rowHeight + verticalSpacing
@@ -86,7 +90,7 @@ public extension UIView {
                         make.centerY.equalTo(previousView)
                     } else {
                         make.top.equalTo(container!.snp.top).offset(currentLineY) // 相对于 container 顶部
-                        make.left.equalTo(container!.snp.left).offset(lineStartX) // 相对于 container 左侧
+                        make.left.equalTo(container!.snp.left).offset(config.padding.left) // 相对于 container 左侧
                     }
                     //高度，宽度由内容决定
                 }
@@ -97,7 +101,7 @@ public extension UIView {
         }
         
         // 计算 container 的总高度
-        let totalHeight = currentMaxY - verticalSpacing // 最后一行的高度就是总高度
+        let totalHeight = currentMaxY - verticalSpacing + config.padding.bottom // 最后一行的高度就是总高度
         return totalHeight
     }
     

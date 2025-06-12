@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AMFlamingo'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'AMFlamingo is an iOS UI component library providing common UI extension functionalities.'
 
 # This description is used to generate tags and improve search results.
