@@ -11,6 +11,8 @@ public class AMFlowlayoutConfig {
     public var verticalSpacing: CGFloat
     /// 内边距
     public var padding: UIEdgeInsets
+    /// 每行显示的视图数量，默认为0表示自适应，大于0时表示固定数量
+    public var itemsPerRow: Int
     
     /// 初始化流式布局配置
     /// - Parameter maxWidth: 最大宽度
@@ -19,13 +21,16 @@ public class AMFlowlayoutConfig {
         self.spacing = 5
         self.verticalSpacing = 5
         self.padding = .zero
+        self.itemsPerRow = 0
     }
 }
 
 public extension UIView {
     /// 计算流式布局所需的高度
     /// - Parameters:
-    ///   - viewsToLayout: 需要布局的视图数组
+    ///   - viewsToLayout: 需要布局的视图数组。数组中的每个视图必须能够通过 systemLayoutSizeFitting 方法计算出其内容大小。
+    ///                    建议使用 UILabel、UIButton 等支持内容自适应的视图，或者自定义视图时实现合适的约束。
+    ///                    如果视图没有正确设置约束，可能会导致布局计算错误。
     ///   - config: 布局配置
     /// - Returns: 布局所需的总高度
     static func heightForFlowHorizontalSubViews(_ viewsToLayout: [UIView], config: AMFlowlayoutConfig) -> CGFloat {
@@ -56,6 +61,16 @@ public extension UIView {
         
         let maxwidth = config.maxWidth
         
+        // 计算固定宽度（如果设置了每行数量）
+        let fixedItemWidth: CGFloat?
+        if config.itemsPerRow > 0 {
+            let availableWidth = maxwidth - config.padding.left - config.padding.right
+            let totalSpacing = CGFloat(config.itemsPerRow - 1) * config.spacing
+            fixedItemWidth = (availableWidth - totalSpacing) / CGFloat(config.itemsPerRow)
+        } else {
+            fixedItemWidth = nil
+        }
+        
         for (index, currentView) in viewsToLayout.enumerated() {
             if currentView.isHidden { continue } // 如果视图隐藏则跳过布局
             if needLayout {
@@ -63,7 +78,7 @@ public extension UIView {
             }
             
             let viewSize = currentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-            let requiredWidth = viewSize.width
+            let requiredWidth = fixedItemWidth ?? viewSize.width
             
             if (index == 0) {
                 rowHeight = viewSize.height
@@ -71,7 +86,11 @@ public extension UIView {
             }
             
             // 判断是否需要换行
-            if currentX + requiredWidth + config.padding.right > maxwidth && currentX > config.padding.left {
+            let shouldWrap = config.itemsPerRow > 0 ? 
+                (index > 0 && index % config.itemsPerRow == 0) : // 固定数量时，根据索引判断
+                (currentX + requiredWidth + config.padding.right > maxwidth && currentX > config.padding.left) // 自适应时，根据宽度判断
+            
+            if shouldWrap {
                 // 换行
                 rowHeight = viewSize.height
                 currentX = config.padding.left // 回到行的起始 X 坐标
@@ -92,7 +111,11 @@ public extension UIView {
                         make.top.equalTo(container!.snp.top).offset(currentLineY) // 相对于 container 顶部
                         make.left.equalTo(container!.snp.left).offset(config.padding.left) // 相对于 container 左侧
                     }
-                    //高度，宽度由内容决定
+                    
+                    // 如果设置了固定宽度，添加宽度约束
+                    if let fixedWidth = fixedItemWidth {
+                        make.width.equalTo(fixedWidth)
+                    }
                 }
             }
             // 更新当前 X 坐标和前一个视图
