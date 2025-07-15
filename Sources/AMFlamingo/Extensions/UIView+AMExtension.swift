@@ -105,11 +105,11 @@ public extension UIView {
             if needLayout {
                 currentView.snp.makeConstraints { make in
                     if let previousView = previousView {
-                        make.left.equalTo(previousView.snp.right).offset(spacing)
+                        make.leading.equalTo(previousView.snp.trailing).offset(spacing)
                         make.centerY.equalTo(previousView)
                     } else {
                         make.top.equalTo(container!.snp.top).offset(currentLineY) // 相对于 container 顶部
-                        make.left.equalTo(container!.snp.left).offset(config.padding.left) // 相对于 container 左侧
+                        make.leading.equalTo(container!.snp.leading).offset(config.padding.left) // 相对于 container 左侧
                     }
                     
                     // 如果设置了固定宽度，添加宽度约束
