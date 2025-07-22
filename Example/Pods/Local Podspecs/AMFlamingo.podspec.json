@@ -1,6 +1,6 @@
 {
   "name": "AMFlamingo",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "summary": "AMFlamingo is an iOS UI component library providing common UI extension functionalities.",
   "description": "AMFlamingo is an iOS UI component library providing common UI extension functionalities. It offers a variety of UI components and extensions to enhance your iOS development experience.",
   "homepage": "https://github.com/owlivendy/AMFlamingo",
@@ -13,13 +13,13 @@
   },
   "source": {
     "git": "https://github.com/owlivendy/AMFlamingo.git",
-    "tag": "0.1.3"
+    "tag": "0.1.4"
   },
   "platforms": {
     "ios": "10.0"
   },
   "swift_versions": "5.0",
-  "source_files": "Sources/AMFlamingo/**/*",
+  "source_files": "Sources/AMFlamingo/**/*.swift",
   "resource_bundles": {
     "AMFlamingo": [
       "Sources/AMFlamingo/Resources/**/*"
