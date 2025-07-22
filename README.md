@@ -10,6 +10,10 @@ AMFlamingo is an iOS UI component library providing common UI extension function
 - UIButton Extensions
   - Customizable image position
   - Customizable text position
+- AMPopupView
+  - Bottom sheet & Alert style popup
+  - Custom content support
+  - Keyboard avoidance
 
 ## Installation
 
@@ -36,6 +40,49 @@ pod install
 ```
 
 ## Usage Example
+
+### AMPopupView
+
+#### 底部弹窗（Bottom Sheet）
+```swift
+import AMFlamingo
+
+let customView = UILabel()
+customView.text = "自定义内容"
+customView.textAlignment = .center
+customView.backgroundColor = .systemGray6
+customView.layer.cornerRadius = 8
+customView.clipsToBounds = true
+customView.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint.activate([
+    customView.heightAnchor.constraint(equalToConstant: 80),
+    customView.widthAnchor.constraint(equalToConstant: 220)
+])
+
+let popup = AMPopupView(title: "弹窗标题", customView: customView, presentationStyle: .fromBottom)
+popup.closeButtonStyle = .x // 可选 .x、.back、.none
+popup.show()
+```
+
+#### 居中弹窗（Alert）
+```swift
+import AMFlamingo
+
+let customView = UILabel()
+customView.text = "Alert 内容"
+customView.textAlignment = .center
+customView.backgroundColor = .systemGray6
+customView.layer.cornerRadius = 8
+customView.clipsToBounds = true
+customView.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint.activate([
+    customView.heightAnchor.constraint(equalToConstant: 80),
+    customView.widthAnchor.constraint(equalToConstant: 220)
+])
+
+let popup = AMPopupView(title: nil, customView: customView, presentationStyle: .alert)
+popup.show()
+```
 
 ### UIView Flow Layout
 
