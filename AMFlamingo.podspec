@@ -32,6 +32,9 @@ AMFlamingo is an iOS UI component library providing common UI extension function
   s.swift_version = '5.0'
 
   s.source_files = 'Sources/AMFlamingo/**/*'
+  s.resource_bundles = {
+    'AMFlamingo' => ['Sources/AMFlamingo/Resources/**/*']
+  }
   
   s.dependency 'SnapKit', '~> 5.0.0'
 end

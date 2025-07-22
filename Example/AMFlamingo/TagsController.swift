@@ -9,7 +9,7 @@
 import UIKit
 import AMFlamingo
 
-class ViewController: UIViewController {
+class TagsController: UIViewController {
     
     private let tagContainer = UIView()
     private let fixedWidthTagContainer = UIView()

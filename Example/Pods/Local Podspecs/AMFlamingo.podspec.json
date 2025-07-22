@@ -1,25 +1,30 @@
 {
   "name": "AMFlamingo",
-  "version": "0.1.0",
-  "summary": "A short description of AMFlamingo.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/sxf/AMFlamingo",
+  "version": "0.1.3",
+  "summary": "AMFlamingo is an iOS UI component library providing common UI extension functionalities.",
+  "description": "AMFlamingo is an iOS UI component library providing common UI extension functionalities. It offers a variety of UI components and extensions to enhance your iOS development experience.",
+  "homepage": "https://github.com/owlivendy/AMFlamingo",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "sxf": "146811+owls@user.noreply.gitee.com"
+    "owlivendy": "owlivendy@github.com"
   },
   "source": {
-    "git": "https://github.com/sxf/AMFlamingo.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/owlivendy/AMFlamingo.git",
+    "tag": "0.1.3"
   },
   "platforms": {
     "ios": "10.0"
   },
   "swift_versions": "5.0",
   "source_files": "Sources/AMFlamingo/**/*",
+  "resource_bundles": {
+    "AMFlamingo": [
+      "Sources/AMFlamingo/Resources/**/*"
+    ]
+  },
   "dependencies": {
     "SnapKit": [
       "~> 5.0.0"
