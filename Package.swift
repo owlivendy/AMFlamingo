@@ -12,7 +12,7 @@ let package = Package(
             targets: ["AMFlamingo"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.0.0")
+        .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.7.1")
     ],
     targets: [
         .target(
