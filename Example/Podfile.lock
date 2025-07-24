@@ -1,7 +1,10 @@
 PODS:
-  - AMFlamingo (0.1.4):
-    - SnapKit (~> 5.0.0)
-  - SnapKit (5.0.1)
+  - AMFlamingo (0.1.5):
+    - AMFlamingo/Resources (= 0.1.5)
+    - SnapKit (~> 5.7)
+  - AMFlamingo/Resources (0.1.5):
+    - SnapKit (~> 5.7)
+  - SnapKit (5.7.1)
 
 DEPENDENCIES:
   - AMFlamingo (from `../`)
@@ -15,9 +18,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AMFlamingo: f497d8b0decc39c7ca9d6efe9899ec6cb1576df5
-  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  AMFlamingo: a9689a7683b6b3b369e8ab7660eb18dbe0e00066
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
 
-PODFILE CHECKSUM: 21524ff8e6372f3ed83b4471bfa03b727dcc2d64
+PODFILE CHECKSUM: f5802bd971cae5628faf13f95ecd17977652398c
 
 COCOAPODS: 1.16.2

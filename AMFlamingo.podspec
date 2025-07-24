@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AMFlamingo'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'AMFlamingo is an iOS UI component library providing common UI extension functionalities.'
 
 # This description is used to generate tags and improve search results.
@@ -28,13 +28,16 @@ AMFlamingo is an iOS UI component library providing common UI extension function
   s.source           = { :git => 'https://github.com/owlivendy/AMFlamingo.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '13.0'
   s.swift_version = '5.0'
 
   s.source_files = 'Sources/AMFlamingo/**/*.swift'
-  s.resource_bundles = {
-    'AMFlamingo' => ['Sources/AMFlamingo/Resources/**/*']
-  }
   
-  s.dependency 'SnapKit', '~> 5.0.0'
+  s.subspec 'Resources' do |resources|
+    resources.resource_bundles = {
+      'AMFlamingo' => ['Sources/AMFlamingo/Resources/**/*.{png,xib,storyboard,xcprivacy}']
+    }
+  end
+  
+  s.dependency 'SnapKit', '~> 5.7'
 end

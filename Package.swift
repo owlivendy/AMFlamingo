@@ -18,7 +18,11 @@ let package = Package(
         .target(
             name: "AMFlamingo",
             dependencies: ["SnapKit"],
-            path: "Sources"),
+            path: "Sources",
+            resources: [
+                .process("AMFlamingo/Resources")
+            ]
+        ),
         .testTarget(
             name: "AMFlamingoTests",
             dependencies: ["AMFlamingo"],

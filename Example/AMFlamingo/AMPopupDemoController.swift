@@ -32,13 +32,15 @@ class AMPopupDemoController: UIViewController {
         customView.layer.cornerRadius = 8
         customView.clipsToBounds = true
         customView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            customView.heightAnchor.constraint(equalToConstant: 280),
-            customView.widthAnchor.constraint(equalToConstant: 220)
-        ])
+//        NSLayoutConstraint.activate([
+//            customView.heightAnchor.constraint(equalToConstant: 280),
+//            customView.widthAnchor.constraint(equalToConstant: 220)
+//        ])
         
-        let popup = AMPopupView(title: "弹窗标题", customView: customView, presentationStyle: .alert)
+        let popup = AMPopupView(title: "弹窗标题", customView: customView, presentationStyle: .fromBottom)
         popup.tapBackgroundToHide = true
+        popup.closeButtonStyle = .x
+        popup.modalType = .fullScreenWithoutSafeAreaTop
         popup.show()
     }
     
