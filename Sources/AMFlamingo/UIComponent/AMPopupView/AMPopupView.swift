@@ -47,6 +47,7 @@ public class AMPopupView: UIView {
     /// 弹窗背景视图（只读）, 如果 presentationStyle 为 .alert，则不显示
     private var closeButton: UIButton!
     private var bottomConstraint: NSLayoutConstraint?
+    private var centerConstraint: NSLayoutConstraint?
     private weak var maskAlphaView: UIView?
     private var closeButtonLeadingConstraint: NSLayoutConstraint?
     private var closeButtonTrailingConstraint: NSLayoutConstraint?
@@ -78,9 +79,22 @@ public class AMPopupView: UIView {
         removeKeyboardObservers()
     }
     
+    private func hasTextFieldOrTextView(in view: UIView) -> Bool {
+        if view is UITextField || contentView is UITextView { return true }
+        for sub in view.subviews {
+            if hasTextFieldOrTextView(in: sub) {
+                return true
+            }
+        }
+        return false
+    }
+    
     // MARK: - 键盘监听
     private func addKeyboardObservers() {
         guard enableKeyboardAdjustment else { return }
+        guard let view = contentView else { return }
+        guard hasTextFieldOrTextView(in: view) else { return }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -99,37 +113,48 @@ public class AMPopupView: UIView {
     }
 
     @objc private func keyboardWillShow(_ notification: Notification) {
-        guard enableKeyboardAdjustment, presentationStyle == .fromBottom else { return }
+        guard enableKeyboardAdjustment else { return }
         guard let userInfo = notification.userInfo,
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
               let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
               let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
         guard let contentView = self.contentView else { return }
-        let firstResponder = findFirstResponder(in: contentView)
-        if firstResponder == nil {
-            bottomConstraint?.constant = 0
-            UIView.animate(withDuration: duration) { self.superview?.layoutIfNeeded() }
+        
+        guard let firstResponder = findFirstResponder(in: contentView) else {
             return
         }
-        let responderFrame = firstResponder!.convert(firstResponder!.bounds, to: window)
-        let responderBottomY = responderFrame.maxY
-        let keyboardTopY = window.bounds.height - keyboardFrame.height
-        let gap = keyboardTopY - responderBottomY
-        if gap > minGapBetweenKeyboardAndTextField {
-            bottomConstraint?.constant = 0
-            UIView.animate(withDuration: duration) { self.superview?.layoutIfNeeded() }
-        } else {
-            let offset = minGapBetweenKeyboardAndTextField - gap
-            bottomConstraint?.constant = -offset
-            UIView.animate(withDuration: duration) { self.superview?.layoutIfNeeded() }
+        
+        if presentationStyle == .fromBottom {
+            let responderFrame = firstResponder.convert(firstResponder.bounds, to: window)
+            let responderBottomY = responderFrame.maxY
+            let keyboardTopY = window.bounds.height - keyboardFrame.height
+            let gap = keyboardTopY - responderBottomY
+            if gap < minGapBetweenKeyboardAndTextField {
+                let offset = minGapBetweenKeyboardAndTextField - gap
+                bottomConstraint?.constant = -offset
+                UIView.animate(withDuration: duration) { self.superview?.layoutIfNeeded() }
+            }
+        } else if presentationStyle == .alert {
+            let responderFrame = firstResponder.convert(firstResponder.bounds, to: window)
+            let responderBottomY = responderFrame.maxY
+            let keyboardTopY = window.bounds.height - keyboardFrame.height
+            let gap = keyboardTopY - responderBottomY
+            if gap < minGapBetweenKeyboardAndTextField {
+                let offset = minGapBetweenKeyboardAndTextField - gap
+                centerConstraint?.constant = -offset
+                UIView.animate(withDuration: duration) { self.superview?.layoutIfNeeded() }
+            }
         }
     }
     @objc private func keyboardWillHide(_ notification: Notification) {
-        guard enableKeyboardAdjustment, presentationStyle == .fromBottom else { return }
+        guard enableKeyboardAdjustment else { return }
         guard let userInfo = notification.userInfo,
               let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
-        bottomConstraint?.constant = 0
-        UIView.animate(withDuration: duration) { self.superview?.layoutIfNeeded() }
+        UIView.animate(withDuration: duration) {
+            self.bottomConstraint?.constant = 0
+            self.centerConstraint?.constant = 0
+            self.superview?.layoutIfNeeded()
+        }
     }
 
     // MARK: - 显示/隐藏
@@ -152,7 +177,7 @@ public class AMPopupView: UIView {
         maskAlphaView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         maskAlphaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnBackground)))
         container.addSubview(maskAlphaView)
-        container.addSubview(self)
+        maskAlphaView.addSubview(self)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.maskAlphaView = maskAlphaView
         addKeyboardObservers()
@@ -192,12 +217,14 @@ public class AMPopupView: UIView {
         } else if presentationStyle == .alert {
             titleLabel?.isHidden = true
             closeButton?.isHidden = true
+            let centerY = self.centerYAnchor.constraint(equalTo: container.centerYAnchor)
             NSLayoutConstraint.activate([
                 self.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-                self.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+                centerY,
                 self.leadingAnchor.constraint(greaterThanOrEqualTo: container.leadingAnchor, constant: 20),
                 self.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -20)
             ])
+            self.centerConstraint = centerY
             self.transform = CGAffineTransform(scaleX: 0.94, y: 0.94)
             self.alpha = 0
             self.maskAlphaView?.backgroundColor = UIColor.black.withAlphaComponent(0.0)
@@ -221,7 +248,9 @@ public class AMPopupView: UIView {
 
     /// 隐藏弹窗
     @objc public func hide() {
+        self.endEditing(true)
         removeKeyboardObservers()
+        
         if let maskAlphaView = self.maskAlphaView {
             if presentationStyle == .fromBottom {
                 UIView.animate(withDuration: 0.2, animations: {
