@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol TrackProtocol: NSObjectProtocol {
+protocol AMTrackProtocol: NSObjectProtocol {
     func shouldTrackMe() -> Bool
     func trackName() -> String
 }
 
 @objcMembers
-class ViewTracker: NSObject {
+class AMViewTracker: NSObject {
     let trackName: String
     let title: String?
     
@@ -57,11 +57,11 @@ class ViewTracker: NSObject {
  * - 如果目标视图控制器不在当前导航栈中，返回空数组
  */
 @objcMembers
-class PagePathManager: NSObject {
-    var lastPathSegments = [ViewTracker]()
-    static let share = PagePathManager()
+class AMPagePathManager: NSObject {
+    var lastPathSegments = [AMViewTracker]()
+    static let share = AMPagePathManager()
     
-    func pathSegments(for visibleViewController: UIViewController) -> [ViewTracker] {
+    func pathSegments(for visibleViewController: UIViewController) -> [AMViewTracker] {
         guard let window = UIApplication.am_keyWindow else {
             return []
         }
@@ -72,7 +72,7 @@ class PagePathManager: NSObject {
         var found = [UIViewController]()
         _findStack(with: rootVC, target: visibleViewController, stack: &found)
         
-        if found.last != visibleViewController, let trackedvc = visibleViewController as? TrackProtocol, trackedvc.shouldTrackMe() {
+        if found.last != visibleViewController, let trackedvc = visibleViewController as? AMTrackProtocol, trackedvc.shouldTrackMe() {
             found.append(visibleViewController)
         }
         
@@ -81,8 +81,8 @@ class PagePathManager: NSObject {
         }
         
         return found.compactMap { c in
-            if let trackedvc = c as? TrackProtocol, trackedvc.shouldTrackMe() {
-                return ViewTracker(trackName: trackedvc.trackName(), title: c.title)
+            if let trackedvc = c as? AMTrackProtocol, trackedvc.shouldTrackMe() {
+                return AMViewTracker(trackName: trackedvc.trackName(), title: c.title)
             }
             return nil
         }
