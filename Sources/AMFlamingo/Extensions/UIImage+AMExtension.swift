@@ -2,7 +2,7 @@
 //  UIImage+AMExtension.swift
 //  AMFlamingo
 //
-//  Created by meotech on 2025/7/22.
+//  Created by shen xiaofei on 2025/7/22.
 //
 
 extension UIImage {

@@ -1,9 +1,9 @@
 //
 //  PagePathManager.swift
-//  ChinaHomelife247
+//  AMFlamingo
 //
-//  Created by meotech on 2025/8/8.
-//  Copyright © 2025 吕欢. All rights reserved.
+//  Created by shen xiaofei on 2025/8/8.
+//  Copyright © 2025 shen xiaofei. All rights reserved.
 //
 
 import UIKit
