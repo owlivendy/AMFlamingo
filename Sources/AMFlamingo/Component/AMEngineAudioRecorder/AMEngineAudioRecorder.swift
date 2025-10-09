@@ -50,7 +50,7 @@ class AMEngineAudioRecorder: NSObject {
             channels: channels,
             interleaved: true
         ) else {
-            CHLogDebug("无法创建录音格式")
+            AMLogDebug("无法创建录音格式")
             return
         }
         
@@ -78,13 +78,13 @@ class AMEngineAudioRecorder: NSObject {
             
             // 执行格式转换
             var error: NSError?
-            let conversionStatus = converter.convert(to: convertedBuffer, error: &error, withInputFrom: inputBlock)
+            let _ = converter.convert(to: convertedBuffer, error: &error, withInputFrom: inputBlock)
             
             if error == nil {
                 // 处理转换后的音频数据
                 self.processAudioBuffer(convertedBuffer, format: pcmFormat)
             } else {
-                CHLogDebug("音频转换失败: \(error!.localizedDescription)")
+                AMLogDebug("音频转换失败: \(error!.localizedDescription)")
             }
         }
         
@@ -93,9 +93,9 @@ class AMEngineAudioRecorder: NSObject {
         do {
             try audioEngine.start()
             isRecording = true
-            CHLogDebug("录音已开始")
+            AMLogDebug("录音已开始")
         } catch {
-            CHLogDebug("启动录音失败: \(error.localizedDescription)")
+            AMLogDebug("启动录音失败: \(error.localizedDescription)")
             isRecording = false
         }
     }
@@ -120,7 +120,7 @@ class AMEngineAudioRecorder: NSObject {
             guard let float32Buffer = buffer.floatChannelData?[0] else { return }
             audioData = Data(bytes: float32Buffer, count: Int(frameLength) * MemoryLayout<Float32>.stride)
         default:
-            CHLogDebug("不支持的音频格式")
+            AMLogDebug("不支持的音频格式")
             return
         }
         
@@ -142,7 +142,7 @@ class AMEngineAudioRecorder: NSObject {
         
         // 转换为Base64并回调
 //        let base64String = data.base64EncodedString().replacingOccurrences(of: "\n", with: "")
-//        CHLogDebug("发送音频数据，索引: \(audioIndex)")
+//        AMLogDebug("发送音频数据，索引: \(audioIndex)")
         onAudioDataReceived?(data, audioIndex)
         
         // 递增索引
@@ -158,6 +158,6 @@ class AMEngineAudioRecorder: NSObject {
         // 停止音频引擎
         audioEngine.stop()
         isRecording = false
-        CHLogDebug("录音已停止")
+        AMLogDebug("录音已停止")
     }
 }

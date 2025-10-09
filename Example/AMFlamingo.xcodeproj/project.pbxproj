@@ -318,11 +318,13 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AMFlamingo_Example/Pods-AMFlamingo_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AMFlamingo/AMFlamingo.framework",
+				"${BUILT_PRODUCTS_DIR}/AMToast/AMToast.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMFlamingo.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMToast.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

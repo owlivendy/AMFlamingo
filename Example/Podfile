@@ -4,7 +4,7 @@ platform :ios, '13.0'
 
 target 'AMFlamingo_Example' do
   pod 'AMFlamingo', :path => '../'
-
+  pod 'AMToast'
   target 'AMFlamingo_Tests' do
     inherit! :search_paths
 

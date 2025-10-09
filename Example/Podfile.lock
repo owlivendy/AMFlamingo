@@ -4,13 +4,16 @@ PODS:
     - SnapKit (~> 5.7)
   - AMFlamingo/Resources (0.1.5):
     - SnapKit (~> 5.7)
+  - AMToast (0.3.3)
   - SnapKit (5.7.1)
 
 DEPENDENCIES:
   - AMFlamingo (from `../`)
+  - AMToast
 
 SPEC REPOS:
   trunk:
+    - AMToast
     - SnapKit
 
 EXTERNAL SOURCES:
@@ -19,8 +22,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AMFlamingo: a9689a7683b6b3b369e8ab7660eb18dbe0e00066
+  AMToast: 2c41cc0e95ecd03035661ab2ce4fc7bfc6127636
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
 
-PODFILE CHECKSUM: f5802bd971cae5628faf13f95ecd17977652398c
+PODFILE CHECKSUM: 58438ce31d0aa3bc2729117400fe33018f6c85c6
 
 COCOAPODS: 1.16.2

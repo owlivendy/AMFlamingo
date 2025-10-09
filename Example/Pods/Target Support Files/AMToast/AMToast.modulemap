@@ -1,0 +1,6 @@
+framework module AMToast {
+  umbrella header "AMToast-umbrella.h"
+
+  export *
+  module * { export * }
+}

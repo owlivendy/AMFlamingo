@@ -27,7 +27,7 @@ extension UIColor {
         let hexString = cleanedString.uppercased()
         
         // 定义扫描器
-        var scanner = Scanner(string: hexString)
+        let scanner = Scanner(string: hexString)
         var hexNumber: UInt64 = 0
         
         // 扫描十六进制数值

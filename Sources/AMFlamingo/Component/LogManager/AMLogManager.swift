@@ -9,19 +9,19 @@
 import Foundation
 
 // MARK: - 全局日志方法
-public func CHLogDebug(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+public func AMLogDebug(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
     AMLogManager.shared.logDebug(message, file: file, function: function, line: line)
 }
 
-public func CHLogInfo(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+public func AMLogInfo(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
     AMLogManager.shared.logInfo(message, file: file, function: function, line: line)
 }
 
-public func CHLogWarn(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+public func AMLogWarn(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
     AMLogManager.shared.logWarn(message, file: file, function: function, line: line)
 }
 
-public func CHLogError(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+public func AMLogError(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
     AMLogManager.shared.logError(message, file: file, function: function, line: line)
 }
 
@@ -31,26 +31,39 @@ public class AMLogManager {
     // MARK: - 单例
     public static let shared = AMLogManager()
     
+    // 日志时间格式化器
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone.current
+        return formatter
+    }()
+    
     private init() {}
     
     // MARK: - 日志方法
     public func logDebug(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+        let timeStr = dateFormatter.string(from: Date())
         let fileName = URL(fileURLWithPath: file).lastPathComponent
-        print("[\(fileName):\(line)] \(function): \(message)")
+        print("\(timeStr) [D] [\(fileName):\(line)] \(function): \(message)")
     }
     
     public func logInfo(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+        let timeStr = dateFormatter.string(from: Date())
         let fileName = URL(fileURLWithPath: file).lastPathComponent
-        print("[\(fileName):\(line)] \(function): \(message)")
+        print("\(timeStr) [I] [\(fileName):\(line)] \(function): \(message)")
     }
     
     public func logWarn(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+        let timeStr = dateFormatter.string(from: Date())
         let fileName = URL(fileURLWithPath: file).lastPathComponent
-        print("[\(fileName):\(line)] \(function): \(message)")
+        print("\(timeStr) [W] [\(fileName):\(line)] \(function): \(message)")
     }
     
     public func logError(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
+        let timeStr = dateFormatter.string(from: Date())
         let fileName = URL(fileURLWithPath: file).lastPathComponent
-        print("[\(fileName):\(line)] \(function): \(message)")
+        print("\(timeStr) [E] [\(fileName):\(line)] \(function): \(message)")
     }
 }

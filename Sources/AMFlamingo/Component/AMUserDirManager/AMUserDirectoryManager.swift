@@ -10,9 +10,9 @@
 import Foundation
 
 /// 用户目录管理器
-public class AMUserDirManager {
+public class AMUserDirectoryManager {
     /// 单例
-    public static let shared = AMUserDirManager()
+    public static let shared = AMUserDirectoryManager()
     
     /// 当前用户唯一键
     public private(set) var userKey: String

@@ -1,3 +1,11 @@
+//
+//  PhotoPreviewController.swift
+//  AMFlamingo
+//
+//  Created by shen xiaofei on 2025/7/2.
+//  Copyright © 2025 shen xiaofei. All rights reserved.
+//
+
 import UIKit
 
 // 代理协议定义
@@ -8,6 +16,9 @@ protocol PhotoPreviewControllerDelegate: AnyObject {
     func photoPreviewController(_ controller: PhotoPreviewController, didUsePhoto image: UIImage)
 }
 
+/**
+ 图片预览，适用于场景：相机拍照后预览图片的页面
+ */
 class PhotoPreviewController: UIViewController {
     
     // MARK: - 公共属性
