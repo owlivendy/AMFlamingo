@@ -1,0 +1,156 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  # 该脚本实现自动打包，支持以下能力：
+  #  1. 支持上传到蒲公英
+  #  2. 支持 dSYM 文件的上传（参数 appstore=1）
+  #  3. 上传到 appstore
+  #
+  # env: prod-正式环境, dev-测试环境; 默认prod
+  # appstore: 是否上传到appstore, 默认0-不上传 (如果考虑上传到appstore, 请设置为1)
+  #       -  0: 不上传到appstore
+  #       -  1: 上传到appstore, 同时 .dSYM 文件上传到Crashlytics
+  # message(可选): 更新内容, 当需要上传到蒲公英时必填
+  # pgaccount(可选): leo, 在下面的逻辑代码中配置对应的 api_key， pgaccount 只是一个方便记忆的字符串,  选填（pgaccount和 apikey 选一个）
+  # apikey(可选): xxx(蒲公英 apikey(https://www.pgyer.com/account/api） ,如果不使用pgaccount参数， 可以直接指定apikey;
+  # webhook(可选): 飞书群聊机器人 webhook（https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM）
+  # postMsg(可选): 使用默认的地址发送飞书消息，默认1-发送（0-不发送） postMsg 和 webhook 参数 二选一
+  desc "打包并上传到蒲公英"
+  lane :build2pg do |options|
+    # 获取环境参数（默认正式环境）
+    if options[:env] == "dev"
+      envValue = 0
+      env = "dev"
+    else
+      envValue = 1
+      env = "production"
+    end
+
+    isAppstore = options[:appstore] == "1"
+
+    if options[:pgaccount] == "fei"
+      api_key = "7883414a526d7fff1762218263a0ac7c"
+    elsif options[:pgaccount] == "fei1"
+      api_key = "d4e66fbd9ec0ebf4e2536ba974beacbe"
+    elsif options[:pgaccount] == "huan"
+      api_key = "55847b65364e7fd3b1dee57e3803b237"
+    else 
+      api_key = options[:apikey]
+    end
+
+    # 当需要上传到蒲公英（api_key 存在）且没有 message 时，抛出错误
+    if api_key && !api_key.empty? && !options[:message]
+      UI.user_error!("需要上传到蒲公英时，必须指定 message 参数，例如：fastlane build2pg pgaccount:leo message:'更新内容'")
+    end
+
+    # # 生成当前时间的字符串（精确到秒），格式示例：20251010143025（年月日时分秒）
+    # time_based_build_number = Time.now.strftime("%Y%m%d%H%M%S")
+    
+    # # 使用时间字符串作为 Build 号
+    # increment_build_number(
+    #   build_number: "#{isAppstore ? '1.' : '0.'}#{time_based_build_number}"
+    # )
+
+    # 根据 isAppstore 变量动态配置参数
+    export_method = isAppstore ? "app-store" : "ad-hoc"
+    configuration = "Release_Fastlane"
+    output_dir = isAppstore ? "./build/appstore" : "./build/#{env}"
+    provisioning_profile_main = isAppstore ? "iOSDisSup815" : "wangzhanmaoADhoc"
+
+    # 1. 清理 & 构建
+    build_app(
+      scheme: "ChinaHomelife247",
+      export_method: export_method,
+      configuration: configuration,
+      output_directory: output_dir,
+      xcargs: "ENV=#{envValue} APPSTORE=#{isAppstore ? 1 : 0}",
+      export_options: {
+        provisioningProfiles: {
+          "com.meorient.ChinaHomelife" => provisioning_profile_main
+        },
+        # 仅App Store需要的额外配置
+        **(isAppstore ? {
+          manageAppVersionAndBuildNumber: false,
+          signingStyle: "manual" # 自动签名可改为"automatic"
+        } : {})
+      }
+    )
+
+    UI.message "✅ App build complete."
+
+    if isAppstore
+      upload_to_app_store(
+        api_key: app_store_connect_api_key(
+          key_id: "3235G929M7",
+          issuer_id: "69a6de91-beb6-47e3-e053-5b8c7c11a4d1",
+          key_filepath: "./AuthKey_3235G929M7.p8",
+          #生成的 JWT 令牌（JSON Web Token） 在被创建后能使用的时间长度（单位：秒）。
+          duration: 1200,
+          in_house: false
+        ),
+        app_identifier: "com.meorient.ChinaHomelife",
+        skip_screenshots: true,
+        skip_metadata: true,
+        submit_for_review: false,
+        #是否启用 分阶段发布（Phased Release）功能。 当 phased_release: true 时，App 审核通过后不会立即向所有用户推送更新，而是按照苹果预设的比例逐步 rollout（推出）：
+        phased_release: false,
+        precheck_include_in_app_purchases: false,  # 不启用应用内购检查（Precheck cannot check In-app purchases with the App Store Connect API Key (yet)）
+      )
+
+      UI.message "✅ App uploaded to App Store."
+    end
+
+    if env == "production" && isAppstore
+      # 上传dSYM文件 到 firebase - Crashlytics (# https://docs.fastlane.tools/actions/upload_symbols_to_crashlytics/)
+      upload_symbols_to_crashlytics(
+        dsym_path: "./build/#{env}/ChinaHomelife247.app.dSYM.zip",
+        # 上传符号文件到 Firebase Crashlytics 时，需要指定 upload-symbols 二进制文件的路径
+        # swift package manager 安装的 FirebaseCrashlytics 插件，路径为 binary_path: "${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
+        # 因为无法在 fastlane 中使用 ${BUILD_DIR%Build/*} 变量，所以使用相对路径 ./scripts/upload-symbols，手动将 upload-symbols 脚本复制到项目根目录scripts/目录下
+        binary_path: "./scripts/upload-symbols"
+      )
+    end
+
+    isUploadToPgyer = api_key && !api_key.empty? && options[:message]
+    # 如果 api_key 为空，则不上传到蒲公英
+    if isUploadToPgyer
+      # 上传到蒲公英
+      pgRes = pgyer(
+        api_key: "#{api_key}",
+        update_description: "【#{env == 'production' ? '正式环境' : '测试环境'}】\n#{options[:message]}"
+      )
+      UI.success("上传到蒲公英成功，蒲公英链接1：#{pgRes["fastlaneAddedWholeVisitUrl"]}")
+    end
+
+    postMsg = options[:postMsg] == "1" ? true : false
+    if postMsg
+      webhook = "https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM"
+    elsif options[:webhook] && !options[:webhook].empty?
+      webhook = options[:webhook]
+    end
+
+    #飞书机器人群消息通知（可选）
+    if isUploadToPgyer && webhook && !webhook.empty?
+      sh %Q{
+        curl -X POST -H "Content-Type: application/json" \
+          -d '{"msg_type":"text","content":{"text":"链接：#{pgRes["fastlaneAddedWholeVisitUrl"]}\\niOS新包已上传【#{env == 'production' ? '正式环境' : '测试环境'}】\\n本次更新内容：#{options[:message]}"}}' \
+          #{webhook}
+      }
+    end
+  end
+end
