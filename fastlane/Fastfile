@@ -28,7 +28,7 @@ platform :ios do
   # message(可选): 更新内容, 当需要上传到蒲公英时必填
   # pgaccount(可选): leo, 在下面的逻辑代码中配置对应的 api_key， pgaccount 只是一个方便记忆的字符串,  选填（pgaccount和 apikey 选一个）
   # apikey(可选): xxx(蒲公英 apikey(https://www.pgyer.com/account/api） ,如果不使用pgaccount参数， 可以直接指定apikey;
-  # webhook(可选): 飞书群聊机器人 webhook（https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM）
+  # webhook(可选): 飞书群聊机器人 webhook（https://open.feishu.cn/open-apis/bot/v2/hook/e7cea091-e00f-42b9-87f6-497041084c63）
   # postMsg(可选): 使用默认的地址发送飞书消息，默认1-发送（0-不发送） postMsg 和 webhook 参数 二选一
   desc "打包并上传到蒲公英"
   lane :build2pg do |options|
@@ -134,12 +134,12 @@ platform :ios do
         api_key: "#{api_key}",
         update_description: "【#{env == 'production' ? '正式环境' : '测试环境'}】\n#{options[:message]}"
       )
-      UI.success("上传到蒲公英成功，蒲公英链接1：#{pgRes["fastlaneAddedWholeVisitUrl"]}")
+      UI.success("上传到蒲公英成功")
     end
 
     postMsg = options[:postMsg] == "1" ? true : false
     if postMsg
-      webhook = "https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM"
+      webhook = "https://open.feishu.cn/open-apis/bot/v2/hook/e7cea091-e00f-42b9-87f6-497041084c63"
     elsif options[:webhook] && !options[:webhook].empty?
       webhook = options[:webhook]
     end
@@ -148,7 +148,7 @@ platform :ios do
     if isUploadToPgyer && webhook && !webhook.empty?
       sh %Q{
         curl -X POST -H "Content-Type: application/json" \
-          -d '{"msg_type":"text","content":{"text":"链接：#{pgRes["fastlaneAddedWholeVisitUrl"]}\\niOS新包已上传【#{env == 'production' ? '正式环境' : '测试环境'}】\\n本次更新内容：#{options[:message]}"}}' \
+          -d '{"msg_type":"text","content":{"text":"链接：#{pgRes["fastlaneAddedWholeVisitUrl"]}\\niOS新包已上传【#{env == 'production' ? '正式环境' : '测试环境'}】\\n本次更新内容：\\n#{options[:message].gsub("\n", "\\n")}"}}' \
           #{webhook}
       }
     end
