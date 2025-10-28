@@ -10,9 +10,9 @@ import UIKit
 extension UIColor {
     /// 使用十六进制字符串创建UIColor
     /// - Parameter hexString: 十六进制颜色字符串，支持格式：#RGB、#RGBA、#RRGGBB、#RRGGBBAA、RGB、RGBA、RRGGBB、RRGGBBAA
-    convenience init?(hexString: String, alpha: CGFloat? = nil) {
+    static func hex(string: String, alpha: CGFloat? = nil) -> UIColor {
         // 移除可能存在的#前缀
-        var cleanedString = hexString.trimmingCharacters(in: .whitespacesAndNewlines)
+        var cleanedString = string.trimmingCharacters(in: .whitespacesAndNewlines)
         if cleanedString.hasPrefix("#") {
             cleanedString.remove(at: cleanedString.startIndex)
         }
@@ -20,7 +20,7 @@ extension UIColor {
         // 检查字符串长度是否合法
         let length = cleanedString.count
         guard length == 3 || length == 4 || length == 6 || length == 8 else {
-            return nil
+            return UIColor.white
         }
         
         // 转换为全大写，便于处理
@@ -32,7 +32,7 @@ extension UIColor {
         
         // 扫描十六进制数值
         guard scanner.scanHexInt64(&hexNumber) else {
-            return nil
+            return UIColor.white
         }
         
         // 根据长度解析RGB和Alpha值
@@ -58,7 +58,7 @@ extension UIColor {
             blue = (hexNumber >> 8) & 0xFF
             alphaTmp = hexNumber & 0xFF
         default:
-            return nil
+            return UIColor.white
         }
         
         if var alpha = alpha {
@@ -71,7 +71,7 @@ extension UIColor {
         }
         
         // 初始化颜色 (将0-255范围转换为0-1范围)
-        self.init(
+        return UIColor.init(
             red: CGFloat(red) / 255.0,
             green: CGFloat(green) / 255.0,
             blue: CGFloat(blue) / 255.0,
