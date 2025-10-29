@@ -94,6 +94,7 @@
 		B87CBD262EB06E1C004595E7 /* AMTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87CBD252EB06E1C004595E7 /* AMTagButton.swift */; };
 		B87CBD282EB06EBB004595E7 /* UIColor+BasicColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87CBD272EB06EBB004595E7 /* UIColor+BasicColor.swift */; };
 		B87CBD2A2EB070F8004595E7 /* AMGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87CBD292EB070F8004595E7 /* AMGradientView.swift */; };
+		B8D1900B2EB208610031DBC8 /* UIImage+AMCrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D1900A2EB208610031DBC8 /* UIImage+AMCrop.swift */; };
 		B8E5148CA16EDCBED00DD2DCF4AD348C /* ConstraintDirectionalInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B27DEEA45D3272235B1325A7A6BB19 /* ConstraintDirectionalInsets.swift */; };
 		BB35A45AC4BC5501F87789A4CB86CB31 /* PhotoPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2316D69CB572F5655FA1925A1D86A97 /* PhotoPreviewController.swift */; };
 		C01C4B75FFA5A90AE412D20B68FFE597 /* AMHoldToTalkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462562CF2D74BAB4721653A0456B05CC /* AMHoldToTalkButton.swift */; };
@@ -291,6 +292,7 @@
 		B87CBD252EB06E1C004595E7 /* AMTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMTagButton.swift; sourceTree = "<group>"; };
 		B87CBD272EB06EBB004595E7 /* UIColor+BasicColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+BasicColor.swift"; sourceTree = "<group>"; };
 		B87CBD292EB070F8004595E7 /* AMGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGradientView.swift; sourceTree = "<group>"; };
+		B8D1900A2EB208610031DBC8 /* UIImage+AMCrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AMCrop.swift"; sourceTree = "<group>"; };
 		B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapKit_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDEA773BDEBB756FE6A0FB6288A8D715 /* UIButton+AMImagePosition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIButton+AMImagePosition.swift"; sourceTree = "<group>"; };
 		BDEBBE1942CCC85206842B67E5DC5314 /* AMFlamingo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AMFlamingo-dummy.m"; sourceTree = "<group>"; };
@@ -573,6 +575,7 @@
 				B87CBD272EB06EBB004595E7 /* UIColor+BasicColor.swift */,
 				E4E5894F8AF710454CD1277E3DCC9324 /* UIImage+AMExtension.swift */,
 				8E7177F33BA947AD7B3D5889E25D9ED5 /* UIView+AMExtension.swift */,
+				B8D1900A2EB208610031DBC8 /* UIImage+AMCrop.swift */,
 			);
 			name = Extensions;
 			path = Sources/AMFlamingo/Extensions;
@@ -1165,6 +1168,7 @@
 				B87CBD242EB06DBB004595E7 /* AMButton.swift in Sources */,
 				8D34399BEE02434F38BE85C54E34882A /* AMBaseController.swift in Sources */,
 				C8C7684C1D8C1F4620ED24E425831B69 /* AMBaseNavigationController.swift in Sources */,
+				B8D1900B2EB208610031DBC8 /* UIImage+AMCrop.swift in Sources */,
 				DEE4EEACB29E9F0BCD5228CC52A56164 /* AMBubbleView.swift in Sources */,
 				11A33B99B8E0A77E4E228D14BE86B5F7 /* AMDotLoadingView.swift in Sources */,
 				EF3F40B7845DEBA20B89E84826134473 /* AMEngineAudioRecorder.swift in Sources */,
