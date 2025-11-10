@@ -215,6 +215,9 @@ open class AMTagListView: UIView {
         }
     }
     
+    //预设宽度，AMTagListView 在 cell 中的自适应的时候会有高度计算问题，可以设置presetWidth，来预设视图的宽度，保证高度的正确计算
+    open var presetWidth: CGFloat?
+    
     // State variables
     open var isExpanded: Bool = true
     private var expandButton: UIButton?
@@ -311,7 +314,7 @@ open class AMTagListView: UIView {
         expandButton?.removeFromSuperview()
         expandButton = nil
 
-        let frameWidth = frame.width
+        let frameWidth = self.presetWidth ?? frame.width
         var finnallyRowCount = 0
         
         // First pass to calculate total rows and hidden tags
