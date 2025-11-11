@@ -126,6 +126,24 @@ open class AMTagView: UIButton {
         didSet {
             removeButton.isHidden = !enableRemoveButton
             updateRightInsets()
+            rearlayoutRemoveButton()
+        }
+    }
+    
+    public enum RemoveButtonStyle {
+        case normal // 正常显示在右侧
+        case float // 悬浮在右侧
+    }
+    open var removeButtonStyle: RemoveButtonStyle = .normal {
+        didSet {
+            updateRightInsets()
+            rearlayoutRemoveButton()
+        }
+    }
+    
+    @IBInspectable open var removeButtonBackgroundColor: UIColor? = nil {
+        didSet {
+            removeButton.backgroundColor = removeButtonBackgroundColor
         }
     }
     
@@ -191,14 +209,21 @@ open class AMTagView: UIButton {
             size.width = size.height
         }
         if enableRemoveButton {
-            size.width += removeButtonIconSize + paddingX
+            if removeButtonStyle == .normal {
+                size.width += removeButtonIconSize + paddingX
+            }
         }
         return size
     }
     
     private func updateRightInsets() {
         if enableRemoveButton {
-            titleEdgeInsets.right = paddingX  + removeButtonIconSize + paddingX
+            switch removeButtonStyle {
+            case .normal:
+                titleEdgeInsets.right = paddingX  + removeButtonIconSize + paddingX
+            case .float:
+                titleEdgeInsets.right = paddingX
+            }
         }
         else {
             titleEdgeInsets.right = paddingX
@@ -207,12 +232,14 @@ open class AMTagView: UIButton {
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        if enableRemoveButton {
-            removeButton.frame.size.width = paddingX + removeButtonIconSize + paddingX
-            removeButton.frame.origin.x = self.frame.width - removeButton.frame.width
-            removeButton.frame.size.height = self.frame.height
-            removeButton.frame.origin.y = 0
-        }
+        rearlayoutRemoveButton()
+    }
+    
+    func rearlayoutRemoveButton() {
+        removeButton.frame.size.width = paddingX + removeButtonIconSize + paddingX
+        removeButton.frame.size.height = self.frame.height
+        removeButton.frame.origin.x = self.frame.width - removeButton.frame.width
+        removeButton.frame.origin.y = 0
     }
 }
 

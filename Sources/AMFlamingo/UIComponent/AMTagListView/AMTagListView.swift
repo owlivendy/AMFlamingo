@@ -170,6 +170,23 @@ open class AMTagListView: UIView {
             }
         }
     }
+
+    open var removeButtonStyle: AMTagView.RemoveButtonStyle = .normal {
+        didSet {
+            defer { rearrangeViews() }
+            tagViews.forEach {
+                $0.removeButtonStyle = removeButtonStyle
+            }
+        }
+    }
+    
+    @IBInspectable open var removeButtonBackgroundColor: UIColor? = nil {
+        didSet {
+            tagViews.forEach {
+                $0.removeButtonBackgroundColor = removeButtonBackgroundColor
+            }
+        }
+    }
     
     @IBInspectable open dynamic var removeButtonIconSize: CGFloat = 12 {
         didSet {
@@ -570,7 +587,9 @@ open class AMTagListView: UIView {
         tagView.removeIconLineWidth = removeIconLineWidth
         tagView.removeButtonIconSize = removeButtonIconSize
         tagView.enableRemoveButton = enableRemoveButton
+        tagView.removeButtonStyle = removeButtonStyle
         tagView.removeIconLineColor = removeIconLineColor
+        tagView.removeButtonBackgroundColor = removeButtonBackgroundColor
         tagView.addTarget(self, action: #selector(tagPressed(_:)), for: .touchUpInside)
         tagView.removeButton.addTarget(self, action: #selector(removeButtonPressed(_:)), for: .touchUpInside)
         tagView.isSelected = isSelected
