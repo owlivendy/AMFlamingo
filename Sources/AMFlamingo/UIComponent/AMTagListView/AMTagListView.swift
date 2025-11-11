@@ -11,6 +11,7 @@ import UIKit
 @objc public protocol AMTagListViewDelegate {
     @objc optional func tagPressed(_ title: String, tagView: AMTagView, sender: AMTagListView) -> Void
     @objc optional func tagRemoveButtonPressed(_ title: String, tagView: AMTagView, sender: AMTagListView) -> Void
+    @objc optional func tagListView(_ tagListView: AMTagListView, isExpanded:Bool) -> Void
 }
 
 @IBDesignable
@@ -215,9 +216,6 @@ open class AMTagListView: UIView {
         }
     }
     
-    //预设宽度，AMTagListView 在 cell 中的自适应的时候会有高度计算问题，可以设置presetWidth，来预设视图的宽度，保证高度的正确计算
-    open var presetWidth: CGFloat?
-    
     // State variables
     open var isExpanded: Bool = true
     private var expandButton: UIButton?
@@ -314,7 +312,7 @@ open class AMTagListView: UIView {
         expandButton?.removeFromSuperview()
         expandButton = nil
 
-        let frameWidth = self.presetWidth ?? frame.width
+        let frameWidth = bounds.width
         var finnallyRowCount = 0
         
         // First pass to calculate total rows and hidden tags
@@ -540,6 +538,7 @@ open class AMTagListView: UIView {
     @objc private func toggleExpandCollapse() {
         isExpanded = !isExpanded
         rearrangeViews()
+        self.delegate?.tagListView?(self, isExpanded: isExpanded)
     }
     
     // MARK: - Manage tags
@@ -549,7 +548,7 @@ open class AMTagListView: UIView {
         if rows > 0 {
             height -= marginY
         }
-        return CGSize(width: frame.width, height: height)
+        return CGSize(width: bounds.width, height: height)
     }
     
     private func createNewTagView(_ title: String, isSelected: Bool = false) -> AMTagView {
