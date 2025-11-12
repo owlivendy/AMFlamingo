@@ -9,13 +9,20 @@
 import UIKit
 
 @objc public protocol AMTagListViewDelegate {
-    @objc optional func tagPressed(_ title: String, tagView: AMTagView, sender: AMTagListView) -> Void
-    @objc optional func tagRemoveButtonPressed(_ title: String, tagView: AMTagView, sender: AMTagListView) -> Void
+    @objc optional func tagPressed(_ title: String, tagView: AMTagView, sender: AMTagListView, index: Int) -> Void
+    @objc optional func tagRemoveButtonPressed(_ title: String, tagView: AMTagView, sender: AMTagListView, index: Int) -> Void
     @objc optional func tagListView(_ tagListView: AMTagListView, isExpanded:Bool) -> Void
 }
 
 @IBDesignable
 open class AMTagListView: UIView {
+    
+    // MARK: - 新增计算属性：获取所有选中的tag文本数组
+    open var selectedTagTexts: [String] {
+        return tagViews
+            .filter { $0.isSelected }
+            .compactMap { $0.currentTitle }
+    }
     
     @IBInspectable open dynamic var textColor: UIColor = .white {
         didSet {
@@ -233,6 +240,22 @@ open class AMTagListView: UIView {
         }
     }
     
+    /*
+     预设AMTagListView 的宽度
+     用于优化在 tableviewcell 中的时候，没那么快拿到高度，导致高度计算有问题。 可以通过预设这个属性来解决， 并且在对于的 tableviewcell 中重写systemLayoutSizeFitting方法，在里面调用rearrangeViews方法
+     
+     //Example:
+     override func systemLayoutSizeFitting(_ targetSize: CGSize,
+                                           withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
+                                           verticalFittingPriority: UILayoutPriority) -> CGSize {
+         tagListView.rearrangeViews()
+         return super.systemLayoutSizeFitting(targetSize,
+                                              withHorizontalFittingPriority: horizontalFittingPriority,
+                                              verticalFittingPriority: verticalFittingPriority)
+     }
+     */
+    open var presetWidth: CGFloat?
+    
     // State variables
     open var isExpanded: Bool = true
     private var expandButton: UIButton?
@@ -317,7 +340,7 @@ open class AMTagListView: UIView {
         super.layoutSubviews()
     }
     
-    private func rearrangeViews() {
+    func rearrangeViews() {
         // Remove existing views
         let views = tagViews as [UIView] + tagBackgroundViews + rowViews
         views.forEach {
@@ -329,7 +352,7 @@ open class AMTagListView: UIView {
         expandButton?.removeFromSuperview()
         expandButton = nil
 
-        let frameWidth = bounds.width
+        let frameWidth = self.presetWidth ?? bounds.width
         var finnallyRowCount = 0
         
         // First pass to calculate total rows and hidden tags
@@ -426,6 +449,8 @@ open class AMTagListView: UIView {
         
         for (index, tagView) in tagViews.enumerated() {
             tagView.frame.size = tagView.intrinsicContentSize
+            tagView.tag = index
+            tagView.removeButton.tag = index
             tagViewHeight = tagView.frame.height
             if numberOfCollapseRows > 0 && index > visibleTagCount - 1 {
                 //剩余的不显示
@@ -565,7 +590,7 @@ open class AMTagListView: UIView {
         if rows > 0 {
             height -= marginY
         }
-        return CGSize(width: bounds.width, height: height)
+        return CGSize(width: UIView.noIntrinsicMetric, height: height)
     }
     
     private func createNewTagView(_ title: String, isSelected: Bool = false) -> AMTagView {
@@ -616,7 +641,7 @@ open class AMTagListView: UIView {
     }
     
     @discardableResult
-    open func addTags(_ tags: [(title:String, isSelected: Bool)]) -> [AMTagView] {
+    open func addTags(tags: [(title:String, isSelected: Bool)]) -> [AMTagView] {
         return addTagViews(tags.map({ createNewTagView($0.title, isSelected: $0.isSelected) }))
     }
     
@@ -691,12 +716,12 @@ open class AMTagListView: UIView {
     
     @objc func tagPressed(_ sender: AMTagView!) {
         sender.onTap?(sender)
-        delegate?.tagPressed?(sender.currentTitle ?? "", tagView: sender, sender: self)
+        delegate?.tagPressed?(sender.currentTitle ?? "", tagView: sender, sender: self, index: sender.tag)
     }
     
     @objc func removeButtonPressed(_ closeButton: AMCloseButton!) {
         if let tagView = closeButton.tagView {
-            delegate?.tagRemoveButtonPressed?(tagView.currentTitle ?? "", tagView: tagView, sender: self)
+            delegate?.tagRemoveButtonPressed?(tagView.currentTitle ?? "", tagView: tagView, sender: self, index: closeButton.tag)
         }
     }
 }
