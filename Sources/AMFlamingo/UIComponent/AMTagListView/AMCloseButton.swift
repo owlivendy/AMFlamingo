@@ -1,9 +1,9 @@
 //
 //  AMCloseButton.swift
-//  TagListViewDemo
+//  Flamingo
 //
-//  Created by Benjamin Wu on 2/11/16.
-//  Copyright © 2016 Ela. All rights reserved.
+//  Created by xiaofei shen on 2/11/16.
+//  Copyright © 2016 xiaofei shen. All rights reserved.
 //
 
 import UIKit

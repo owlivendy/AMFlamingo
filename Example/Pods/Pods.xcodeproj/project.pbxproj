@@ -30,7 +30,7 @@
 		24A057AF5486DAB5B0D54D71A825A2E4 /* ConstraintViewDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E1AA8DF4CF1CB802B29BCF50A49480 /* ConstraintViewDSL.swift */; };
 		26D506A5A5512B1C76A46F07DD2157AF /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23C74D1EA5C1B192FBE5BBA2AF9A331 /* Global.swift */; };
 		28BA7848728728314DFE13A34F83E22E /* AMHoldToTalkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D609A1489E4BF13BC03675C1EE508F /* AMHoldToTalkButton.swift */; };
-		29446229FCA720EA7252CF2C4AC28E35 /* AMToast-AMToast in Resources */ = {isa = PBXBuildFile; fileRef = A44F764C1BF666CED7D9F5F9B897353C /* AMToast-AMToast */; };
+		29446229FCA720EA7252CF2C4AC28E35 /* AMToast.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A44F764C1BF666CED7D9F5F9B897353C /* AMToast.bundle */; };
 		2A13E4B10CE8FCF7F276B850BFE238AF /* Pods-AMFlamingo_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E1FB62ED61A408A944ED17910E21F4A2 /* Pods-AMFlamingo_Tests-dummy.m */; };
 		2A83373EA8A16959CB9468F149DC6ABD /* ConstraintMakerRelatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDDB1B9E703CC0D588A8040C8BF75D3 /* ConstraintMakerRelatable.swift */; };
 		2EAFD7C46C62D8F3EC3ED00EA8F519B8 /* ConstraintRelatableTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C96BA0DA7FA32ECE950BC6C24180D3 /* ConstraintRelatableTarget.swift */; };
@@ -90,7 +90,7 @@
 		9EF327C926D082D858A61444B33416B0 /* UIImage+AMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585EBC2BEC4628C87DA76EDD27448889 /* UIImage+AMExtension.swift */; };
 		A189AB135427DA86BAB200A320043033 /* AMTextToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C6A69F667452E969F47A16006AFCBF /* AMTextToastView.swift */; };
 		A1D689164AEE27B9D4397F4EF489835E /* success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A480DEBEF0798B5B7ABDE9AFDA60866 /* success@2x.png */; };
-		A2EC49FADDE2ADDB99B02CD57D436B2B /* AMFlamingo-AMFlamingo in Resources */ = {isa = PBXBuildFile; fileRef = 491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo-AMFlamingo */; };
+		A2EC49FADDE2ADDB99B02CD57D436B2B /* AMFlamingo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo.bundle */; };
 		A461E2D116B8851B5C883D2A0865B059 /* ConstraintInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8921C46EA067247D0C5E029F33E601CD /* ConstraintInsets.swift */; };
 		A51426028FE02BC5449BD23CAB4CDAF4 /* AMFrameLayoutMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7B5313BDCA4537DFAB15ED85AFED6C /* AMFrameLayoutMaker.swift */; };
 		ACBFD952EEB2A58763BF3305B8683D56 /* AMCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18039E100C7B4A698F50BABC904746 /* AMCloseButton.swift */; };
@@ -100,6 +100,7 @@
 		AF9A6F7CF26B452B00E2C40384D4D15C /* ConstraintLayoutGuide+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A40DD2A6BD7F8F46AB1681C62A14BF3 /* ConstraintLayoutGuide+Extensions.swift */; };
 		B48B33E50A3F15CE72E99C1F570BA26C /* AMAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1568B8CD875EF6786964691B70FA9A75 /* AMAudioPlayer.swift */; };
 		B4DDECEE86A6A9B3A698E8C438BAEDA5 /* AMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88981E421E2DC95C9FA957EB41410E85 /* AMTextField.swift */; };
+		B85D5E1A2EC47945009E8ED2 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D5E192EC47945009E8ED2 /* String+Extension.swift */; };
 		BB259C43BDBFC1A169ACADADC8029550 /* PCMVolumeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17995CD53D87CE9B18EAF4850FDE117 /* PCMVolumeCalculator.swift */; };
 		BED03055F9E10DEDABC686A61EEE5F30 /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = AA9EC49E52E875336F9F0603AA8CC04F /* success.png */; };
 		BEE8E31685A428A97B014DEFC5626DDC /* AMPagePathManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5808DBDC88D35409650035518A9255F /* AMPagePathManager.swift */; };
@@ -123,7 +124,7 @@
 		DC85872702DCE5AB4960AE5C15AD6FCB /* ConstraintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A78ED2A496509FC409F6A1DF953460 /* ConstraintView.swift */; };
 		DD7D4FDAAF0B016DE2CD0F86E4BB3AAC /* AMLoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02E9F4ADD29B48E963446DF101FA22F /* AMLoadingButton.swift */; };
 		E39EDA6B601DECA5431C654D20BAF78F /* ConstraintInsetTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432BA1C54C998834555BEB2446B0179 /* ConstraintInsetTarget.swift */; };
-		E59C50CCE160F18EA50FC568670C263C /* SnapKit-SnapKit_Privacy in Resources */ = {isa = PBXBuildFile; fileRef = B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit-SnapKit_Privacy */; };
+		E59C50CCE160F18EA50FC568670C263C /* SnapKit_Privacy.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit_Privacy.bundle */; };
 		E5EA844AED7B7BC3346CD1EDA1CD0A5C /* ConstraintConstantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC636664804E284063EC1227CE5F4541 /* ConstraintConstantTarget.swift */; };
 		EAD67556A88F232314801CC21F69C093 /* AMToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920AE8D6C7F472DBA3B307C56BD7CD5D /* AMToast.swift */; };
 		EBBC9667C267D0652E808032FBEFF9BC /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3A8B7EE0CDCB5D691AE5DB0039694F /* LayoutConstraint.swift */; };
@@ -199,7 +200,7 @@
 		02C6A69F667452E969F47A16006AFCBF /* AMTextToastView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AMTextToastView.swift; path = Sources/AMToast/AMTextToastView.swift; sourceTree = "<group>"; };
 		049613024571A94738492C03D2E13BC1 /* Pods-AMFlamingo_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AMFlamingo_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		075C74CE8BEB3487E62DC2C71A7B3267 /* AMToastWindow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AMToastWindow.swift; path = Sources/AMToast/AMToastWindow.swift; sourceTree = "<group>"; };
-		0816788530D5A1526D155C48D594AE6A /* AMFlamingo */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AMFlamingo; path = AMFlamingo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0816788530D5A1526D155C48D594AE6A /* AMFlamingo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AMFlamingo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C27F03BB63344D8B2397CB17893B4DA /* Pods-AMFlamingo_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AMFlamingo_Tests-umbrella.h"; sourceTree = "<group>"; };
 		0ED374005F5F049EB7C45DACA144FE4C /* AMEngineAudioRecorder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMEngineAudioRecorder.swift; sourceTree = "<group>"; };
 		11D74748DE40318DF60FC927A90B3F25 /* Decodable+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Decodable+Extension.swift"; sourceTree = "<group>"; };
@@ -215,7 +216,7 @@
 		1DCF7F42E7CED6E30525BAFDBDBE6606 /* UIColor+Hex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		1EEF034BF44C51BBE3C1428C742307F1 /* AMStreamAudioPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMStreamAudioPlayer.swift; sourceTree = "<group>"; };
 		21D2E7605D5604266A6EBD19FC6FC733 /* UIImage+AMCrop.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIImage+AMCrop.swift"; sourceTree = "<group>"; };
-		24A632990AE589EDB0CD793BA3F49813 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		24A632990AE589EDB0CD793BA3F49813 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		26DC4B4AF9AD12B67A6E5FE7861A57F8 /* AMLayoutRelation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMLayoutRelation.swift; sourceTree = "<group>"; };
 		2840A6F26BC2ECCCAB19A03C5208C4A8 /* Pods-AMFlamingo_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AMFlamingo_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		2A480DEBEF0798B5B7ABDE9AFDA60866 /* success@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "success@2x.png"; path = "Sources/AMToast/Resources/success@2x.png"; sourceTree = "<group>"; };
@@ -241,10 +242,10 @@
 		4297F6A3EE6A6086A9B2DF0875670130 /* popupview_close@3x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "popupview_close@3x.png"; path = "Sources/AMFlamingo/Resources/popupview_close@3x.png"; sourceTree = "<group>"; };
 		43D609A1489E4BF13BC03675C1EE508F /* AMHoldToTalkButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMHoldToTalkButton.swift; sourceTree = "<group>"; };
 		45AE15511E2DCA06577663B466BF9972 /* Pods-AMFlamingo_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AMFlamingo_Example-umbrella.h"; sourceTree = "<group>"; };
-		491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo-AMFlamingo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "AMFlamingo-AMFlamingo"; path = AMFlamingo.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AMFlamingo.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B788C2008F0F058D5E29567CD8C846 /* Constraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Constraint.swift; path = Sources/Constraint.swift; sourceTree = "<group>"; };
 		4D13550966BE332A56EF79F2587E7A31 /* AMGradientButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMGradientButton.swift; sourceTree = "<group>"; };
-		54782073ABAD00D359C3CD4F8B44256C /* Pods-AMFlamingo_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-AMFlamingo_Example"; path = Pods_AMFlamingo_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		54782073ABAD00D359C3CD4F8B44256C /* Pods_AMFlamingo_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AMFlamingo_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		552F902D5DCE0255CFC16E1EE6E10E79 /* AMToastViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AMToastViewController.swift; path = Sources/AMToast/AMToastViewController.swift; sourceTree = "<group>"; };
 		55439A7B259794DE2055AA5809006CC2 /* AMFlamingo-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AMFlamingo-Info.plist"; sourceTree = "<group>"; };
 		56D9BE5BA56CE8F3BAFEAEBB70655DD2 /* AMFlamingo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AMFlamingo-dummy.m"; sourceTree = "<group>"; };
@@ -265,7 +266,7 @@
 		6D18039E100C7B4A698F50BABC904746 /* AMCloseButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMCloseButton.swift; sourceTree = "<group>"; };
 		6EFB9A3426D21FB79C9F1C50CF88C56E /* AMFlamingo.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AMFlamingo.modulemap; sourceTree = "<group>"; };
 		710583497DA70BD5577A052EC0CD4A05 /* Pods-AMFlamingo_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AMFlamingo_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		78C586E36BF58F40ABB1045E3F77284B /* AMFlamingo.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AMFlamingo.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		78C586E36BF58F40ABB1045E3F77284B /* AMFlamingo.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = AMFlamingo.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		793D88FCE0C32A85DBD2D10C1DF7540F /* SnapKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "SnapKit-Info.plist"; sourceTree = "<group>"; };
 		794C721A66DC1F2F1E969F4C7791B2BF /* AMGradientView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMGradientView.swift; sourceTree = "<group>"; };
 		7A40DD2A6BD7F8F46AB1681C62A14BF3 /* ConstraintLayoutGuide+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ConstraintLayoutGuide+Extensions.swift"; path = "Sources/ConstraintLayoutGuide+Extensions.swift"; sourceTree = "<group>"; };
@@ -284,16 +285,16 @@
 		8FDDB1B9E703CC0D588A8040C8BF75D3 /* ConstraintMakerRelatable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerRelatable.swift; path = Sources/ConstraintMakerRelatable.swift; sourceTree = "<group>"; };
 		920AE8D6C7F472DBA3B307C56BD7CD5D /* AMToast.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AMToast.swift; path = Sources/AMToast/AMToast.swift; sourceTree = "<group>"; };
 		959AC4CA0DBAE10898A45F61A98BEC57 /* ConstraintMultiplierTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMultiplierTarget.swift; path = Sources/ConstraintMultiplierTarget.swift; sourceTree = "<group>"; };
-		979486118B3E90C08386079D57962701 /* SnapKit */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SnapKit; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		979486118B3E90C08386079D57962701 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		994E3138731C62CC1A6BD44C60E6A5F5 /* AMLayoutAnchor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMLayoutAnchor.swift; sourceTree = "<group>"; };
 		9D5ACC35B404CBEC3F95B5E322F29D35 /* ConstraintLayoutSupportDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutSupportDSL.swift; path = Sources/ConstraintLayoutSupportDSL.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A28926649D4919E293E5BB15CE832D85 /* AMFlamingo-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AMFlamingo-prefix.pch"; sourceTree = "<group>"; };
 		A3929F554E07EA46355B45DEF98B0728 /* ResourceBundle-SnapKit_Privacy-SnapKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-SnapKit_Privacy-SnapKit-Info.plist"; sourceTree = "<group>"; };
 		A3FAB90583C48C482DCA77DA2377E8A6 /* UIColor+BasicColor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIColor+BasicColor.swift"; sourceTree = "<group>"; };
-		A44F764C1BF666CED7D9F5F9B897353C /* AMToast-AMToast */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "AMToast-AMToast"; path = AMToast.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		A44F764C1BF666CED7D9F5F9B897353C /* AMToast.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AMToast.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5A130F48A731B5A83A623D4C8C68A4F /* ConstraintLayoutSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutSupport.swift; path = Sources/ConstraintLayoutSupport.swift; sourceTree = "<group>"; };
-		A679F6AFEE6A43BE6973F10620D95EF2 /* AMToast */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AMToast; path = AMToast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A679F6AFEE6A43BE6973F10620D95EF2 /* AMToast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AMToast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7FB589449BFDD8FBACF6C6C7B31AAAE /* SubString+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "SubString+Extension.swift"; sourceTree = "<group>"; };
 		AA9046982FB319C7B43EE3943049430B /* Debugging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Debugging.swift; path = Sources/Debugging.swift; sourceTree = "<group>"; };
 		AA9EC49E52E875336F9F0603AA8CC04F /* success.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = success.png; path = Sources/AMToast/Resources/success.png; sourceTree = "<group>"; };
@@ -308,9 +309,10 @@
 		B3CDA09870E2746E7894244E53B47167 /* SnapKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SnapKit.debug.xcconfig; sourceTree = "<group>"; };
 		B3D04792B5B788510E1FA5CD02F1C36F /* AMToast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AMToast.release.xcconfig; sourceTree = "<group>"; };
 		B4E6A7EBCB9C89EEB0759B3B3B631A83 /* AMVideoPreviewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMVideoPreviewController.swift; sourceTree = "<group>"; };
-		B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit-SnapKit_Privacy */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "SnapKit-SnapKit_Privacy"; path = SnapKit_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		B85D5E192EC47945009E8ED2 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapKit_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC16EA3DB32AAD91C640045A7FC14DC2 /* AMFlamingo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AMFlamingo.release.xcconfig; sourceTree = "<group>"; };
-		BE599ABF50915C3D1A1BC58024CFE7CB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/AMToast/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		BE599ABF50915C3D1A1BC58024CFE7CB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/AMToast/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C020926E58A30227C71A48B3F045B127 /* Pods-AMFlamingo_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AMFlamingo_Tests-Info.plist"; sourceTree = "<group>"; };
 		C127094A71681A3964D8DA795F1F5BD9 /* Pods-AMFlamingo_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AMFlamingo_Example-dummy.m"; sourceTree = "<group>"; };
 		C1F7CA8614D31F25BB5AFFF16F6BBB02 /* ConstraintConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintConfig.swift; path = Sources/ConstraintConfig.swift; sourceTree = "<group>"; };
@@ -320,7 +322,7 @@
 		C760139FD3D835585FB43A4F8DA57A9F /* AMToast-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AMToast-prefix.pch"; sourceTree = "<group>"; };
 		C77B2869695B1656672CB03816D0485E /* AMBaseNavigationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMBaseNavigationController.swift; sourceTree = "<group>"; };
 		C92DD97C2FE5C85B71BC784F7E7CAED4 /* ConstraintDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDSL.swift; path = Sources/ConstraintDSL.swift; sourceTree = "<group>"; };
-		CEC40E3C4445508F297E0876413121DC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/AMFlamingo/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		CEC40E3C4445508F297E0876413121DC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/AMFlamingo/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		CF89B58F3B3E7241ABE89EFEDFD61021 /* AMToast-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AMToast-umbrella.h"; sourceTree = "<group>"; };
 		CF9DC25FCC5BA4DBD5640094E331606F /* ConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintItem.swift; path = Sources/ConstraintItem.swift; sourceTree = "<group>"; };
 		D1190107F96525CC3FA0F9D34C2B5C3C /* UIButton+AMImagePosition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIButton+AMImagePosition.swift"; sourceTree = "<group>"; };
@@ -334,9 +336,9 @@
 		DEB9A7F643A4329B2AE242A5CA76DF3A /* SnapKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-prefix.pch"; sourceTree = "<group>"; };
 		E0655F9D6B998024579B5B8E1225E4C6 /* SnapKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-umbrella.h"; sourceTree = "<group>"; };
 		E0FCE925303C615D13AB2E58C8A56F93 /* AMMediaModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMMediaModel.swift; sourceTree = "<group>"; };
-		E1BE9B11D26CFAA212F765DC6DF9E6BE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		E1BE9B11D26CFAA212F765DC6DF9E6BE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E1FB62ED61A408A944ED17910E21F4A2 /* Pods-AMFlamingo_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AMFlamingo_Tests-dummy.m"; sourceTree = "<group>"; };
-		E283F5F0609ABF7E768FBAC2274211AC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		E283F5F0609ABF7E768FBAC2274211AC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E483FC7C29AD4232F1A00D37CCBA5E9D /* AMToast-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AMToast-Info.plist"; sourceTree = "<group>"; };
 		E7A78ED2A496509FC409F6A1DF953460 /* ConstraintView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintView.swift; path = Sources/ConstraintView.swift; sourceTree = "<group>"; };
 		E96CA2EB85007C640589008B92DD9489 /* ConstraintOffsetTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintOffsetTarget.swift; path = Sources/ConstraintOffsetTarget.swift; sourceTree = "<group>"; };
@@ -351,7 +353,7 @@
 		F3704D418C8A426F88CBC1EBCC49756C /* Pods-AMFlamingo_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AMFlamingo_Example-Info.plist"; sourceTree = "<group>"; };
 		F50ACE240C51D508151585F163C4A795 /* Pods-AMFlamingo_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AMFlamingo_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		F5808DBDC88D35409650035518A9255F /* AMPagePathManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMPagePathManager.swift; sourceTree = "<group>"; };
-		F854117B936CA1A8F152795C65E5F18E /* Pods-AMFlamingo_Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-AMFlamingo_Tests"; path = Pods_AMFlamingo_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F854117B936CA1A8F152795C65E5F18E /* Pods_AMFlamingo_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AMFlamingo_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9130981F399B20ED158B7CD9385BD64 /* AMFlamingo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AMFlamingo-umbrella.h"; sourceTree = "<group>"; };
 		FB7B5313BDCA4537DFAB15ED85AFED6C /* AMFrameLayoutMaker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMFrameLayoutMaker.swift; sourceTree = "<group>"; };
 		FCDC4A1AA9ED9547197CFCF19D019EAC /* AMLoadingToastView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AMLoadingToastView.swift; path = Sources/AMToast/AMLoadingToastView.swift; sourceTree = "<group>"; };
@@ -454,7 +456,6 @@
 			children = (
 				5DE15BEF6EF0EFFEE18CE2459C2318C1 /* AMMediaManager.swift */,
 			);
-			name = AMMediaManager;
 			path = AMMediaManager;
 			sourceTree = "<group>";
 		};
@@ -525,7 +526,6 @@
 				02DCED1B937F1DA709F81904ABC62E3F /* Resources */,
 				AB38308B322C9427E3047FE21C821766 /* Support Files */,
 			);
-			name = SnapKit;
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
@@ -560,7 +560,6 @@
 			children = (
 				F5808DBDC88D35409650035518A9255F /* AMPagePathManager.swift */,
 			);
-			name = PV;
 			path = PV;
 			sourceTree = "<group>";
 		};
@@ -579,21 +578,20 @@
 				E5CAFBE57B1F8BA66F23292E4FDA0164 /* Resources */,
 				84C3330260B04C77A2C4D46916F6786D /* Support Files */,
 			);
-			name = AMToast;
 			path = AMToast;
 			sourceTree = "<group>";
 		};
 		41E552085A1989FA8846BD93142E92D0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0816788530D5A1526D155C48D594AE6A /* AMFlamingo */,
-				491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo-AMFlamingo */,
-				A679F6AFEE6A43BE6973F10620D95EF2 /* AMToast */,
-				A44F764C1BF666CED7D9F5F9B897353C /* AMToast-AMToast */,
-				54782073ABAD00D359C3CD4F8B44256C /* Pods-AMFlamingo_Example */,
-				F854117B936CA1A8F152795C65E5F18E /* Pods-AMFlamingo_Tests */,
-				979486118B3E90C08386079D57962701 /* SnapKit */,
-				B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit-SnapKit_Privacy */,
+				0816788530D5A1526D155C48D594AE6A /* AMFlamingo.framework */,
+				491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo.bundle */,
+				A679F6AFEE6A43BE6973F10620D95EF2 /* AMToast.framework */,
+				A44F764C1BF666CED7D9F5F9B897353C /* AMToast.bundle */,
+				54782073ABAD00D359C3CD4F8B44256C /* Pods_AMFlamingo_Example.framework */,
+				F854117B936CA1A8F152795C65E5F18E /* Pods_AMFlamingo_Tests.framework */,
+				979486118B3E90C08386079D57962701 /* SnapKit.framework */,
+				B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit_Privacy.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -603,7 +601,6 @@
 			children = (
 				81121EAC8A8C2E3A191E4110F549CC38 /* AMAttributedStringBuilder.swift */,
 			);
-			name = AMAttributedStringBuilder;
 			path = AMAttributedStringBuilder;
 			sourceTree = "<group>";
 		};
@@ -680,7 +677,6 @@
 				1568B8CD875EF6786964691B70FA9A75 /* AMAudioPlayer.swift */,
 				1EEF034BF44C51BBE3C1428C742307F1 /* AMStreamAudioPlayer.swift */,
 			);
-			name = AMAudio;
 			path = AMAudio;
 			sourceTree = "<group>";
 		};
@@ -707,7 +703,6 @@
 				E0FCE925303C615D13AB2E58C8A56F93 /* AMMediaModel.swift */,
 				C3ABE738286E6D69B7F3B5743A8FFE4A /* AMUserDirectoryManager.swift */,
 			);
-			name = AMUserDirManager;
 			path = AMUserDirManager;
 			sourceTree = "<group>";
 		};
@@ -736,7 +731,6 @@
 				994E3138731C62CC1A6BD44C60E6A5F5 /* AMLayoutAnchor.swift */,
 				26DC4B4AF9AD12B67A6E5FE7861A57F8 /* AMLayoutRelation.swift */,
 			);
-			name = AMFrameLayout;
 			path = AMFrameLayout;
 			sourceTree = "<group>";
 		};
@@ -745,7 +739,6 @@
 			children = (
 				D676E38CA7EC5708B231B920DA5320EA /* AMLogManager.swift */,
 			);
-			name = LogManager;
 			path = LogManager;
 			sourceTree = "<group>";
 		};
@@ -807,7 +800,6 @@
 				0ED374005F5F049EB7C45DACA144FE4C /* AMEngineAudioRecorder.swift */,
 				B17995CD53D87CE9B18EAF4850FDE117 /* PCMVolumeCalculator.swift */,
 			);
-			name = AMEngineAudioRecorder;
 			path = AMEngineAudioRecorder;
 			sourceTree = "<group>";
 		};
@@ -816,7 +808,6 @@
 			children = (
 				3AD52330879AD1459CABF29D2D24C05A /* AMPopupView.swift */,
 			);
-			name = AMPopupView;
 			path = AMPopupView;
 			sourceTree = "<group>";
 		};
@@ -838,7 +829,6 @@
 				D985673254B68B419E3C06A811425736 /* AMTagListView.swift */,
 				60834B4B854ADAECD829C0795ABEE6FB /* AMTagView.swift */,
 			);
-			name = AMTagListView;
 			path = AMTagListView;
 			sourceTree = "<group>";
 		};
@@ -850,6 +840,7 @@
 				F23C74D1EA5C1B192FBE5BBA2AF9A331 /* Global.swift */,
 				3B767D5885E610B2A22868B7F90BFE92 /* Optional+Extension.swift */,
 				A7FB589449BFDD8FBACF6C6C7B31AAAE /* SubString+Extension.swift */,
+				B85D5E192EC47945009E8ED2 /* String+Extension.swift */,
 				37017A53062A80C544AD007BE79D1B15 /* UIApplication+Window.swift */,
 				D1190107F96525CC3FA0F9D34C2B5C3C /* UIButton+AMImagePosition.swift */,
 				A3FAB90583C48C482DCA77DA2377E8A6 /* UIColor+BasicColor.swift */,
@@ -924,7 +915,7 @@
 			);
 			name = "Pods-AMFlamingo_Tests";
 			productName = Pods_AMFlamingo_Tests;
-			productReference = F854117B936CA1A8F152795C65E5F18E /* Pods-AMFlamingo_Tests */;
+			productReference = F854117B936CA1A8F152795C65E5F18E /* Pods_AMFlamingo_Tests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		19622742EBA51E823D6DAE3F8CDBFAD4 /* SnapKit */ = {
@@ -943,7 +934,7 @@
 			);
 			name = SnapKit;
 			productName = SnapKit;
-			productReference = 979486118B3E90C08386079D57962701 /* SnapKit */;
+			productReference = 979486118B3E90C08386079D57962701 /* SnapKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		48AD1EAE13B9F6D2BEBA399EDD149613 /* AMToast-AMToast */ = {
@@ -960,7 +951,7 @@
 			);
 			name = "AMToast-AMToast";
 			productName = AMToast;
-			productReference = A44F764C1BF666CED7D9F5F9B897353C /* AMToast-AMToast */;
+			productReference = A44F764C1BF666CED7D9F5F9B897353C /* AMToast.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		8A8DB685241263AFDF5E6B20FE67B93A /* SnapKit-SnapKit_Privacy */ = {
@@ -977,7 +968,7 @@
 			);
 			name = "SnapKit-SnapKit_Privacy";
 			productName = SnapKit_Privacy;
-			productReference = B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit-SnapKit_Privacy */;
+			productReference = B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit_Privacy.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		E1C12736B291A0E687E075B996C4E3CF /* AMFlamingo */ = {
@@ -997,7 +988,7 @@
 			);
 			name = AMFlamingo;
 			productName = AMFlamingo;
-			productReference = 0816788530D5A1526D155C48D594AE6A /* AMFlamingo */;
+			productReference = 0816788530D5A1526D155C48D594AE6A /* AMFlamingo.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		E9D26DAC4B3DCFDC7043E0DA11107674 /* AMToast */ = {
@@ -1016,7 +1007,7 @@
 			);
 			name = AMToast;
 			productName = AMToast;
-			productReference = A679F6AFEE6A43BE6973F10620D95EF2 /* AMToast */;
+			productReference = A679F6AFEE6A43BE6973F10620D95EF2 /* AMToast.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		FDAF36C229A573395A390ADD41D3EC22 /* AMFlamingo-AMFlamingo */ = {
@@ -1033,7 +1024,7 @@
 			);
 			name = "AMFlamingo-AMFlamingo";
 			productName = AMFlamingo;
-			productReference = 491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo-AMFlamingo */;
+			productReference = 491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		FE8263A73AB2210A649C68E1DFA90E5C /* Pods-AMFlamingo_Example */ = {
@@ -1054,7 +1045,7 @@
 			);
 			name = "Pods-AMFlamingo_Example";
 			productName = Pods_AMFlamingo_Example;
-			productReference = 54782073ABAD00D359C3CD4F8B44256C /* Pods-AMFlamingo_Example */;
+			productReference = 54782073ABAD00D359C3CD4F8B44256C /* Pods_AMFlamingo_Example.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -1075,8 +1066,6 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			minimizedProjectReferenceProxies = 0;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 41E552085A1989FA8846BD93142E92D0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1098,7 +1087,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E59C50CCE160F18EA50FC568670C263C /* SnapKit-SnapKit_Privacy in Resources */,
+				E59C50CCE160F18EA50FC568670C263C /* SnapKit_Privacy.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1106,7 +1095,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29446229FCA720EA7252CF2C4AC28E35 /* AMToast-AMToast in Resources */,
+				29446229FCA720EA7252CF2C4AC28E35 /* AMToast.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1121,7 +1110,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2EC49FADDE2ADDB99B02CD57D436B2B /* AMFlamingo-AMFlamingo in Resources */,
+				A2EC49FADDE2ADDB99B02CD57D436B2B /* AMFlamingo.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1296,6 +1285,7 @@
 				18C122236B135CC4B91CF55984D6E9D0 /* AMLogManager.swift in Sources */,
 				3055B356D2E9A2CE14CA721F0CAEB6F9 /* AMMediaManager.swift in Sources */,
 				0E3CBA00C8636A46A405D672D8F4426E /* AMMediaModel.swift in Sources */,
+				B85D5E1A2EC47945009E8ED2 /* String+Extension.swift in Sources */,
 				36E99A96AE7BD570B7A22CAF33D6F75B /* AMNavigationBar.swift in Sources */,
 				BEE8E31685A428A97B014DEFC5626DDC /* AMPagePathManager.swift in Sources */,
 				4FA419CA3844F30A7B302D44889C2718 /* AMPopupView.swift in Sources */,
@@ -1752,8 +1742,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

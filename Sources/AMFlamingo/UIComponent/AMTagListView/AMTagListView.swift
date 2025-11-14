@@ -1,9 +1,9 @@
 //
-//  TagListView.swift
-//  TagListViewDemo
+//  AMTagListView.swift
+//  Flamingo
 //
-//  Created by Dongyuan Liu on 2015-05-09.
-//  Copyright (c) 2015 Ela. All rights reserved.
+//  Created by xiaofei shen on 2015-05-09.
+//  Copyright (c) 2015 xiaofei shen. All rights reserved.
 //
 
 import UIKit
@@ -265,24 +265,12 @@ open class AMTagListView: UIView {
     public var showExpandButton: Bool = true
     
     // Custom button text properties
-    @IBInspectable open var expandButtonTitle: String = "展开" {
-        didSet {
-            updateExpandButtonTitle()
-        }
-    }
+    @IBInspectable open var expandButtonTitle: String = "展开"
     
-    @IBInspectable open var collapseButtonTitle: String = "收起" {
-        didSet {
-            updateExpandButtonTitle()
-        }
-    }
+    @IBInspectable open var collapseButtonTitle: String = "收起"
     
     // Whether to show hidden tag count in expand button
-    @IBInspectable open var showHiddenTagCount: Bool = true {
-        didSet {
-            updateExpandButtonTitle()
-        }
-    }
+    @IBInspectable open var showHiddenTagCount: Bool = true
     
     // Expand button style properties
     @IBInspectable open var expandButtonTextColor: UIColor = UIColor.white {
@@ -366,11 +354,15 @@ open class AMTagListView: UIView {
         // Add expand/collapse button if needed
         var expandButtonWidth: CGFloat = 0
         addExpandButton()
-        let intrinsicContentSize = expandButton?.intrinsicContentSize ?? .zero
-        if showExpandButton {
-            expandButtonWidth = intrinsicContentSize.width + paddingX * 2
-        } else {
-            expandButtonWidth = intrinsicContentSize.width
+        if !showHiddenTagCount || isExpanded {
+            //展开状态或者不需要显示剩余的数量，按钮的文本是固定的可以提前计算
+            updateExpandButtonTitle(hiddenTagCount: 0)
+            let intrinsicContentSize = expandButton?.intrinsicContentSize ?? .zero
+            if showExpandButton {
+                expandButtonWidth = intrinsicContentSize.width + paddingX * 2
+            } else {
+                expandButtonWidth = intrinsicContentSize.width
+            }
         }
         
         for tagView in tagViews {
@@ -380,6 +372,18 @@ open class AMTagListView: UIView {
             var currentMaxWidth: CGFloat = frameWidth
             if !isExpanded {
                 if finnallyRowCount == numberOfCollapseRows {
+                    
+                    if showHiddenTagCount {
+                        //收起并且需要展示剩余数量的情况下, 每次都要重新计算当前的剩余数量，因为文本宽度不固定
+                        updateExpandButtonTitle(hiddenTagCount: totalTags - visibleTagCount)
+                        let intrinsicContentSize = expandButton?.intrinsicContentSize ?? .zero
+                        if showExpandButton {
+                            expandButtonWidth = intrinsicContentSize.width + paddingX * 2
+                        } else {
+                            expandButtonWidth = intrinsicContentSize.width
+                        }
+                    }
+                    
                     currentMaxWidth = frameWidth - expandButtonWidth - marginX
                 }
                 
@@ -535,9 +539,6 @@ open class AMTagListView: UIView {
         }
         expandButton?.isUserInteractionEnabled = showExpandButton
         
-        // Update button title
-        updateExpandButtonTitle()
-        
         if let button = expandButton {
             addSubview(button)
             // Adjust intrinsic content size to accommodate the button
@@ -558,7 +559,7 @@ open class AMTagListView: UIView {
         button.clipsToBounds = expandButtonCornerRadius > 0
     }
     
-    private func updateExpandButtonTitle() {
+    private func updateExpandButtonTitle(hiddenTagCount: Int) {
         guard let button = expandButton else { return }
         
         if showExpandButton {
@@ -566,7 +567,7 @@ open class AMTagListView: UIView {
                 button.setTitle(collapseButtonTitle, for: .normal)
             } else {
                 // Show hidden tag count in collapsed state if enabled
-                if showHiddenTagCount && hiddenTagCount > 0 {
+                if showHiddenTagCount {
                     button.setTitle("\(expandButtonTitle)+\(hiddenTagCount)", for: .normal)
                 } else {
                     button.setTitle(expandButtonTitle, for: .normal)
