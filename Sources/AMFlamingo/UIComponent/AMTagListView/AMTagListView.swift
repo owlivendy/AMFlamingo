@@ -303,6 +303,8 @@ open class AMTagListView: UIView {
         }
     }
     
+    //缓存的 AMTagView
+    private var cachesTagViews: [AMTagView] = []
     open private(set) var tagViews: [AMTagView] = []
     private(set) var tagBackgroundViews: [UIView] = []
     private(set) var rowViews: [UIView] = []
@@ -388,7 +390,7 @@ open class AMTagListView: UIView {
                 }
                 
                 if tempRowTagCount == 0 || tempRowWidth + tagView.frame.width > currentMaxWidth {
-                    if finnallyRowCount == numberOfCollapseRows && tempRowWidth + expandButtonWidth < frameWidth {
+                    if finnallyRowCount == numberOfCollapseRows && numberOfCollapseRows > 0 {
                         //未展开情况下，结束
                         break
                     }
@@ -595,8 +597,14 @@ open class AMTagListView: UIView {
     }
     
     private func createNewTagView(_ title: String, isSelected: Bool = false) -> AMTagView {
-        let tagView = AMTagView(title: title)
+        let tagView: AMTagView
+        if cachesTagViews.count > 0, let cache = cachesTagViews.popLast() {
+            tagView = cache
+        } else {
+            tagView = AMTagView(title: title)
+        }
         
+        tagView.setTitle(title, for: .normal)
         tagView.textColor = textColor
         tagView.selectedTextColor = selectedTextColor
         tagView.tagBackgroundColor = tagBackgroundColor
@@ -700,6 +708,7 @@ open class AMTagListView: UIView {
     
     open func removeAllTags() {
         defer {
+            cachesTagViews.append(contentsOf:tagViews)
             tagViews = []
             tagBackgroundViews = []
             rearrangeViews()
