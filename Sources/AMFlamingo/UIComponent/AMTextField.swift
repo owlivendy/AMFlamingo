@@ -8,26 +8,26 @@
 
 import UIKit
 
-class AMTextField: UITextField {
+open class AMTextField: UITextField {
     // 输入类型枚举
-    enum InputType {
+    public enum InputType {
         case text
         case number
         case numericValue
     }
     
     // 自定义委托，用于转发常用的UITextFieldDelegate方法
-    weak var amDelegate: UITextFieldDelegate?
+    public weak var amDelegate: UITextFieldDelegate?
     
     // 当前输入类型
-    var type: InputType = .text {
+    open var type: InputType = .text {
         didSet {
             configureForType()
         }
     }
     
     // 字符数限制（仅 type = .text 时有效）
-    var maxCharacterCount: Int = 0 {
+    open var maxCharacterCount: Int = 0 {
         didSet {
             if type == .text {
                 validateTextLimit()
@@ -36,7 +36,7 @@ class AMTextField: UITextField {
     }
     
     // 数值范围限制（仅 type = .numericValue 时有效）
-    var valueRange: ClosedRange<Int>? {
+    open var valueRange: ClosedRange<Int>? {
         didSet {
             if type == .numericValue {
                 validateNumericValue()
@@ -45,12 +45,12 @@ class AMTextField: UITextField {
     }
     
     // 初始化
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
     }
@@ -132,7 +132,7 @@ class AMTextField: UITextField {
 
 // MARK: - UITextFieldDelegate
 extension AMTextField: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // 先执行自定义逻辑
         let shouldChange: Bool
         switch type {
@@ -164,25 +164,25 @@ extension AMTextField: UITextFieldDelegate {
         return false
     }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         // 先询问amDelegate，如果没有设置或返回true，再执行默认逻辑
         return amDelegate?.textFieldShouldBeginEditing?(textField) ?? true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    public func textFieldDidBeginEditing(_ textField: UITextField) {
         // 转发给amDelegate
         amDelegate?.textFieldDidBeginEditing?(textField)
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+    public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         return amDelegate?.textFieldShouldEndEditing?(textField) ?? true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    public func textFieldDidEndEditing(_ textField: UITextField) {
         amDelegate?.textFieldDidEndEditing?(textField)
     }
     
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    public func textFieldShouldClear(_ textField: UITextField) -> Bool {
         let shouldClear = amDelegate?.textFieldShouldClear?(textField) ?? true
         if shouldClear {
             // 清除文本后执行对应验证
@@ -198,7 +198,7 @@ extension AMTextField: UITextFieldDelegate {
         return shouldClear
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return amDelegate?.textFieldShouldReturn?(textField) ?? true
     }
 }

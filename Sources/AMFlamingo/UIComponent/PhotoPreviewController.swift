@@ -9,7 +9,7 @@
 import UIKit
 
 // 代理协议定义
-protocol PhotoPreviewControllerDelegate: AnyObject {
+public protocol PhotoPreviewControllerDelegate: AnyObject {
     /// 点击重拍按钮回调
     func photoPreviewControllerDidRetake(_ controller: PhotoPreviewController)
     /// 点击使用照片按钮回调
@@ -19,13 +19,13 @@ protocol PhotoPreviewControllerDelegate: AnyObject {
 /**
  图片预览，适用于场景：相机拍照后预览图片的页面
  */
-class PhotoPreviewController: UIViewController {
+open class PhotoPreviewController: UIViewController {
     
     // MARK: - 公共属性
     /// 需要预览的照片
-    var previewImage: UIImage?
+    public var previewImage: UIImage?
     /// 代理对象
-    weak var delegate: PhotoPreviewControllerDelegate?
+    public weak var delegate: PhotoPreviewControllerDelegate?
     
     // MARK: - 私有控件
     private let imagePreviewView = UIImageView()
@@ -34,7 +34,7 @@ class PhotoPreviewController: UIViewController {
     private let usePhotoButton = UIButton(type: .custom)
     
     // MARK: - 生命周期
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         setupBaseUI()
         setupPreviewView()
@@ -125,7 +125,7 @@ class PhotoPreviewController: UIViewController {
     }
     
     // MARK: - 导航栏控制
-    override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 恢复导航栏（如果之前隐藏了）
         navigationController?.setNavigationBarHidden(false, animated: false)

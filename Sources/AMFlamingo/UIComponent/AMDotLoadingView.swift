@@ -1,7 +1,7 @@
 import UIKit
 
-class AMDotLoadingView: UIView {
-    enum ContentStyle {
+open class AMDotLoadingView: UIView {
+    public enum ContentStyle {
         case light
         case dark
     }
@@ -26,7 +26,7 @@ class AMDotLoadingView: UIView {
     }
     private let animationCycle: TimeInterval = 0.9 // 0.3s * 3
     
-    var contentStyle = ContentStyle.dark {
+    open var contentStyle = ContentStyle.dark {
         didSet {
             //update background color
             dot1.backgroundColor = baseColor.withAlphaComponent(0.2)
@@ -37,20 +37,20 @@ class AMDotLoadingView: UIView {
         }
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         // 强制使用固定尺寸，忽略传入的frame大小
         super.init(frame: CGRect(origin: frame.origin, size: viewSize))
         setupViews()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         // 强制设置固定尺寸
         self.bounds.size = viewSize
         setupViews()
     }
     
-    func resetAnimation() {
+    open func resetAnimation() {
         dot1.layer.removeAllAnimations()
         dot2.layer.removeAllAnimations()
         dot3.layer.removeAllAnimations()
@@ -82,7 +82,7 @@ class AMDotLoadingView: UIView {
         dot3.backgroundColor = baseColor.withAlphaComponent(1.0)
     }
     
-    func startAnimation() {
+    open func startAnimation() {
         // 为每个圆点设置关键帧动画
         animateDot(dot: dot1, startIndex: 0)
         animateDot(dot: dot2, startIndex: 1)

@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol AMTrackProtocol: NSObjectProtocol {
+public protocol AMTrackProtocol: NSObjectProtocol {
     func shouldTrackMe() -> Bool
     func trackName() -> String
 }
 
 @objcMembers
-class AMViewTracker: NSObject {
+public class AMViewTracker: NSObject {
     let trackName: String
     let title: String?
     
@@ -57,11 +57,11 @@ class AMViewTracker: NSObject {
  * - 如果目标视图控制器不在当前导航栈中，返回空数组
  */
 @objcMembers
-class AMPagePathManager: NSObject {
+public class AMPagePathManager: NSObject {
     var lastPathSegments = [AMViewTracker]()
-    static let share = AMPagePathManager()
+    public static let share = AMPagePathManager()
     
-    func pathSegments(for visibleViewController: UIViewController) -> [AMViewTracker] {
+    public func pathSegments(for visibleViewController: UIViewController) -> [AMViewTracker] {
         guard let window = UIApplication.am_keyWindow else {
             return []
         }

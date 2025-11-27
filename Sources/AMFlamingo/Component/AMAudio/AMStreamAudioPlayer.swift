@@ -8,7 +8,7 @@
 
 import AVFoundation
 
-class AMStreamAudioPlayer: NSObject {
+public class AMStreamAudioPlayer: NSObject {
     // 核心播放器
     private var player: AVAudioPlayer?
     // 音频队列（处理分片顺序）
@@ -21,13 +21,13 @@ class AMStreamAudioPlayer: NSObject {
     private var isFragmentPlaying: Bool = false
     
     // 播放完成回调
-    var onFinish: ((Bool) -> Void)?
+    public var onFinish: ((Bool) -> Void)?
     // 错误回调
-    var onError: ((Error) -> Void)?
+    public var onError: ((Error) -> Void)?
     
-    var workQueue = DispatchQueue(label: "com.meorient.steamAudioPlayer")
+    public var workQueue = DispatchQueue(label: "com.meorient.steamAudioPlayer")
     
-    var identifier: String?
+    public var identifier: String?
     
     func onQueueFinished() {
         AMLogDebug("onQueueFinished")
@@ -62,7 +62,7 @@ class AMStreamAudioPlayer: NSObject {
     }
     
     // 添加base64编码的MP3分片
-    func addStreamFragment(base64Data: String, sequence: Int, last: Bool) {
+    public func addStreamFragment(base64Data: String, sequence: Int, last: Bool) {
         guard let mp3Data = Data(base64Encoded: base64Data, options: .ignoreUnknownCharacters) else {
             onError?(NSError(domain: "AMStreamAudioPlayer", code: -1, userInfo: [NSLocalizedDescriptionKey: "base64解码失败"]))
             return
@@ -111,7 +111,7 @@ class AMStreamAudioPlayer: NSObject {
     }
     
     // 停止播放并重置
-    func stop() {
+    public func stop() {
         AMLogDebug("steam audio player stoped!!")
         player?.stop()
         player = nil
@@ -126,7 +126,7 @@ class AMStreamAudioPlayer: NSObject {
 
 //MARK: AVAudioPlayerDelegate
 extension AMStreamAudioPlayer: AVAudioPlayerDelegate {
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         isFragmentPlaying = false
         
         if let lastSeq = lastFragmentSeq, nextExpectedSeq > lastSeq {

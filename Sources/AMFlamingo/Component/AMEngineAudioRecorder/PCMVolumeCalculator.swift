@@ -7,15 +7,15 @@
 import UIKit
 
 /// PCM 音频位深枚举
-enum PCMBitDepth: Int {
+public enum PCMBitDepth: Int {
     case bit16 = 16
     case bit32 = 32
 }
 /// PCM 音频音量计算器（峰值/平均音量转分贝）
-final class PCMVolumeCalculator {
+public final class PCMVolumeCalculator {
     
     // MARK: - 计算峰值音量（分贝）
-    static func calculatePeakVolume(inDBFromPCM pcmData: Data,
+    public  static func calculatePeakVolume(inDBFromPCM pcmData: Data,
                                     bitDepth: PCMBitDepth,
                                     channels: UInt) -> CGFloat {
         // 空数据防护
@@ -51,7 +51,7 @@ final class PCMVolumeCalculator {
     }
     
     // MARK: - 计算平均音量（分贝）
-    static func calculateAverageVolume(inDBFromPCM pcmData: Data,
+    public static func calculateAverageVolume(inDBFromPCM pcmData: Data,
                                        bitDepth: PCMBitDepth,
                                        channels: UInt) -> CGFloat {
         // 空数据防护

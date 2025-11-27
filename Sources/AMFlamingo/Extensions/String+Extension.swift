@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FlagSize {
+public enum FlagSize {
     case size_40x30
     
     var size: (width:Int, height:Int) {
@@ -18,7 +18,7 @@ enum FlagSize {
     }
 }
 
-extension String {
+public extension String {
     
     func createCoutryIconUrl(with flagSize: FlagSize = .size_40x30, ext: String = "png") -> String {
         return "https://flagcdn.com/\(flagSize.size.width)x\(flagSize.size.height)/\(self.lowercased()).\(ext)"

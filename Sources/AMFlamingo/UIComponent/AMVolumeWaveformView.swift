@@ -8,10 +8,10 @@
 
 import UIKit
 
-class AMVolumeWaveformView: UIView {
+open class AMVolumeWaveformView: UIView {
     
     /// 外部设置的分贝值 (0 ~ 1，或者 -∞ ~ 0 dB 归一化后)
-    var level: CGFloat = 0.0 {
+    open var level: CGFloat = 0.0 {
         didSet {
             // 在 updateWave() 里
             let normalized: CGFloat
@@ -33,19 +33,19 @@ class AMVolumeWaveformView: UIView {
     
     private let lineHeight: CGFloat = 6
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
 //        startAnimation()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         backgroundColor = .clear
 //        startAnimation()
     }
     
-    override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         
         // 避免重复创建
@@ -71,14 +71,14 @@ class AMVolumeWaveformView: UIView {
         }
     }
     
-    func startAnimation() {
+    open func startAnimation() {
         if displayLink == nil {
             displayLink = CADisplayLink(target: self, selector: #selector(updateWave))
             displayLink?.add(to: .main, forMode: .common)
         }
     }
     
-    func stopAnimation() {
+    open func stopAnimation() {
         displayLink?.invalidate()
         displayLink = nil
     }

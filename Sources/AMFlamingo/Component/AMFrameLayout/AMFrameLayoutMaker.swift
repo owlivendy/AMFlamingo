@@ -7,10 +7,10 @@
 //
 
 @objcMembers
-class AMFrameLayoutMaker: NSObject, AMLayoutAnchor {
-    var view: UIView
+public class AMFrameLayoutMaker: NSObject, AMLayoutAnchor {
+    public var view: UIView
     
-    init(view: UIView) {
+    public init(view: UIView) {
         self.view = view
     }
     

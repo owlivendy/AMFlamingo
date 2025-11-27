@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIColor {
+public extension UIColor {
     /// 使用十六进制字符串创建UIColor
     /// - Parameter hexString: 十六进制颜色字符串，支持格式：#RGB、#RGBA、#RRGGBB、#RRGGBBAA、RGB、RGBA、RRGGBB、RRGGBBAA
     static func hex(string: String, alpha: CGFloat? = nil) -> UIColor {

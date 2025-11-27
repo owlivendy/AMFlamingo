@@ -10,15 +10,15 @@ import AVKit
 import UIKit
 import Photos
 
-class AMVideoPreviewController: AVPlayerViewController {
+open class AMVideoPreviewController: AVPlayerViewController {
     private var overlayerView = UIView()
     private let savebutton = UIButton(type: .custom)
     
-    var videoURL: URL?
+    open var videoURL: URL?
     private var saveButtonHidden = false
     
     private var workItem: DispatchWorkItem?
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         if let videoURL = videoURL {
             let player = AVPlayer(url: videoURL)
@@ -73,7 +73,7 @@ class AMVideoPreviewController: AVPlayerViewController {
         }
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         self.workItem?.cancel()
         self.workItem = nil

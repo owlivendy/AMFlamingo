@@ -7,23 +7,23 @@
 //
 
 
-typealias AMFrameLayoutMakerCallback = ((AMFrameLayoutMaker)->(Void))
+public typealias AMFrameLayoutMakerCallback = ((AMFrameLayoutMaker)->(Void))
 
-extension UIView {
+public extension UIView {
     var am: AMFrameLayout {
         return AMFrameLayout(view: self)
     }
 }
 
 @objcMembers
-class AMFrameLayout: NSObject, AMLayoutAnchor {
-    var view: UIView
+public class AMFrameLayout: NSObject, AMLayoutAnchor {
+    public var view: UIView
     
-    init(view: UIView) {
+    public init(view: UIView) {
         self.view = view
     }
     
-    func make(_ callback: AMFrameLayoutMakerCallback) {
+    public func make(_ callback: AMFrameLayoutMakerCallback) {
         callback(AMFrameLayoutMaker.init(view: view))
     }
     

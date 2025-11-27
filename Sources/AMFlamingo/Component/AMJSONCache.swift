@@ -9,7 +9,7 @@
 import Foundation
 import CommonCrypto
 
-class AMJSONCache {
+open class AMJSONCache {
     // 单例
     static let shared = AMJSONCache()
     private init() { setup() }
@@ -57,7 +57,7 @@ class AMJSONCache {
     /// - Parameters:
     ///   - maxCount: 最大缓存个数
     ///   - maxSizeMB: 最大缓存大小（MB）
-    func setCacheLimit(maxCount: UInt, maxSizeMB: UInt) {
+    open func setCacheLimit(maxCount: UInt, maxSizeMB: UInt) {
         self.maxCount = maxCount
         self.maxSizeBytes = maxSizeMB * 1024 * 1024
     }
@@ -66,14 +66,14 @@ class AMJSONCache {
     /// - Parameters:
     ///   - json: 要缓存的JSON（支持Dictionary/Array）
     ///   - key: 缓存key
-    func saveJSON(_ json: Any, forKey key: String) {
+    open func saveJSON(_ json: Any, forKey key: String) {
         guard JSONSerialization.isValidJSONObject(json), !key.isEmpty else { return }
         
         // 1. 序列化JSON为Data
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else { return }
         
         // 2. 计算文件名（key的MD5）
-        let fileName = key.md5()
+        let fileName = key.am_md5()
         let fileURL = cacheDir.appendingPathComponent(fileName)
         
         // 3. 写入文件
@@ -116,11 +116,11 @@ class AMJSONCache {
     /// 获取缓存的JSON数据
     /// - Parameter key: 缓存key
     /// - Returns: 解析后的JSON（Dictionary/Array，nil表示无缓存或解析失败）
-    func getJSON(forKey key: String) -> Any? {
+    open func getJSON(forKey key: String) -> Any? {
         guard !key.isEmpty else { return nil }
         
         // 1. 检查文件是否存在
-        let fileName = key.md5()
+        let fileName = key.am_md5()
         let fileURL = cacheDir.appendingPathComponent(fileName)
         guard FileManager.default.fileExists(atPath: fileURL.path) else { return nil }
         
@@ -145,11 +145,11 @@ class AMJSONCache {
     
     /// 删除指定key的缓存
     /// - Parameter key: 缓存key
-    func removeJSON(forKey key: String) {
+    open func removeJSON(forKey key: String) {
         guard !key.isEmpty else { return }
         
         // 1. 删除文件
-        let fileName = key.md5()
+        let fileName = key.am_md5()
         let fileURL = cacheDir.appendingPathComponent(fileName)
         try? FileManager.default.removeItem(at: fileURL)
         
@@ -166,7 +166,7 @@ class AMJSONCache {
     }
     
     /// 清空所有缓存
-    func clearAllCache() {
+    open func clearAllCache() {
         // 1. 删除所有缓存文件（保留metadata.plist）
         if let files = try? FileManager.default.contentsOfDirectory(at: cacheDir, includingPropertiesForKeys: nil) {
             for fileURL in files where fileURL.lastPathComponent != "metadata.plist" {
@@ -223,8 +223,8 @@ class AMJSONCache {
 }
 
 // MARK: - 扩展：计算MD5
-extension String {
-    func md5() -> String {
+public extension String {
+    func am_md5() -> String {
         let cStr = self.cString(using: .utf8)!
         let digestLen = Int(CC_MD5_DIGEST_LENGTH)
         let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLen)

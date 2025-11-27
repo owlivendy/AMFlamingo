@@ -9,14 +9,14 @@
 import UIKit
 
 /// 自定义导航栏视图，支持返回按钮、标题和右侧视图的配置
-class AMNavigationBar: UIView {
+open class AMNavigationBar: UIView {
     
     // MARK: - Properties
     private let backButton = UIButton(type: .system)
     private let titleLabel = UILabel()
     
     /// 导航栏标题文本，设置后会显示在中间位置
-    var title: String? {
+    open var title: String? {
         didSet {
             titleLabel.text = title
             titleLabel.isHidden = title == nil || customTitleView != nil
@@ -26,7 +26,7 @@ class AMNavigationBar: UIView {
         }
     }
     
-    var titleColor: UIColor? {
+    open var titleColor: UIColor? {
         didSet {
             applyTintColor()
         }
@@ -34,7 +34,7 @@ class AMNavigationBar: UIView {
     
     /// 自定义标题视图，可以替换默认的文本标题
     /// 注意：设置后会替换默认的文本标题并居中显示
-    var customTitleView: UIView? {
+    open var customTitleView: UIView? {
         didSet {
             oldValue?.removeFromSuperview()
             titleLabel.isHidden = customTitleView != nil
@@ -49,7 +49,7 @@ class AMNavigationBar: UIView {
     }
     
     /// 导航栏主题色调，影响返回按钮和标题颜色
-    override var tintColor: UIColor? {
+    override open var tintColor: UIColor? {
         didSet {
             applyTintColor()
         }
@@ -57,20 +57,20 @@ class AMNavigationBar: UIView {
     
     /// 返回按钮点击回调
     /// 如果设置了此回调，将使用自定义处理逻辑；否则使用默认的返回逻辑
-    var onBackButtonTapped: (() -> Void)?
+    open var onBackButtonTapped: (() -> Void)?
     
     // MARK: - Initialization
     
     /// 使用指定的 frame 初始化导航栏
     /// - Parameter frame: 导航栏的 frame
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
     
     /// 使用 Storyboard/XIB 初始化导航栏
     /// - Parameter coder: NSCoder 对象
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
     }
@@ -209,7 +209,7 @@ class AMNavigationBar: UIView {
     }
     
     // MARK: - Layout
-    override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
     }
 }

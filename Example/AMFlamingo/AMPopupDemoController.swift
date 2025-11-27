@@ -1,7 +1,7 @@
 import UIKit
 import AMFlamingo
 
-class AMPopupDemoController: UIViewController, UITextFieldDelegate {
+class AMPopupDemoController: AMBaseController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "AMPopupView 演示"
@@ -13,6 +13,8 @@ class AMPopupDemoController: UIViewController, UITextFieldDelegate {
         showButton.addTarget(self, action: #selector(showPopup), for: .touchUpInside)
         showButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(showButton)
+        
+        showButton.addDraggable()
         
         let showAlertButton = UIButton(type: .system)
         showAlertButton.setTitle("Alert 弹出 AMPopupView", for: .normal)

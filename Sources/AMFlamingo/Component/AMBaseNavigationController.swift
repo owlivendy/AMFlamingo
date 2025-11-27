@@ -5,8 +5,8 @@
 //  Created by meotech on 2025/10/20.
 //
 
-class AMBaseNavigationController: UINavigationController {
-    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+open class AMBaseNavigationController: UINavigationController {
+    open override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         // 导航栏显示逻辑
         if let current = viewControllers.last {
             // 处理根视图控制器在 TabBar 中的情况

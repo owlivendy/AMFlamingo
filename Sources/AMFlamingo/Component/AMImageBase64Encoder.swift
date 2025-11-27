@@ -7,16 +7,16 @@
 //
 
 // 图片格式枚举
-enum AMImageFormat {
+public enum AMImageFormat {
     case png
     case jpeg
 }
 
-enum AMImageBase64EncoderError: Error {
+public enum AMImageBase64EncoderError: Error {
     case EncodeFailed
 }
 
-class AMImageBase64Encoder {
+open class AMImageBase64Encoder {
     
     /// 将 UIImage 编码为 Base64 字符串
     /// - Parameters:
@@ -24,7 +24,7 @@ class AMImageBase64Encoder {
     ///   - format: 图片格式（png/jpeg）
     ///   - compressionQuality: JPEG 压缩质量（0-1，仅对 jpeg 有效）
     /// - Returns: Base64 字符串（转换失败返回 nil）
-    static func encode(
+    open class func encode(
         image: UIImage,
         format: AMImageFormat = .jpeg,
         compressionQuality: CGFloat = 0.6

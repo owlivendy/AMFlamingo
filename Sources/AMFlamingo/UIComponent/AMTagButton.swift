@@ -8,20 +8,20 @@
 import UIKit
 
 // 定义按钮类型枚举
-enum AMTagButtonType {
+public enum AMTagButtonType {
     case `default`  // 默认类型（不可交互）
     case selected   // 可选中类型（可交互）
 }
 
-class CHTagButton: AMButton {  // 继承自之前实现的 CHButton
+open class CHTagButton: AMButton {  // 继承自之前实现的 CHButton
     
     // 初始化方法（指定类型）
-    init(type: AMTagButtonType) {
+    public init(type: AMTagButtonType) {
         super.init(frame: .zero)
         commonInit(type: type)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -50,7 +50,7 @@ class CHTagButton: AMButton {  // 继承自之前实现的 CHButton
     }
     
     // 重写 intrinsicContentSize，补偿 titleEdgeInsets 的空间
-    override var intrinsicContentSize: CGSize {
+    open override var intrinsicContentSize: CGSize {
         // 计算标题原始尺寸
         titleLabel?.sizeToFit()
         let originalSize = titleLabel?.bounds.size ?? .zero
@@ -66,12 +66,12 @@ class CHTagButton: AMButton {  // 继承自之前实现的 CHButton
     }
     
     // 设置标题内边距（封装 titleEdgeInsets）
-    func setTextInsets(_ insets: UIEdgeInsets) {
+    open func setTextInsets(_ insets: UIEdgeInsets) {
         titleEdgeInsets = insets
     }
     
     // 文本访问器（映射到 title）
-    var text: String? {
+    open var text: String? {
         get { title(for: .normal) }
         set { setTitle(newValue, for: .normal) }
     }

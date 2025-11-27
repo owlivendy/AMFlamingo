@@ -15,7 +15,6 @@
 		072CDD0C1DCF6CEB567252171025403C /* AMGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D13550966BE332A56EF79F2587E7A31 /* AMGradientButton.swift */; };
 		08B70E380A4162152C7394EB74583C19 /* AMUserDirectoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3ABE738286E6D69B7F3B5743A8FFE4A /* AMUserDirectoryManager.swift */; };
 		0D704C945D1B9E6A63D2E9C8C670F937 /* ConstraintMakerFinalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB8EEA3D7803E5AA55EF759B1CFF972 /* ConstraintMakerFinalizable.swift */; };
-		0E3CBA00C8636A46A405D672D8F4426E /* AMMediaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FCE925303C615D13AB2E58C8A56F93 /* AMMediaModel.swift */; };
 		0F3346F8ADE162D098ADAC574EA869B6 /* AMToast-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CF89B58F3B3E7241ABE89EFEDFD61021 /* AMToast-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0FF0147E4E3CA194CDFC8CAA6BAA1DF2 /* AMFrameLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1569CAF55F1992D7BC11707B6194B1 /* AMFrameLayout.swift */; };
 		11036E013443E58DD5976E2F1F3CD397 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8193349D819536E58C58A34C1B7DF545 /* Foundation.framework */; };
@@ -100,7 +99,11 @@
 		AF9A6F7CF26B452B00E2C40384D4D15C /* ConstraintLayoutGuide+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A40DD2A6BD7F8F46AB1681C62A14BF3 /* ConstraintLayoutGuide+Extensions.swift */; };
 		B48B33E50A3F15CE72E99C1F570BA26C /* AMAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1568B8CD875EF6786964691B70FA9A75 /* AMAudioPlayer.swift */; };
 		B4DDECEE86A6A9B3A698E8C438BAEDA5 /* AMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88981E421E2DC95C9FA957EB41410E85 /* AMTextField.swift */; };
-		B802420F2ED7E74B002ADAC0 /* UIView+AMFloating.swift in Sources */ = {isa = PBXBuildFile; fileRef = B802420E2ED7E74B002ADAC0 /* UIView+AMFloating.swift */; };
+		B802420F2ED7E74B002ADAC0 /* UIView+AMDraggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B802420E2ED7E74B002ADAC0 /* UIView+AMDraggable.swift */; };
+		B80242112ED7F974002ADAC0 /* AMMediaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80242102ED7F974002ADAC0 /* AMMediaModel.swift */; };
+		B80242132ED7FA0B002ADAC0 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80242122ED7FA0B002ADAC0 /* Array+Extension.swift */; };
+		B80242152ED7FA13002ADAC0 /* NSObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80242142ED7FA13002ADAC0 /* NSObject+Extension.swift */; };
+		B80242172ED7FA22002ADAC0 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80242162ED7FA22002ADAC0 /* CGPoint+Extension.swift */; };
 		B85D5E1A2EC47945009E8ED2 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D5E192EC47945009E8ED2 /* String+Extension.swift */; };
 		BB259C43BDBFC1A169ACADADC8029550 /* PCMVolumeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17995CD53D87CE9B18EAF4850FDE117 /* PCMVolumeCalculator.swift */; };
 		BED03055F9E10DEDABC686A61EEE5F30 /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = AA9EC49E52E875336F9F0603AA8CC04F /* success.png */; };
@@ -310,7 +313,11 @@
 		B3CDA09870E2746E7894244E53B47167 /* SnapKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SnapKit.debug.xcconfig; sourceTree = "<group>"; };
 		B3D04792B5B788510E1FA5CD02F1C36F /* AMToast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AMToast.release.xcconfig; sourceTree = "<group>"; };
 		B4E6A7EBCB9C89EEB0759B3B3B631A83 /* AMVideoPreviewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMVideoPreviewController.swift; sourceTree = "<group>"; };
-		B802420E2ED7E74B002ADAC0 /* UIView+AMFloating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AMFloating.swift"; sourceTree = "<group>"; };
+		B802420E2ED7E74B002ADAC0 /* UIView+AMDraggable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AMDraggable.swift"; sourceTree = "<group>"; };
+		B80242102ED7F974002ADAC0 /* AMMediaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMMediaModel.swift; sourceTree = "<group>"; };
+		B80242122ED7FA0B002ADAC0 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		B80242142ED7FA13002ADAC0 /* NSObject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
+		B80242162ED7FA22002ADAC0 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		B85D5E192EC47945009E8ED2 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapKit_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC16EA3DB32AAD91C640045A7FC14DC2 /* AMFlamingo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AMFlamingo.release.xcconfig; sourceTree = "<group>"; };
@@ -337,7 +344,6 @@
 		DBB8EEA3D7803E5AA55EF759B1CFF972 /* ConstraintMakerFinalizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerFinalizable.swift; path = Sources/ConstraintMakerFinalizable.swift; sourceTree = "<group>"; };
 		DEB9A7F643A4329B2AE242A5CA76DF3A /* SnapKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-prefix.pch"; sourceTree = "<group>"; };
 		E0655F9D6B998024579B5B8E1225E4C6 /* SnapKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-umbrella.h"; sourceTree = "<group>"; };
-		E0FCE925303C615D13AB2E58C8A56F93 /* AMMediaModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMMediaModel.swift; sourceTree = "<group>"; };
 		E1BE9B11D26CFAA212F765DC6DF9E6BE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E1FB62ED61A408A944ED17910E21F4A2 /* Pods-AMFlamingo_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AMFlamingo_Tests-dummy.m"; sourceTree = "<group>"; };
 		E283F5F0609ABF7E768FBAC2274211AC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -456,6 +462,7 @@
 		100D9E50A0110C5C25772374123D209A /* AMMediaManager */ = {
 			isa = PBXGroup;
 			children = (
+				B80242102ED7F974002ADAC0 /* AMMediaModel.swift */,
 				5DE15BEF6EF0EFFEE18CE2459C2318C1 /* AMMediaManager.swift */,
 			);
 			path = AMMediaManager;
@@ -702,7 +709,6 @@
 		83AE9828D8736B4D1BE7F141EB36E36A /* AMUserDirManager */ = {
 			isa = PBXGroup;
 			children = (
-				E0FCE925303C615D13AB2E58C8A56F93 /* AMMediaModel.swift */,
 				C3ABE738286E6D69B7F3B5743A8FFE4A /* AMUserDirectoryManager.swift */,
 			);
 			path = AMUserDirManager;
@@ -837,8 +843,11 @@
 		FBD9780352AD8F31089BFE3EDC08C545 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B80242142ED7FA13002ADAC0 /* NSObject+Extension.swift */,
+				B80242162ED7FA22002ADAC0 /* CGPoint+Extension.swift */,
 				11D74748DE40318DF60FC927A90B3F25 /* Decodable+Extension.swift */,
 				DA9A1239338D3B5189D15DDC14B141C1 /* Double+Extension.swift */,
+				B80242122ED7FA0B002ADAC0 /* Array+Extension.swift */,
 				F23C74D1EA5C1B192FBE5BBA2AF9A331 /* Global.swift */,
 				3B767D5885E610B2A22868B7F90BFE92 /* Optional+Extension.swift */,
 				A7FB589449BFDD8FBACF6C6C7B31AAAE /* SubString+Extension.swift */,
@@ -850,7 +859,7 @@
 				21D2E7605D5604266A6EBD19FC6FC733 /* UIImage+AMCrop.swift */,
 				585EBC2BEC4628C87DA76EDD27448889 /* UIImage+AMExtension.swift */,
 				8DF655A2C6744B278AABF6653FE8C292 /* UIView+AMExtension.swift */,
-				B802420E2ED7E74B002ADAC0 /* UIView+AMFloating.swift */,
+				B802420E2ED7E74B002ADAC0 /* UIView+AMDraggable.swift */,
 			);
 			name = Extensions;
 			path = Sources/AMFlamingo/Extensions;
@@ -1267,11 +1276,14 @@
 				B48B33E50A3F15CE72E99C1F570BA26C /* AMAudioPlayer.swift in Sources */,
 				58A113F27B5AAEA8F5085EA7BBA21499 /* AMBaseController.swift in Sources */,
 				173491F439A6CE742F7CDD37C30F35DB /* AMBaseNavigationController.swift in Sources */,
+				B80242132ED7FA0B002ADAC0 /* Array+Extension.swift in Sources */,
+				B80242112ED7F974002ADAC0 /* AMMediaModel.swift in Sources */,
 				3EDB9B2DFF2A53EE37A67AB993A924C6 /* AMBubbleView.swift in Sources */,
 				FCAFCA9BEAC456BBD11BC19235AD690B /* AMButton.swift in Sources */,
 				ACBFD952EEB2A58763BF3305B8683D56 /* AMCloseButton.swift in Sources */,
 				15F9E7D707B9AC4199826AD6D87D3916 /* AMDotLoadingView.swift in Sources */,
 				5CB862CFBDC50E7EF5000D1C0B1036F7 /* AMEngineAudioRecorder.swift in Sources */,
+				B80242152ED7FA13002ADAC0 /* NSObject+Extension.swift in Sources */,
 				C641D8673F235A79401AB75BAF60CAFD /* AMFlamingo-dummy.m in Sources */,
 				0FF0147E4E3CA194CDFC8CAA6BAA1DF2 /* AMFrameLayout.swift in Sources */,
 				77BC127151DC9BF93D6646CA6C070D44 /* AMFrameLayoutAnchor.swift in Sources */,
@@ -1283,15 +1295,15 @@
 				97DEBE98F69E57B5D42B2ADFBEABCF1D /* AMJSONCache.swift in Sources */,
 				EFA178F4148A7C1307D4D74D0AB54C46 /* AMLayoutAnchor.swift in Sources */,
 				FB67FF0C045781960C2826506FC56B66 /* AMLayoutRelation.swift in Sources */,
+				B80242172ED7FA22002ADAC0 /* CGPoint+Extension.swift in Sources */,
 				DD7D4FDAAF0B016DE2CD0F86E4BB3AAC /* AMLoadingButton.swift in Sources */,
 				92D06068E54DB26E79492CB2FC19EC0C /* AMLocalJSONStorage.swift in Sources */,
 				18C122236B135CC4B91CF55984D6E9D0 /* AMLogManager.swift in Sources */,
 				3055B356D2E9A2CE14CA721F0CAEB6F9 /* AMMediaManager.swift in Sources */,
-				0E3CBA00C8636A46A405D672D8F4426E /* AMMediaModel.swift in Sources */,
 				B85D5E1A2EC47945009E8ED2 /* String+Extension.swift in Sources */,
 				36E99A96AE7BD570B7A22CAF33D6F75B /* AMNavigationBar.swift in Sources */,
 				BEE8E31685A428A97B014DEFC5626DDC /* AMPagePathManager.swift in Sources */,
-				B802420F2ED7E74B002ADAC0 /* UIView+AMFloating.swift in Sources */,
+				B802420F2ED7E74B002ADAC0 /* UIView+AMDraggable.swift in Sources */,
 				4FA419CA3844F30A7B302D44889C2718 /* AMPopupView.swift in Sources */,
 				F1FD491D6A6CB6FE7882634B37B1E7AA /* AMStreamAudioPlayer.swift in Sources */,
 				45009203BAE5AC3913613A98BB0A0A94 /* AMTagButton.swift in Sources */,

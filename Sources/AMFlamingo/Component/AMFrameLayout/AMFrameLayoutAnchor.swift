@@ -7,7 +7,7 @@
 //
 
 
-class AMFrameLayoutAnchor: NSObject, AMLayoutRelation {
+public class AMFrameLayoutAnchor: NSObject, AMLayoutRelation {
     enum AMFrameLayoutAnchorType {
         case left
         case right
@@ -33,7 +33,7 @@ class AMFrameLayoutAnchor: NSObject, AMLayoutRelation {
     
     
     @discardableResult
-    func equalToSuper(view superview: AMFrameLayoutAnchor) -> AMFrameLayoutAnchor {
+    public func equalToSuper(view superview: AMFrameLayoutAnchor) -> AMFrameLayoutAnchor {
         self.superViewAnchor = superview
         apply()
         return self
@@ -41,21 +41,21 @@ class AMFrameLayoutAnchor: NSObject, AMLayoutRelation {
     
     
     @discardableResult
-    func equalTo(sameLevelView: AMFrameLayoutAnchor) -> AMFrameLayoutAnchor {
+    public func equalTo(sameLevelView: AMFrameLayoutAnchor) -> AMFrameLayoutAnchor {
         self.sameLevelViewAnchor = sameLevelView
         apply()
         return self
     }
     
     @discardableResult
-    func equalToSize(size: CGSize) -> AMFrameLayoutAnchor {
+    public func equalToSize(size: CGSize) -> AMFrameLayoutAnchor {
         self._size = size
         apply()
         return self
     }
     
     @discardableResult
-    func offset(_ value: CGFloat) -> AMFrameLayoutAnchor {
+    public func offset(_ value: CGFloat) -> AMFrameLayoutAnchor {
         self._offset = value
         apply()
         return self
@@ -83,7 +83,7 @@ class AMFrameLayoutAnchor: NSObject, AMLayoutRelation {
         
     }
     
-    func apply() {
+    public func apply() {
         let isRTL = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft
         var viewAnchorType = self.type
         var toffset = _offset

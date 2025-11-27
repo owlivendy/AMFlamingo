@@ -8,17 +8,21 @@
 import Foundation
 
 // MARK: - 文件保存选项
-struct LocalJSONStorageOptions: OptionSet {
-    let rawValue: Int
-    static let overwrite = LocalJSONStorageOptions(rawValue: 1 << 0) // 覆盖同名文件
-    static let permanent = LocalJSONStorageOptions(rawValue: 1 << 1) // 永久保存，不被自动清理
-    static let none: LocalJSONStorageOptions = []
+public struct LocalJSONStorageOptions: OptionSet {
+    public let rawValue: Int
+    public static let overwrite = LocalJSONStorageOptions(rawValue: 1 << 0) // 覆盖同名文件
+    public static let permanent = LocalJSONStorageOptions(rawValue: 1 << 1) // 永久保存，不被自动清理
+    public static let none: LocalJSONStorageOptions = []
+    
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
 }
 
 // MARK: - 通用本地 JSON 存储工具
 @objcMembers
-final class AMLocalJSONStorage: NSObject {
-    static let shared = AMLocalJSONStorage()
+public final class AMLocalJSONStorage: NSObject {
+    public static let shared = AMLocalJSONStorage()
     private override init() {
         super.init()
         loadModTimes()
@@ -40,7 +44,7 @@ final class AMLocalJSONStorage: NSObject {
     private let modTimesQueue = DispatchQueue(label: "com.flamingo.AMLocalJSONStorage.modTimesQueue")
 
     // Swift Codable 对象存储
-    func save<T: Encodable>(_ object: T, fileName: String, businessDir: String, businessId: String, options: LocalJSONStorageOptions = [.overwrite]) {
+    public func save<T: Encodable>(_ object: T, fileName: String, businessDir: String, businessId: String, options: LocalJSONStorageOptions = [.overwrite]) {
         modTimesQueue.async { [weak self] in
             guard let self = self else { return }
             let key = "\(businessDir)/\(businessId)"
@@ -86,7 +90,7 @@ final class AMLocalJSONStorage: NSObject {
             }
         }
     }
-    func load<T: Decodable>(_ type: T.Type, fileName: String, businessDir: String, businessId: String) -> T? {
+    public func load<T: Decodable>(_ type: T.Type, fileName: String, businessDir: String, businessId: String) -> T? {
         let dir = cacheDirectory(businessDir: businessDir, businessId: businessId)
         let url = dir.appendingPathComponent(fileName)
         guard let data = try? Data(contentsOf: url) else { return nil }
@@ -94,7 +98,7 @@ final class AMLocalJSONStorage: NSObject {
     }
     
     // 加载永久保存的数据
-    func loadPermanent<T: Decodable>(_ type: T.Type, fileName: String, businessDir: String, businessId: String) -> T? {
+    public func loadPermanent<T: Decodable>(_ type: T.Type, fileName: String, businessDir: String, businessId: String) -> T? {
         let dir = permanentCacheDirectory(businessDir: businessDir, businessId: businessId)
         let url = dir.appendingPathComponent(fileName)
         guard let data = try? Data(contentsOf: url) else { return nil }

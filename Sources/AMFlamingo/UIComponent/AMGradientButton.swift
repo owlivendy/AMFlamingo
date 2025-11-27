@@ -8,58 +8,58 @@
 
 import UIKit
 
-class AMGradientButton: UIButton {
+open class AMGradientButton: UIButton {
     // 渐变层
     private let gradientLayer = CAGradientLayer()
     
     // 渐变颜色数组
-    var gradientColors: [UIColor] = [] {
+    open var gradientColors: [UIColor] = [] {
         didSet {
             updateGradientLayer()
         }
     }
     
     // 渐变起始点 (默认左中)
-    var startPoint: CGPoint = CGPoint(x: 0, y: 0.5) {
+    open var startPoint: CGPoint = CGPoint(x: 0, y: 0.5) {
         didSet {
             updateGradientLayer()
         }
     }
     
     // 渐变结束点 (默认右中)
-    var endPoint: CGPoint = CGPoint(x: 1, y: 0.5) {
+    open var endPoint: CGPoint = CGPoint(x: 1, y: 0.5) {
         didSet {
             updateGradientLayer()
         }
     }
     
     // 颜色分布位置
-    var locations: [NSNumber]? {
+    open var locations: [NSNumber]? {
         didSet {
             updateGradientLayer()
         }
     }
     
     // 按钮圆角
-    var cornerRadius: CGFloat = 8 {
+    open var cornerRadius: CGFloat = 8 {
         didSet {
             layer.cornerRadius = cornerRadius
         }
     }
     
     // 初始化方法
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupButton()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         setupButton()
     }
     
     // 便捷初始化方法，可直接设置渐变属性
-    convenience init(colors: [UIColor], startPoint: CGPoint, endPoint: CGPoint) {
+    convenience public init(colors: [UIColor], startPoint: CGPoint, endPoint: CGPoint) {
         self.init(frame: .zero)
         self.gradientColors = colors
         self.startPoint = startPoint
@@ -93,13 +93,13 @@ class AMGradientButton: UIButton {
     }
     
     // 确保渐变层大小与按钮一致
-    override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = bounds
     }
     
     // 高亮状态反馈
-    override var isHighlighted: Bool {
+    open override var isHighlighted: Bool {
         didSet {
             alpha = isHighlighted ? 0.8 : 1.0
         }

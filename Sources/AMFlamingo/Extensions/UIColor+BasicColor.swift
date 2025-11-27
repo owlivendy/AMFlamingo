@@ -5,7 +5,7 @@
 //  Created by meotech on 2025/10/28.
 //
 
-extension UIColor {
+public extension UIColor {
     static var am_line: UIColor {
         return UIColor.hex(string: "e5e5e5")
     }

@@ -306,8 +306,8 @@ open class AMTagListView: UIView {
     open private(set) var tagViews: [AMTagView] = []
     private(set) var tagBackgroundViews: [UIView] = []
     private(set) var rowViews: [UIView] = []
-    private(set) var tagViewHeight: CGFloat = 0
-    private(set) var rows = 0 {
+    open private(set) var tagViewHeight: CGFloat = 0
+    open private(set) var rows = 0 {
         didSet {
             invalidateIntrinsicContentSize()
         }

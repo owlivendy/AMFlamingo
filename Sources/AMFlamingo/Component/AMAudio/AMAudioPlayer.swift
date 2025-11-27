@@ -8,13 +8,13 @@
 
 import AVFoundation
 
-class AMAudioPlayer: NSObject, AVAudioPlayerDelegate {
+public class AMAudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var audioPlayer: AVAudioPlayer?
     
-    var playerDidFinished: ((Bool)->(Void))?
+    public var playerDidFinished: ((Bool)->(Void))?
     
     // 播放本地音频文件
-    func playLocalAudio(fileName: String, fileType: String) {
+    public func playLocalAudio(fileName: String, fileType: String) {
         // 停止当前播放（如果有）
         stop()
         
@@ -46,7 +46,7 @@ class AMAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     // 暂停播放
-    func pause() {
+    public func pause() {
         if audioPlayer?.isPlaying ?? false {
             audioPlayer?.pause()
             AMLogDebug("音频已暂停")
@@ -54,7 +54,7 @@ class AMAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     // 停止播放
-    func stop() {
+    public func stop() {
         audioPlayer?.stop()
         // 重置播放进度到开头
         audioPlayer?.currentTime = 0
@@ -62,7 +62,7 @@ class AMAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     // 音频播放完成回调
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag {
             AMLogDebug("音频播放完成")
         } else {
@@ -72,7 +72,7 @@ class AMAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     // 音频解码错误回调
-    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+    public func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
         if let error = error {
             AMLogDebug("音频解码错误：\(error.localizedDescription)")
         }

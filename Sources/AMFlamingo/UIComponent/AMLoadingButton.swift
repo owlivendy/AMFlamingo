@@ -9,22 +9,22 @@
 import UIKit
 
 @objcMembers
-class AMLoadingButton: UIControl {
+open class AMLoadingButton: UIControl {
     // MARK: - Public Properties
-    var isLoading: Bool = false {
+    open var isLoading: Bool = false {
         didSet { updateLoadingState() }
     }
-    var loadingImage: UIImage? {
+    open var loadingImage: UIImage? {
         didSet { imageView.image = loadingImage }
     }
-    var text: String? {
+    open var text: String? {
         didSet { label.text = text }
     }
-    var loadingText: String? = nil
-    var textColor: UIColor? {
+    open var loadingText: String? = nil
+    open var textColor: UIColor? {
         didSet { label.textColor = textColor }
     }
-    var font: UIFont? {
+    open var font: UIFont? {
         didSet { label.font = font }
     }
     
@@ -34,12 +34,12 @@ class AMLoadingButton: UIControl {
     private let hStack = UIStackView()
     
     // MARK: - Init
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
     }

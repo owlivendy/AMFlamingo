@@ -9,9 +9,9 @@
 
 import UIKit
 
-class AMHoldToTalkButton: UIButton {
+open class AMHoldToTalkButton: UIButton {
     // 状态枚举
-    enum HoldStatus {
+    public enum HoldStatus {
         case uninitial  // 初始状态
         case inner      // 上滑距离未超过100px
         case outer      // 上滑超过100px
@@ -44,19 +44,19 @@ class AMHoldToTalkButton: UIButton {
     
     // 回调闭包 - 对外暴露的事件接口
     /// 按住动作回调
-    var onHoldBegan: (() -> Void)?
+    open var onHoldBegan: (() -> Void)?
     /// 松手动作回调
-    var onHoldEnded: ((HoldStatus) -> Void)?
+    open var onHoldEnded: ((HoldStatus) -> Void)?
     /// 状态变化回调
-    var onHoldStatusChange: ((HoldStatus) -> Void)?
+    open var onHoldStatusChange: ((HoldStatus) -> Void)?
     
     // 初始化方法
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
     }
@@ -77,7 +77,7 @@ class AMHoldToTalkButton: UIButton {
     }
     
     // MARK: - 触摸事件处理
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         guard let touch = touches.first else { return }
         
@@ -91,7 +91,7 @@ class AMHoldToTalkButton: UIButton {
         onHoldBegan?()
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         guard isHolding, let touch = touches.first else { return }
         
@@ -113,12 +113,12 @@ class AMHoldToTalkButton: UIButton {
         }
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         handleRelease()
     }
     
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesCancelled(touches, with: event)
         handleRelease()
     }

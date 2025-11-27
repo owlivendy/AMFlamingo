@@ -6,7 +6,7 @@
 //  Copyright © 2025 shen xiaofei. All rights reserved.
 //
 
-extension Double {
+public extension Double {
     func format(_ format: String) -> String {
         let date = Date(timeIntervalSince1970: self)
         let dateFormatter = DateFormatter()

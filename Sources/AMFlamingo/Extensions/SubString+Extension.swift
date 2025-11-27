@@ -6,7 +6,7 @@
 //  Copyright © 2025 吕欢. All rights reserved.
 //
 
-extension Substring {
+public extension Substring {
     var string: String {
         return String(self)
     }

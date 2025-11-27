@@ -10,7 +10,7 @@
 import AVFoundation
 
 @objcMembers
-class AMEngineAudioRecorder: NSObject {
+public class AMEngineAudioRecorder: NSObject {
     // 音频引擎
     private let audioEngine = AVAudioEngine()
     // 输入节点
@@ -22,16 +22,16 @@ class AMEngineAudioRecorder: NSObject {
     // 音频索引
     private var audioIndex = 1
     // 音量更新回调
-    var onVolumeUpdated: ((Float) -> Void)?
+    public var onVolumeUpdated: ((Float) -> Void)?
     // 音频数据回调
-    var onAudioDataReceived: ((Data, Int) -> Void)?
+    public var onAudioDataReceived: ((Data, Int) -> Void)?
     
     /// 开始录音
     /// - Parameters:
     ///   - pcmFormat: 位深格式，默认16位整数
     ///   - sampleRate: 采样率，默认16000Hz
     ///   - channels: 通道数，默认1（单声道）
-    func startRecord(
+    public func startRecord(
         pcmFormat: AVAudioCommonFormat = .pcmFormatInt16,
         sampleRate: Double = 16000,
         channels: AVAudioChannelCount = 1
@@ -150,7 +150,7 @@ class AMEngineAudioRecorder: NSObject {
     }
     
     /// 停止录音
-    func stopRecord() {
+    public func stopRecord() {
         guard isRecording else { return }
         
         // 移除输入监听

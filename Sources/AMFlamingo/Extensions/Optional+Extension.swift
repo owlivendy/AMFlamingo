@@ -6,7 +6,7 @@
 //  Copyright © 2025 shen xiaofei. All rights reserved.
 //
 
-extension Optional where Wrapped: Collection {
+public extension Optional where Wrapped: Collection {
     var valueNotEmpty: Wrapped? {
         get {
             switch self {

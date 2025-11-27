@@ -6,7 +6,7 @@
 //  Copyright © 2025 shen xiaofei. All rights reserved.
 //
 
-protocol AMLayoutRelation {
+public protocol AMLayoutRelation {
     func equalToSuper(view superview: AMFrameLayoutAnchor) -> AMFrameLayoutAnchor
     func equalTo(sameLevelView: AMFrameLayoutAnchor) -> AMFrameLayoutAnchor
     func offset(_ value: CGFloat) -> AMFrameLayoutAnchor

@@ -7,19 +7,19 @@
 
 import UIKit
 
-class AMButton: UIButton {
+open class AMButton: UIButton {
     // 存储不同状态对应的属性（key: UIControl.State 的原始值）
     private var backgroundColors: [UInt: UIColor] = [:]
     private var borderColors: [UInt: UIColor] = [:]
     private var borderWidths: [UInt: CGFloat] = [:]
     
     // 初始化方法
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
     }
@@ -31,7 +31,7 @@ class AMButton: UIButton {
     // MARK: - 公开方法：为不同状态设置属性
     
     /// 为指定状态设置背景色
-    func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
+    open func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
         guard let color = color else {
             backgroundColors.removeValue(forKey: state.rawValue)
             return
@@ -40,7 +40,7 @@ class AMButton: UIButton {
     }
     
     /// 为指定状态设置边框色
-    func setBorderColor(_ color: UIColor?, for state: UIControl.State) {
+    open func setBorderColor(_ color: UIColor?, for state: UIControl.State) {
         guard let color = color else {
             borderColors.removeValue(forKey: state.rawValue)
             return
@@ -49,13 +49,13 @@ class AMButton: UIButton {
     }
     
     /// 为指定状态设置边框宽度
-    func setBorderWidth(_ width: CGFloat, for state: UIControl.State) {
+    open func setBorderWidth(_ width: CGFloat, for state: UIControl.State) {
         borderWidths[state.rawValue] = width
     }
     
     // MARK: - 布局时更新状态属性
     
-    override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         
         // 更新背景色（优先使用当前状态对应的颜色）

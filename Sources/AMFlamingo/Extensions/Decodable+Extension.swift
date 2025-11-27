@@ -7,7 +7,7 @@
 //
 import Foundation
 
-extension Decodable {
+public extension Decodable {
     static func from(json: [String: Any]) -> Self? {
         do {
             let data = try JSONSerialization.data(withJSONObject: json, options: [])

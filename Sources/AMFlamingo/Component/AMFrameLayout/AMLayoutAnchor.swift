@@ -6,7 +6,7 @@
 //  Copyright © 2025 shen xiaofei. All rights reserved.
 //
 
-protocol AMLayoutAnchor {
+public protocol AMLayoutAnchor {
     
     var left: AMFrameLayoutAnchor { get }
     var right: AMFrameLayoutAnchor { get }
@@ -21,7 +21,7 @@ protocol AMLayoutAnchor {
     
 }
 
-extension AMLayoutAnchor {
+public extension AMLayoutAnchor {
     var left: AMFrameLayoutAnchor {
         return AMFrameLayoutAnchor(view: view, type: .left)
     }
