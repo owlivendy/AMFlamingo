@@ -1,5 +1,5 @@
 //
-//  UIView+AMFloating.swift
+//  UIView+AMDraggable.swift
 //  ChinaHomelife247
 //
 //  Created by shenxiaofei on 2025/11/26.
@@ -44,7 +44,7 @@ private class AMDragConfiguration {
 }
 
 // MARK: - UIView 拖动+磁吸贴右扩展
-extension UIView {
+public extension UIView {
     /// 关联对象Key（仅需一个，绑定DragConfiguration）
     private enum AssociatedKey {
         static var dragConfig: Void?
