@@ -105,6 +105,7 @@
 		B80242152ED7FA13002ADAC0 /* NSObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80242142ED7FA13002ADAC0 /* NSObject+Extension.swift */; };
 		B80242172ED7FA22002ADAC0 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80242162ED7FA22002ADAC0 /* CGPoint+Extension.swift */; };
 		B85D5E1A2EC47945009E8ED2 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D5E192EC47945009E8ED2 /* String+Extension.swift */; };
+		B8DC976A2EF0FCA8007BA211 /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DC97692EF0FCA8007BA211 /* DateFormatter+Extension.swift */; };
 		BB259C43BDBFC1A169ACADADC8029550 /* PCMVolumeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17995CD53D87CE9B18EAF4850FDE117 /* PCMVolumeCalculator.swift */; };
 		BED03055F9E10DEDABC686A61EEE5F30 /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = AA9EC49E52E875336F9F0603AA8CC04F /* success.png */; };
 		BEE8E31685A428A97B014DEFC5626DDC /* AMPagePathManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5808DBDC88D35409650035518A9255F /* AMPagePathManager.swift */; };
@@ -319,6 +320,7 @@
 		B80242142ED7FA13002ADAC0 /* NSObject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
 		B80242162ED7FA22002ADAC0 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		B85D5E192EC47945009E8ED2 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		B8DC97692EF0FCA8007BA211 /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
 		B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapKit_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC16EA3DB32AAD91C640045A7FC14DC2 /* AMFlamingo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AMFlamingo.release.xcconfig; sourceTree = "<group>"; };
 		BE599ABF50915C3D1A1BC58024CFE7CB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/AMToast/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -860,6 +862,7 @@
 				585EBC2BEC4628C87DA76EDD27448889 /* UIImage+AMExtension.swift */,
 				8DF655A2C6744B278AABF6653FE8C292 /* UIView+AMExtension.swift */,
 				B802420E2ED7E74B002ADAC0 /* UIView+AMDraggable.swift */,
+				B8DC97692EF0FCA8007BA211 /* DateFormatter+Extension.swift */,
 			);
 			name = Extensions;
 			path = Sources/AMFlamingo/Extensions;
@@ -1282,6 +1285,7 @@
 				FCAFCA9BEAC456BBD11BC19235AD690B /* AMButton.swift in Sources */,
 				ACBFD952EEB2A58763BF3305B8683D56 /* AMCloseButton.swift in Sources */,
 				15F9E7D707B9AC4199826AD6D87D3916 /* AMDotLoadingView.swift in Sources */,
+				B8DC976A2EF0FCA8007BA211 /* DateFormatter+Extension.swift in Sources */,
 				5CB862CFBDC50E7EF5000D1C0B1036F7 /* AMEngineAudioRecorder.swift in Sources */,
 				B80242152ED7FA13002ADAC0 /* NSObject+Extension.swift in Sources */,
 				C641D8673F235A79401AB75BAF60CAFD /* AMFlamingo-dummy.m in Sources */,
