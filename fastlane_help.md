@@ -8,19 +8,13 @@ Fastlane 是一款自动化工具，主要用于 iOS/Android 项目的打包、�
 
 ## 二、环境准备
 
-### 1. 安装 Xcode 命令行工具
-
-```bash
-xcode-select --install
-```
-
-### 2. 安装 Homebrew（如未安装）
+### 1. 安装 Homebrew（如未安装）
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-### 3. 安装 Ruby（macOS 自带 Ruby，建议升级到新版本）
+### 2. 安装 Ruby（macOS 自带 Ruby，建议升级到新版本）
 
 推荐用 Homebrew 安装：
 
@@ -35,13 +29,13 @@ echo 'export PATH="/opt/homebrew/opt/ruby/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### 4. 安装 Bundler
+### 3. 安装 Bundler
 
 ```bash
 gem install bundler
 ```
 
-### 5. 安装 Fastlane
+### 4. 安装 Fastlane
 
 **推荐使用 bundle 方式安装 fastlane，因为项目中有 Gemfile，这样可以统一和管理依赖，避免全局依赖冲突。**
 
@@ -57,7 +51,7 @@ bundle install
 fastlane build2pg message:"更新内容"
 ```
 
-### 6. 安装蒲公英插件（如需上传到蒲公英）
+### 5. 安装蒲公英插件（如需上传到蒲公英）
 
 ```bash
 fastlane add_plugin pgyer

@@ -118,7 +118,7 @@ platform :ios do
     if env == "production" && isAppstore
       # 上传dSYM文件 到 firebase - Crashlytics (# https://docs.fastlane.tools/actions/upload_symbols_to_crashlytics/)
       upload_symbols_to_crashlytics(
-        dsym_path: "./build/#{env}/ChinaHomelife247.app.dSYM.zip",
+        dsym_path: "#{output_dir}/ChinaHomelife247.app.dSYM.zip",
         # 上传符号文件到 Firebase Crashlytics 时，需要指定 upload-symbols 二进制文件的路径
         # swift package manager 安装的 FirebaseCrashlytics 插件，路径为 binary_path: "${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
         # 因为无法在 fastlane 中使用 ${BUILD_DIR%Build/*} 变量，所以使用相对路径 ./scripts/upload-symbols，手动将 upload-symbols 脚本复制到项目根目录scripts/目录下
