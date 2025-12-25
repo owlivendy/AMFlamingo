@@ -530,7 +530,9 @@ open class AMTagListView: UIView {
         // Calculate button position
         
         // Create button
-        expandButton = UIButton(type: .system)
+        if expandButton == nil {
+            expandButton = UIButton(type: .system)
+        }
         expandButton?.titleLabel?.font = self.textFont
         
         // Apply custom styles
