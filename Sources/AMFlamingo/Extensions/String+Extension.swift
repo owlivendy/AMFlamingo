@@ -24,4 +24,7 @@ public extension String {
         return "https://flagcdn.com/\(flagSize.size.width)x\(flagSize.size.height)/\(self.lowercased()).\(ext)"
     }
     
+    func localize(_ tableName:String? = nil, value: String = "", comment: String) -> String {
+        return NSLocalizedString(self, tableName: tableName, value: value, comment: comment)
+    }
 }
