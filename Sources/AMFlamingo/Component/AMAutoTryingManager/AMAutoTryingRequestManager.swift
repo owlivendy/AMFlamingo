@@ -60,8 +60,8 @@ open class AMAutoTryingInternalRequest {
         return combinedString.md5()
     }
     
-    public init(domain: String, path: String, method: HTTPMethod, params: [String: Any]?, retryCount: Int = 0) {
-        self.identifier = UUID().uuidString
+    public init(identifier: String = UUID().uuidString, domain: String, path: String, method: HTTPMethod, params: [String: Any]?, retryCount: Int = 0) {
+        self.identifier = identifier
         self.domain = domain
         self.path = path
         self.method = method
@@ -261,6 +261,7 @@ open class AMAutoTryingRequestManager {
                     let params = dataDict["params"] as? [String: Any]
                     
                     let request = AMAutoTryingInternalRequest(
+                        identifier: identifier,
                         domain: domain,
                         path: path,
                         method: method,
