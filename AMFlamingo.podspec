@@ -40,4 +40,5 @@ AMFlamingo is an iOS UI component library providing common UI extension function
   end
   
   s.dependency 'SnapKit', '~> 5.7'
+  
 end

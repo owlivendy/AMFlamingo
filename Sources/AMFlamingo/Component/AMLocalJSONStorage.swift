@@ -107,10 +107,10 @@ public final class AMLocalJSONStorage: NSObject {
     
     // OC Model: NSDictionary/NSArray 存储
     @objc public func saveOC(_ object: Any, fileName: String, businessDir: String, businessId: String, overwrite: Bool = true, permanent: Bool = false) {
+        assert(object is NSDictionary || object is NSArray, "saveOC object param must be NSDictionary or NSArray")
         modTimesQueue.async { [weak self] in
             guard let self = self else { return }
             let key = "\(businessDir)/\(businessId)"
-            
             // 根据是否永久保存选择不同的目录
             let dir = permanent ? self.permanentCacheDirectory(businessDir: businessDir, businessId: businessId) : self.cacheDirectory(businessDir: businessDir, businessId: businessId)
             
@@ -130,10 +130,20 @@ public final class AMLocalJSONStorage: NSObject {
             let tmpURL = url.appendingPathExtension("tmp")
             var newFileSize: UInt64 = 0
             if let dict = object as? NSDictionary {
-                dict.write(to: tmpURL, atomically: true)
+                do {
+                    try dict.write(to: tmpURL)
+                } catch {
+                    AMLogDebug("LocalJOSNStorge: saveOC error(dict.write): \(error)")
+                    return
+                }
                 newFileSize = (try? tmpURL.resourceValues(forKeys: [.fileSizeKey]).fileSize).map { UInt64($0) } ?? 0
             } else if let array = object as? NSArray {
-                array.write(to: tmpURL, atomically: true)
+                do {
+                    try array.write(to: tmpURL)
+                } catch {
+                    AMLogDebug("LocalJOSNStorge: saveOC error(array.write): \(error)")
+                    return
+                }
                 newFileSize = (try? tmpURL.resourceValues(forKeys: [.fileSizeKey]).fileSize).map { UInt64($0) } ?? 0
             }
             
@@ -160,6 +170,17 @@ public final class AMLocalJSONStorage: NSObject {
         let url = dir.appendingPathComponent(fileName)
         return NSArray(contentsOf: url)
     }
+    
+    // 加载永久保存的字典数据
+    @objc public func loadOCPermanentDictionary(path: URL) -> NSDictionary? {
+        return NSDictionary(contentsOf: path)
+    }
+    
+    // 加载永久保存的数组数据
+    @objc public func loadOCPermanentArray(path: URL) -> NSArray? {
+        return NSArray(contentsOf: path)
+    }
+    
     @objc public func remove(fileName: String, businessDir: String, businessId: String) {
         modTimesQueue.async { [weak self] in
             guard let self = self else { return }
