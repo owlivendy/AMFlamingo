@@ -41,17 +41,16 @@ public class AMStreamAudioPlayer: NSObject {
     }
     
     // 配置音频会话
-    static func setupAudioSession() {
+    static func activeAudioSession(duckOthers: Bool = true) {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: .default, options: [
-                .duckOthers
-            ])
+            //如果是在后台唤醒的话，需要 backgroundMode 开启 Location updates
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
             try AVAudioSession.sharedInstance().setActive(true)
-            AMLogDebug("[CHSteamAudioPlayer] ✅ Audio Session 配置成功")
-            AMLogDebug("[CHSteamAudioPlayer] 📊 当前路由: \(AVAudioSession.sharedInstance().currentRoute)")
+            AMLogDebug("[CHStreamAudioPlayer] ✅ Audio Session 配置成功")
+            AMLogDebug("[CHStreamAudioPlayer] 📊 当前路由: \(AVAudioSession.sharedInstance().currentRoute)")
         } catch {
-            AMLogDebug("[CHSteamAudioPlayer] ❌ Audio Session 配置失败: \(error.localizedDescription)")
-            AMLogDebug("[CHSteamAudioPlayer] Audio Session 错误详情: \(error)")
+            AMLogDebug("[CHStreamAudioPlayer] ❌ Audio Session 配置失败: \(error.localizedDescription)")
+            AMLogDebug("[CHStreamAudioPlayer] Audio Session 错误详情: \(error)")
         }
     }
     
@@ -83,6 +82,7 @@ public class AMStreamAudioPlayer: NSObject {
     }
     
     // 尝试播放下一个分片（按序号顺序）
+    
     private func tryPlayNextFragment() {
         guard let data = fragmentQueue[nextExpectedSeq] else {
             AMLogDebug("[CHSteamAudioPlayer] 没有找到下一个播放分片！！！ 索引\(nextExpectedSeq)")
@@ -90,11 +90,17 @@ public class AMStreamAudioPlayer: NSObject {
         }
         
         do {
-            player = try AVAudioPlayer(data: data)
             if !isPlaying {
-                Self.setupAudioSession()
+                Self.activeAudioSession()
             }
+            
+            player = try AVAudioPlayer(data: data)
             player?.delegate = self
+            let prepare = player?.prepareToPlay()
+            if prepare == false {
+                AMLogError("[CHStreamAudioPlayer] prepare play failed")
+                return
+            }
             let res = player?.play()
             if res == false {
                 AMLogError("[AMStreamAudioPlayer] play failed")
@@ -114,6 +120,9 @@ public class AMStreamAudioPlayer: NSObject {
     public func stop() {
         AMLogDebug("steam audio player stoped!!")
         player?.stop()
+        if (self.isPlaying) {
+            inActiveAudioSession()
+        }
         player = nil
         isPlaying = false
         isFragmentPlaying = false
@@ -146,6 +155,17 @@ extension AMStreamAudioPlayer: AVAudioPlayerDelegate {
         workQueue.async {
             AMLogDebug("audioPlayerDidFinishPlaying & tryPlayNextFragment")
             self.tryPlayNextFragment()
+        }
+    }
+}
+
+private extension AMStreamAudioPlayer {
+    func inActiveAudioSession() {
+        do {
+            AMLogDebug("[CHStreamAudioPlayer] inactive audio session")
+            try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        } catch {
+            AMLogDebug("[CHStreamAudioPlayer] inactive audio session error: \(error)")
         }
     }
 }
