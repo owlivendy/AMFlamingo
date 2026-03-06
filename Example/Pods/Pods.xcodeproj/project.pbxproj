@@ -70,7 +70,6 @@
 		69F2A374D8D5CA0112E635C690AD3650 /* loading-white-style1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 081AA8142ACAB4677FBA5CA7B209AF71 /* loading-white-style1@3x.png */; };
 		6B0757D254CD06414AD1AAD071148704 /* ConstraintMakerPrioritizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139965785BBFA7910A2412F502E3CF23 /* ConstraintMakerPrioritizable.swift */; };
 		6C0E02EB1D6F3138A3B609EE34ADBF7C /* NSObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AC3F26A1224FBF4C91CF3FE0062DA6 /* NSObject+Extension.swift */; };
-		6D37D24573E1F1F629D4288A1758F321 /* AMStreamAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F8CAB1A75E8E89E7849C5082A9F8C /* AMStreamAudioPlayer.swift */; };
 		6D6F308091DC74EBB3C93B8CDCD06A5A /* AMVideoPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA72E0021F3D332A1B3F505B6674861 /* AMVideoPreviewController.swift */; };
 		7464CE559DA9A2AC96B0FA11D953E992 /* AMFlamingo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 491F91BDCC6DD155B212D8ED97CECA43 /* AMFlamingo.bundle */; };
 		76B23E3CCBCE87E3BCA9EAFB8D4206BC /* AMNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93FA85CEA1532CA22A00E5046728EE2 /* AMNavigationBar.swift */; };
@@ -108,6 +107,7 @@
 		B40A195330C556426930247EE0892F85 /* PhotoPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B293152B8F74D72DA6D0578D3E7DD4C /* PhotoPreviewController.swift */; };
 		B81828222F23091D00E9CEC3 /* AMPrivateImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81828212F23091D00E9CEC3 /* AMPrivateImageView.swift */; };
 		B84E172B941FC7334B833A08E5A9639B /* AMGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB8E489C833105F9CB769F252536CE3 /* AMGradientView.swift */; };
+		B860FEDF2F5A8168008B6D6E /* AMChunkAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B860FEDE2F5A8168008B6D6E /* AMChunkAudioPlayer.swift */; };
 		B9BEFC006661C5EB8D77AF6331851158 /* ConstraintMakerFinalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB8EEA3D7803E5AA55EF759B1CFF972 /* ConstraintMakerFinalizable.swift */; };
 		BA777B2EB4D415F7F705B869CEAD7488 /* ConstraintConstantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC636664804E284063EC1227CE5F4541 /* ConstraintConstantTarget.swift */; };
 		BE0A7796642BEF86C17B384164E89668 /* SnapKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E0655F9D6B998024579B5B8E1225E4C6 /* SnapKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -308,7 +308,6 @@
 		AC248BC27124E8948F021DF306081E2C /* AMAttributedStringBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMAttributedStringBuilder.swift; sourceTree = "<group>"; };
 		AC636664804E284063EC1227CE5F4541 /* ConstraintConstantTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintConstantTarget.swift; path = Sources/ConstraintConstantTarget.swift; sourceTree = "<group>"; };
 		AD3A8B7EE0CDCB5D691AE5DB0039694F /* LayoutConstraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraint.swift; path = Sources/LayoutConstraint.swift; sourceTree = "<group>"; };
-		B23F8CAB1A75E8E89E7849C5082A9F8C /* AMStreamAudioPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMStreamAudioPlayer.swift; sourceTree = "<group>"; };
 		B2B501CC9E7F972C328ADA64E3D8FE0A /* ConstraintMaker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMaker.swift; path = Sources/ConstraintMaker.swift; sourceTree = "<group>"; };
 		B3911B48C18F34AE40FE5981556204C4 /* AMFlamingo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AMFlamingo-umbrella.h"; sourceTree = "<group>"; };
 		B3C2A85F3073987749796A90E2FDBB18 /* ConstraintAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintAttributes.swift; path = Sources/ConstraintAttributes.swift; sourceTree = "<group>"; };
@@ -316,6 +315,7 @@
 		B3D04792B5B788510E1FA5CD02F1C36F /* AMToast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AMToast.release.xcconfig; sourceTree = "<group>"; };
 		B66CBD9FE96CE541F60F108ACD1A1173 /* AMButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AMButton.swift; sourceTree = "<group>"; };
 		B81828212F23091D00E9CEC3 /* AMPrivateImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMPrivateImageView.swift; sourceTree = "<group>"; };
+		B860FEDE2F5A8168008B6D6E /* AMChunkAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMChunkAudioPlayer.swift; sourceTree = "<group>"; };
 		B9DCB5EC0B1CDADD221717CADDF62359 /* SnapKit_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapKit_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE599ABF50915C3D1A1BC58024CFE7CB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/AMToast/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C020926E58A30227C71A48B3F045B127 /* Pods-AMFlamingo_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AMFlamingo_Tests-Info.plist"; sourceTree = "<group>"; };
@@ -719,7 +719,7 @@
 			isa = PBXGroup;
 			children = (
 				33FB4CE2181387DFD10CB14EC22B7B76 /* AMAudioPlayer.swift */,
-				B23F8CAB1A75E8E89E7849C5082A9F8C /* AMStreamAudioPlayer.swift */,
+				B860FEDE2F5A8168008B6D6E /* AMChunkAudioPlayer.swift */,
 			);
 			path = AMAudio;
 			sourceTree = "<group>";
@@ -1219,7 +1219,6 @@
 				76B23E3CCBCE87E3BCA9EAFB8D4206BC /* AMNavigationBar.swift in Sources */,
 				ACCBCFE23FEE874D644A3D81A181FBE4 /* AMPagePathManager.swift in Sources */,
 				63145FF2F52FCA150A3235F169F062E9 /* AMPopupView.swift in Sources */,
-				6D37D24573E1F1F629D4288A1758F321 /* AMStreamAudioPlayer.swift in Sources */,
 				5E34C0EC7FC7ABA953646DB86351B01C /* AMTagButton.swift in Sources */,
 				F83EE106EFB66DCFEF68465063A262EE /* AMTagListView.swift in Sources */,
 				ED8D5209DB5BEBEE6063C9C7063B06BA /* AMTagView.swift in Sources */,
@@ -1235,6 +1234,7 @@
 				3845E97E4CB6F9F6A43EA3211B2AC42A /* Global.swift in Sources */,
 				6C0E02EB1D6F3138A3B609EE34ADBF7C /* NSObject+Extension.swift in Sources */,
 				AD07E127932A74FFF13BE2583FE515FF /* Optional+Extension.swift in Sources */,
+				B860FEDF2F5A8168008B6D6E /* AMChunkAudioPlayer.swift in Sources */,
 				78182FA2D6AA44B9A050FA55C3A841FF /* PCMVolumeCalculator.swift in Sources */,
 				B81828222F23091D00E9CEC3 /* AMPrivateImageView.swift in Sources */,
 				B40A195330C556426930247EE0892F85 /* PhotoPreviewController.swift in Sources */,
