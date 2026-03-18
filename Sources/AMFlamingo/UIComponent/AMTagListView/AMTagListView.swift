@@ -232,7 +232,7 @@ open class AMTagListView: UIView {
     
     @IBOutlet open weak var delegate: AMTagListViewDelegate?
 
-    //默认 折叠的行数， 默认 0, 0 表示不折叠
+    //默认 折叠的行数， 默认 0, 0 表示不折叠,  大于 0 表示 大于 x 行后会折叠
     @IBInspectable open dynamic var numberOfCollapseRows: Int = 0 {
         didSet {
             isExpanded = numberOfCollapseRows <= 0
@@ -256,7 +256,7 @@ open class AMTagListView: UIView {
      */
     open var presetWidth: CGFloat?
     
-    // State variables
+    // State variables, true 表示展开， false表示需要折叠
     open var isExpanded: Bool = true
     private var expandButton: UIButton?
     public private(set) var hiddenTagCount: Int = 0
@@ -411,7 +411,7 @@ open class AMTagListView: UIView {
             visibleTagCount += 1
             tempRowTagCount += 1
         }
-        if isExpanded && tempRowWidth + expandButtonWidth > frameWidth {
+        if isExpanded && numberOfCollapseRows > 0 && tempRowWidth + expandButtonWidth > frameWidth {
             finnallyRowCount += 1
         }
         
