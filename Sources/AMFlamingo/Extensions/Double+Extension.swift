@@ -5,6 +5,7 @@
 //  Created by shen xiaofei on 2025/6/30.
 //  Copyright © 2025 shen xiaofei. All rights reserved.
 //
+import Foundation
 
 public extension Double {
     func format(_ format: String) -> String {

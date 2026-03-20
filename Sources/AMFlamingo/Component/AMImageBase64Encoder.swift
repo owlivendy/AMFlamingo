@@ -5,6 +5,7 @@
 //  Created by shen xiaofei on 2025/7/2.
 //  Copyright © 2025 shen xiaofei. All rights reserved.
 //
+import UIKit
 
 // 图片格式枚举
 public enum AMImageFormat {

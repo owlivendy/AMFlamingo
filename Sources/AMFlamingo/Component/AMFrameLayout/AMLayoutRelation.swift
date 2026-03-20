@@ -5,6 +5,7 @@
 //  Created by shen xiaofei on 2025/8/21.
 //  Copyright © 2025 shen xiaofei. All rights reserved.
 //
+import Foundation
 
 public protocol AMLayoutRelation {
     func equalToSuper(view superview: AMFrameLayoutAnchor) -> AMFrameLayoutAnchor

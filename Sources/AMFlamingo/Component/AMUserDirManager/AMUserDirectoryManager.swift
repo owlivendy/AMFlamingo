@@ -5,7 +5,7 @@
 //  Created by shen xiaofei on 2025/8/21.
 //  Copyright © 2025 shen xiaofei. All rights reserved.
 //
-
+import Foundation
 
 /// iOS 用户目录管理器，用于获取 tmp/caches/documentation 目录并管理用户标识
 @objcMembers

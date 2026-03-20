@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "AMFlamingo",
     platforms: [
-        .iOS(.v10)
+        .iOS(.v15)  // ⚠️ swift-markdown 最低要求 iOS 15
     ],
     products: [
         .library(
@@ -12,12 +12,18 @@ let package = Package(
             targets: ["AMFlamingo"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.7.1")
+        .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.7.1"),
+        // ✅ 添加 swift-markdown
+        .package(url: "https://github.com/apple/swift-markdown.git", branch: "main")
     ],
     targets: [
         .target(
             name: "AMFlamingo",
-            dependencies: ["SnapKit"],
+            dependencies: [
+                "SnapKit",
+                // ✅ 引入 Markdown 模块
+                .product(name: "Markdown", package: "swift-markdown")
+            ],
             path: "Sources",
             resources: [
                 .process("AMFlamingo/Resources")
@@ -28,4 +34,4 @@ let package = Package(
             dependencies: ["AMFlamingo"],
             path: "Tests"),
     ]
-) 
+)

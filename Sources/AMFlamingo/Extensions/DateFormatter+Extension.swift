@@ -4,6 +4,7 @@
 //
 //  Created by meotech on 2025/12/16.
 //
+import Foundation
 
 public extension DateFormatter {
     static let iso8601DateFormatter: DateFormatter = {

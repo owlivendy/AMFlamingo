@@ -61,12 +61,12 @@ open class AMVideoPreviewController: AVPlayerViewController {
         }) { success, error in
             if success {
                 AMLogDebug("视频保存成功")
-                performOnMainThread {
+                AMGlobal.performOnMainThread {
 //                    Global.showSuccesToast(withText: "视频保存成功")
                 }
             } else {
                 AMLogDebug("视频保存失败: \(error?.localizedDescription ?? "未知错误")")
-                performOnMainThread {
+                AMGlobal.performOnMainThread {
 //                    Global.showErrorToast(withText: error?.localizedDescription ?? "未知错误")
                 }
             }

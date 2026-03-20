@@ -4,6 +4,7 @@
 //
 //  Created by shen xiaofei on 2025/7/22.
 //
+import UIKit
 
 public extension UIImage {
     static func am_Image(named name: String) -> UIImage? {

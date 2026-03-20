@@ -4,6 +4,7 @@
 //
 //  Created by meotech on 2025/10/20.
 //
+import UIKit
 
 open class AMBaseController: UIViewController {
     open var needHiddenNavigationBar: Bool {

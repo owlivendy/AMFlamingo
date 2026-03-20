@@ -4,6 +4,7 @@
 //
 //  Created by meotech on 2025/10/28.
 //
+import UIKit
 
 public extension UIColor {
     static var am_line: UIColor {

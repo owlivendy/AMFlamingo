@@ -5,8 +5,7 @@
 //  Created by meotech on 2025/10/17.
 //  Copyright © 2025 吕欢. All rights reserved.
 //
-
-import Foundation
+import UIKit
 
 open class AMGradientView: UIView {
     // 渐变层
