@@ -14,7 +14,7 @@ import SnapKit
 /// - 分数默认按 1 颗星 = 1 分计算
 class AMStarRatingView: UIView {
     /// 评分变更回调，返回当前分数
-    typealias ScoreChangedBlock = (_ score: Int) -> Void
+    typealias ScoreChangedBlock = (_ score: Double) -> Void
 
     /// 星星总数，最少为 1，默认 5 颗
     var starCount: Int = 5 {
@@ -24,7 +24,7 @@ class AMStarRatingView: UIView {
                 starCount = validCount
                 return
             }
-            rebuildStarButtons()
+            rebuildStarImageViews()
             setScore(score)
         }
     }
@@ -40,6 +40,9 @@ class AMStarRatingView: UIView {
     /// 选中状态的图片名称，要求初始化时传入
     let selectedImageName: String
 
+    /// 半星状态的图片名称，可选；未提供时回退为整星图片
+    let halfSelectedImageName: String?
+
     /// 未选中状态的图片名称，要求初始化时传入
     let unselectedImageName: String
 
@@ -50,10 +53,18 @@ class AMStarRatingView: UIView {
         }
     }
 
-    /// 每颗星对应的分值，默认 1 颗星 = 1 分
-    var scorePerStar: Int = 1 {
+    /// 是否允许选择半星，默认关闭
+    var allowsHalfStar: Bool = false {
         didSet {
-            if scorePerStar < 1 {
+            setScore(score)
+            refreshStarDisplay()
+        }
+    }
+
+    /// 每颗星对应的分值，默认 1 颗星 = 1 分
+    var scorePerStar: Double = 1 {
+        didSet {
+            if scorePerStar <= 0 {
                 scorePerStar = 1
                 return
             }
@@ -63,21 +74,26 @@ class AMStarRatingView: UIView {
     }
 
     /// 评分结果回调
-    /// 返回值按“选中星星数量 * scorePerStar”计算
+    /// 返回值按“实际选中的星星数量 * scorePerStar”计算
     /// 例如选中 3 颗星且 scorePerStar = 2 时，回调分数为 6
+    /// 开启半星后，选中 2.5 颗星且 scorePerStar = 2 时，回调分数为 5
     var scoreChangedBlock: ScoreChangedBlock?
 
     /// 当前分数，外部只读，通过方法或点击修改
-    private(set) var score: Int = 0 {
+    private(set) var score: Double = 0 {
         didSet {
             refreshStarDisplay()
         }
     }
 
-    /// 横向承载所有星星按钮
+    /// 横向承载所有星星视图
     private let stackView = UIStackView()
-    /// 内部所有星星按钮集合
-    private var starButtons: [UIButton] = []
+    /// 内部所有星星图片视图集合
+    private var starImageViews: [UIImageView] = []
+    /// 点击手势统一加在评分控件本身
+    private lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStarTap(_:)))
+    /// 拖动手势统一加在评分控件本身
+    private lazy var panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleStarPan(_:)))
     /// 单颗星的默认参考尺寸，用于 intrinsicContentSize，外部可修改
     var defaultStarSize: CGFloat = 24 {
         didSet {
@@ -93,10 +109,12 @@ class AMStarRatingView: UIView {
     /// 指定图片和编辑状态初始化
     /// - Parameters:
     ///   - selectedImageName: 选中状态图片名称，必传
+    ///   - halfSelectedImageName: 半星状态图片名称，可选；不传则使用整星图片
     ///   - unselectedImageName: 未选中状态图片名称，必传
     ///   - isEditable: 是否可编辑，默认 true
-    init(selectedImageName: String, unselectedImageName: String, isEditable: Bool = true) {
+    init(selectedImageName: String, halfSelectedImageName: String? = nil, unselectedImageName: String, isEditable: Bool = true) {
         self.selectedImageName = selectedImageName
+        self.halfSelectedImageName = halfSelectedImageName
         self.unselectedImageName = unselectedImageName
         self.isEditable = isEditable
         super.init(frame: .zero)
@@ -104,7 +122,7 @@ class AMStarRatingView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented. Use init(selectedImageName:unselectedImageName:isEditable:)")
+        fatalError("init(coder:) has not been implemented. Use init(selectedImageName:halfSelectedImageName:unselectedImageName:isEditable:)")
     }
 
     override var intrinsicContentSize: CGSize {
@@ -116,10 +134,11 @@ class AMStarRatingView: UIView {
     /// - Parameters:
     ///   - score: 目标分数，会自动限制在 0 ~ starCount * scorePerStar 之间
     ///   - triggerCallback: 是否触发评分回调
-    func setScore(_ score: Int, triggerCallback: Bool = false) {
-        let maxScore = starCount * scorePerStar
-        let minScore = 0
-        let validScore = min(max(score, minScore), maxScore)
+    func setScore(_ score: Double, triggerCallback: Bool = false) {
+        let maxScore = Double(starCount) * scorePerStar
+        let minScore = 0.0
+        let clampedScore = min(max(score, minScore), maxScore)
+        let validScore = normalizedScore(for: clampedScore)
 
         guard self.score != validScore else {
             if triggerCallback {
@@ -139,13 +158,16 @@ class AMStarRatingView: UIView {
     /// - Parameters:
     ///   - selectedStars: 选中的星星数量
     ///   - triggerCallback: 是否触发评分回调
-    func setSelectedStars(_ selectedStars: Int, triggerCallback: Bool = false) {
+    func setSelectedStars(_ selectedStars: Double, triggerCallback: Bool = false) {
         setScore(selectedStars * scorePerStar, triggerCallback: triggerCallback)
     }
 
     private func commonInit() {
         setupViews()
-        rebuildStarButtons()
+        rebuildStarImageViews()
+        addGestureRecognizer(tapGesture)
+        addGestureRecognizer(panGesture)
+        updateInteractionState()
     }
 
     private func setupViews() {
@@ -160,27 +182,26 @@ class AMStarRatingView: UIView {
         }
     }
 
-    /// 根据当前星数重新创建按钮
-    /// 按钮宽高保持一致，最终会随着外部高度约束自动缩放
-    private func rebuildStarButtons() {
-        starButtons.forEach { button in
-            stackView.removeArrangedSubview(button)
-            button.removeFromSuperview()
+    /// 根据当前星数重新创建星星图片视图
+    /// 图片宽高保持一致，最终会随着外部高度约束自动缩放
+    private func rebuildStarImageViews() {
+        starImageViews.forEach { imageView in
+            stackView.removeArrangedSubview(imageView)
+            imageView.removeFromSuperview()
         }
-        starButtons.removeAll()
+        starImageViews.removeAll()
 
         for index in 0..<starCount {
-            let button = UIButton(type: .custom)
-            button.tag = index + 1
-            button.imageView?.contentMode = .scaleAspectFit
-            button.addTarget(self, action: #selector(handleStarTap(_:)), for: .touchUpInside)
+            let imageView = UIImageView()
+            imageView.tag = index + 1
+            imageView.contentMode = .scaleAspectFit
 
-            stackView.addArrangedSubview(button)
-            button.snp.makeConstraints { make in
-                make.width.equalTo(button.snp.height)
+            stackView.addArrangedSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.width.equalTo(imageView.snp.height)
             }
 
-            starButtons.append(button)
+            starImageViews.append(imageView)
         }
 
         updateInteractionState()
@@ -189,28 +210,82 @@ class AMStarRatingView: UIView {
         setNeedsLayout()
     }
 
-    /// 根据编辑状态统一更新按钮交互能力
+    /// 根据编辑状态统一更新控件交互能力
     private func updateInteractionState() {
-        starButtons.forEach { button in
-            button.isUserInteractionEnabled = isEditable
-        }
+        tapGesture.isEnabled = isEditable
+        panGesture.isEnabled = isEditable
+    }
+
+    /// 按当前配置把分数归一到有效步进值
+    private func normalizedScore(for score: Double) -> Double {
+        let step = allowsHalfStar ? (scorePerStar / 2.0) : scorePerStar
+        guard step > 0 else { return score }
+
+        let normalized = (score / step).rounded() * step
+        return min(max(normalized, 0), Double(starCount) * scorePerStar)
     }
 
     /// 按当前分数刷新每颗星的显示状态
     private func refreshStarDisplay() {
-        let selectedCount = scorePerStar > 0 ? min(starCount, score / scorePerStar) : 0
+        let selectedStars = scorePerStar > 0 ? min(Double(starCount), score / scorePerStar) : 0
 
-        for (index, button) in starButtons.enumerated() {
-            let isSelected = index < selectedCount
-            let imageName = isSelected ? selectedImageName : unselectedImageName
+        for (index, imageView) in starImageViews.enumerated() {
+            let currentStarIndex = Double(index) + 1
+            let imageName: String
+
+            if selectedStars >= currentStarIndex {
+                imageName = selectedImageName
+            } else if allowsHalfStar, selectedStars >= currentStarIndex - 0.5 {
+                imageName = halfSelectedImageName ?? selectedImageName
+            } else {
+                imageName = unselectedImageName
+            }
+
             let image = UIImage(named: imageName)
-            button.setImage(image, for: .normal)
+            imageView.image = image
         }
     }
 
-    /// 编辑模式下点击某颗星后，直接完成评分并回调
-    @objc private func handleStarTap(_ sender: UIButton) {
+    /// 编辑模式下根据点击位置换算评分并回调
+    @objc private func handleStarTap(_ gesture: UITapGestureRecognizer) {
         guard isEditable else { return }
-        setSelectedStars(sender.tag, triggerCallback: true)
+        updateScore(with: gesture.location(in: self))
+    }
+
+    /// 编辑模式下根据拖动位置连续换算评分并回调
+    @objc private func handleStarPan(_ gesture: UIPanGestureRecognizer) {
+        guard isEditable else { return }
+
+        switch gesture.state {
+        case .began, .changed, .ended:
+            updateScore(with: gesture.location(in: self))
+        default:
+            break
+        }
+    }
+
+    /// 根据控件内的横向位置换算星级并更新分数
+    private func updateScore(with location: CGPoint) {
+        guard !starImageViews.isEmpty else { return }
+        guard scorePerStar > 0 else { return }
+
+        let relativeX = min(max(location.x - stackView.frame.minX, 0), stackView.frame.width)
+        let starWidth = stackView.frame.height > 0 ? stackView.frame.height : defaultStarSize
+        let unitWidth = starWidth + starSpacing
+        guard unitWidth > 0 else { return }
+
+        let rawIndex = Int(relativeX / unitWidth)
+        let starIndex = min(max(rawIndex, 0), starCount - 1)
+        let offsetInUnit = relativeX - CGFloat(starIndex) * unitWidth
+        let offsetInStar = min(max(offsetInUnit, 0), starWidth)
+
+        let selectedStars: Double
+        if allowsHalfStar {
+            selectedStars = offsetInStar <= starWidth / 2.0 ? Double(starIndex) + 0.5 : Double(starIndex) + 1
+        } else {
+            selectedStars = Double(starIndex) + 1
+        }
+
+        setSelectedStars(selectedStars, triggerCallback: true)
     }
 }
