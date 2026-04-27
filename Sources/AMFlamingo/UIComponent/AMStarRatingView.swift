@@ -249,7 +249,7 @@ class AMStarRatingView: UIView {
     /// 编辑模式下根据点击位置换算评分并回调
     @objc private func handleStarTap(_ gesture: UITapGestureRecognizer) {
         guard isEditable else { return }
-        updateScore(with: gesture.location(in: self))
+        updateScore(with: gesture.location(in: self), triggerCallback: true, animated: true)
     }
 
     /// 编辑模式下根据拖动位置连续换算评分并回调
@@ -257,25 +257,25 @@ class AMStarRatingView: UIView {
         guard isEditable else { return }
 
         switch gesture.state {
-        case .began, .changed, .ended:
-            updateScore(with: gesture.location(in: self))
+        case .began, .changed:
+            updateScore(with: gesture.location(in: self), triggerCallback: false)
+        case .ended, .cancelled, .failed:
+            updateScore(with: gesture.location(in: self), triggerCallback: true)
         default:
             break
         }
     }
 
     /// 根据控件内的横向位置换算星级并更新分数
-    private func updateScore(with location: CGPoint) {
+    private func updateScore(with location: CGPoint, triggerCallback: Bool, animated: Bool = false) {
         guard !starImageViews.isEmpty else { return }
         guard scorePerStar > 0 else { return }
+
+        guard let starIndex = starIndex(for: location) else { return }
 
         let relativeX = min(max(location.x - stackView.frame.minX, 0), stackView.frame.width)
         let starWidth = stackView.frame.height > 0 ? stackView.frame.height : defaultStarSize
         let unitWidth = starWidth + starSpacing
-        guard unitWidth > 0 else { return }
-
-        let rawIndex = Int(relativeX / unitWidth)
-        let starIndex = min(max(rawIndex, 0), starCount - 1)
         let offsetInUnit = relativeX - CGFloat(starIndex) * unitWidth
         let offsetInStar = min(max(offsetInUnit, 0), starWidth)
 
@@ -286,6 +286,50 @@ class AMStarRatingView: UIView {
             selectedStars = Double(starIndex) + 1
         }
 
-        setSelectedStars(selectedStars, triggerCallback: true)
+        setSelectedStars(selectedStars, triggerCallback: triggerCallback)
+
+        if animated {
+            performTapAnimation(selectedStars: selectedStars)
+        }
+    }
+
+    /// 根据点击位置计算命中的星星下标
+    private func starIndex(for location: CGPoint) -> Int? {
+        guard !starImageViews.isEmpty else { return nil }
+
+        let relativeX = min(max(location.x - stackView.frame.minX, 0), stackView.frame.width)
+        let starWidth = stackView.frame.height > 0 ? stackView.frame.height : defaultStarSize
+        let unitWidth = starWidth + starSpacing
+        guard unitWidth > 0 else { return nil }
+
+        let rawIndex = Int(relativeX / unitWidth)
+        return min(max(rawIndex, 0), starCount - 1)
+    }
+
+    /// 点击时让当前已选中的整排星星一起回弹，增强评分反馈
+    private func performTapAnimation(selectedStars: Double) {
+        let animatedCount = max(1, Int(ceil(selectedStars)))
+        let targetViews = Array(starImageViews.prefix(animatedCount))
+        guard !targetViews.isEmpty else { return }
+
+        for (index, imageView) in targetViews.enumerated() {
+            imageView.layer.removeAllAnimations()
+            imageView.transform = .identity
+
+            let delay = Double(index) * 0.035
+            UIView.animate(withDuration: 0.12,
+                           delay: delay,
+                           options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseOut]) {
+                imageView.transform = CGAffineTransform(scaleX: 0.82, y: 0.82)
+            } completion: { _ in
+                UIView.animate(withDuration: 0.38,
+                               delay: 0,
+                               usingSpringWithDamping: 0.42,
+                               initialSpringVelocity: 5,
+                               options: [.beginFromCurrentState, .allowUserInteraction]) {
+                    imageView.transform = .identity
+                }
+            }
+        }
     }
 }
