@@ -16,20 +16,6 @@ public enum HTTPMethod: Int {
     case delete
 }
 
-/// ✅ Swift5.6+ 专用：解决 any Encodable 无法编码的核心工具
-struct AnyEncodable: Encodable {
-    private let _encode: (Encoder) throws -> Void
-    
-    /// 接收任意遵循 Encodable 的类型（包括 any Encodable）
-    init(_ value: some Encodable) {
-        _encode = value.encode
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        try _encode(encoder)
-    }
-}
-
 /// 重试请求模型
 public class AMAutoTryingRequest {
     public var domain: String
@@ -67,6 +53,51 @@ open class AMAutoTryingInternalRequest {
         self.method = method
         self.params = params
         self.retryCount = retryCount
+    }
+
+    fileprivate func jsonStorageKey(businessDir: String) -> String {
+        "\(businessDir)/\(businessId)/\(identifier)"
+    }
+}
+
+/// 落盘用的 Codable 模型（`params` 以 JSON 数据保存）
+private struct AMAutoTryingPersistedRequest: Codable {
+    let identifier: String
+    let domain: String
+    let path: String
+    let method: Int
+    let retryCount: Int
+    let paramsJSON: Data?
+
+    init(_ request: AMAutoTryingInternalRequest) {
+        identifier = request.identifier
+        domain = request.domain
+        path = request.path
+        method = request.method.rawValue
+        retryCount = request.retryCount
+        if let params = request.params, JSONSerialization.isValidJSONObject(params) {
+            paramsJSON = try? JSONSerialization.data(withJSONObject: params)
+        } else {
+            paramsJSON = nil
+        }
+    }
+
+    func asInternalRequest() -> AMAutoTryingInternalRequest {
+        let method = HTTPMethod(rawValue: method) ?? .get
+        let params: [String: Any]?
+        if let data = paramsJSON {
+            params = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
+        } else {
+            params = nil
+        }
+        return AMAutoTryingInternalRequest(
+            identifier: identifier,
+            domain: domain,
+            path: path,
+            method: method,
+            params: params,
+            retryCount: retryCount
+        )
     }
 }
 
@@ -215,71 +246,31 @@ open class AMAutoTryingRequestManager {
     /// 保存请求到本地
     /// - Parameter request: 要保存的请求
     private func saveRequestToLocal(_ request: AMAutoTryingInternalRequest) {
-        // 转换为可存储的字典
-        var requestDict: [String: Any] = [
-            "identifier": request.identifier,
-            "domain": request.domain,
-            "path": request.path,
-            "method": request.method.rawValue,
-            "retryCount": request.retryCount
-        ]
-        if let params = request.params {
-            requestDict["params"] = params
-        }
-        
-        // 使用AMLocalJSONStorage保存请求
-        AMLocalJSONStorage.shared.saveOC(requestDict,
-                                       fileName: request.identifier,
-                                       businessDir: businessDir,
-                                       businessId: request.businessId,
-                                       overwrite: true,
-                                       permanent: true)
+        let key = request.jsonStorageKey(businessDir: businessDir)
+        AMJSONStorage.shared.save(AMAutoTryingPersistedRequest(request), key: key)
     }
     
     /// 从本地加载待处理请求
     private func loadPendingRequestsFromLocal() {
-        // 获取所有永久保存的失败请求文件名
-        let filePaths = AMLocalJSONStorage.shared.getAllPermanentFilePaths(businessDir: businessDir)
-        
+        let filePaths = AMJSONStorage.shared.storedFileURLs(keyPrefix: businessDir)
+
         print("AMAutoTryingRequestManager: Found \(filePaths.count) files in directory")
-        
-        // 加载本地未完成的请求
+
         for filePath in filePaths {
             print("AMAutoTryingRequestManager: Loading file: \(filePath)")
-            
-            if let dataDict = AMLocalJSONStorage.shared.loadOCPermanentDictionary(path: filePath) {
-                print("AMAutoTryingRequestManager: Successfully loaded data from file: \(filePath)")
-                
-                // 解析请求数据
-                if let identifier = dataDict["identifier"] as? String,
-                   let domain = dataDict["domain"] as? String,
-                   let path = dataDict["path"] as? String,
-                   let methodRawValue = dataDict["method"] as? Int,
-                   let retryCount = dataDict["retryCount"] as? Int {
-                    
-                    let method = HTTPMethod(rawValue: methodRawValue) ?? .get
-                    let params = dataDict["params"] as? [String: Any]
-                    
-                    let request = AMAutoTryingInternalRequest(
-                        identifier: identifier,
-                        domain: domain,
-                        path: path,
-                        method: method,
-                        params: params,
-                        retryCount: retryCount
-                    )
-                    
-                    tryingRequests.append(request)
-                }
-            } else {
+            guard let data = try? Data(contentsOf: filePath),
+                  let payload = try? JSONDecoder().decode(AMAutoTryingPersistedRequest.self, from: data) else {
                 print("AMAutoTryingRequestManager: Failed to load file: \(filePath)")
+                continue
             }
+            print("AMAutoTryingRequestManager: Successfully loaded data from file: \(filePath)")
+            tryingRequests.append(payload.asInternalRequest())
         }
     }
     
     /// 从本地删除请求
     /// - Parameter request: 要删除的请求
     private func deleteRequestFromLocal(_ request: AMAutoTryingInternalRequest) {
-        AMLocalJSONStorage.shared.removePermanent(fileName: request.identifier, businessDir: businessDir, businessId: request.businessId)
+        AMJSONStorage.shared.remove(key: request.jsonStorageKey(businessDir: businessDir))
     }
 }
