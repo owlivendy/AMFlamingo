@@ -31,7 +31,7 @@ class AMMediaManager: NSObject {
     // 依赖的用户目录管理器
     private let directoryManager = AMUserDirectoryManager.shared
     // 眼镜设备标识
-    let glassesIdentifier: String
+    let identifier: String
     
     /// 图片名称中的时间格式化器（UTC时间戳，避免时区影响唯一性）
     private let mediaTimestampFormatter: DateFormatter = {
@@ -43,8 +43,8 @@ class AMMediaManager: NSObject {
     }()
     
     // 初始化（沿用原有逻辑）
-    init(glassesIdentifier: String) {
-        self.glassesIdentifier = glassesIdentifier
+    init(identifier: String) {
+        self.identifier = identifier
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .replacingOccurrences(of: "/", with: "_")
         super.init()
@@ -75,7 +75,7 @@ class AMMediaManager: NSObject {
 //        let captureTimestamp = Date().timeIntervalSince1970 * 1000
         
         // 4. 获取基础目录（与图片共用同一基础目录）
-        guard let baseDir = getGlassesBaseDirectory() else {
+        guard let baseDir = getBasicDirectory() else {
             throw NSError(domain: "CHMediaManager", code: -1,
                           userInfo: [NSLocalizedDescriptionKey: "无法获取基础目录"])
         }
@@ -298,7 +298,7 @@ class AMMediaManager: NSObject {
     
     //获取图片：按“拍摄时区的本地日期”分组（核心适配）
     func getAllPhotosGroupedByDate() -> [AMMediaGroupModel]? {
-        guard let baseDir = getGlassesBaseDirectory() else {
+        guard let baseDir = getBasicDirectory() else {
             print("❌ 无法获取基础目录")
             return nil
         }
@@ -468,23 +468,6 @@ private extension AMMediaManager {
         }
     }
     
-    func getImageFormatAndExtension(from data: Data) -> (format: String, extension: String)? {
-        guard data.count >= 8 else { return nil }
-        let headerBytes = [UInt8](data.subdata(in: 0..<8))
-        
-        if headerBytes[0] == 0xFF && headerBytes[1] == 0xD8 && headerBytes[2] == 0xFF {
-            return ("JPEG", "jpg")
-        } else if headerBytes[0] == 0x89 && headerBytes[1] == 0x50 && headerBytes[2] == 0x4E && headerBytes[3] == 0x47 &&
-                  headerBytes[4] == 0x0D && headerBytes[5] == 0x0A && headerBytes[6] == 0x1A && headerBytes[7] == 0x0A {
-            return ("PNG", "png")
-        } else if data.count >= 12, let ftypHeader = String(data: data.subdata(in: 4..<12), encoding: .utf8),
-                  ftypHeader.hasPrefix("ftypheic") || ftypHeader.hasPrefix("ftypheix") {
-            return ("HEIC", "heic")
-        } else {
-            return nil
-        }
-    }
-    
     /// 提取视频首帧作为图片
     /// - Parameter videoURL: 视频文件URL
     /// - Returns: 视频首帧图片
@@ -518,21 +501,21 @@ private extension AMMediaManager {
         return formatter
     }
     
-    // 沿用原有辅助方法（getGlassesBaseDirectory、getImageFormatAndExtension）
-    func getGlassesBaseDirectory() -> URL? {
+    // 沿用原有辅助方法
+    func getBasicDirectory() -> URL? {
         guard let docDir = directoryManager.getUserDirectory(for: .documentation) else {
             print("❌ 无法获取文档目录")
             return nil
         }
-        let glassesDir = docDir.appendingPathComponent(glassesIdentifier)
-        try? FileManager.default.createDirectory(at: glassesDir, withIntermediateDirectories: true)
-        return glassesDir
+        let basicDir = docDir.appendingPathComponent(identifier)
+        try? FileManager.default.createDirectory(at: basicDir, withIntermediateDirectories: true)
+        return basicDir
     }
     
     // 获取/创建回收站目录：{docDir}/{glassesIdentifier}_trashbin
     private func getTrashBinDirectory() -> URL? {
         guard let docDir = directoryManager.getUserDirectory(for: .documentation) else { return nil }
-        let trashDir = docDir.appendingPathComponent("\(glassesIdentifier)_trashbin")
+        let trashDir = docDir.appendingPathComponent("\(identifier)_trashbin")
         try? FileManager.default.createDirectory(at: trashDir, withIntermediateDirectories: true)
         return trashDir
     }
