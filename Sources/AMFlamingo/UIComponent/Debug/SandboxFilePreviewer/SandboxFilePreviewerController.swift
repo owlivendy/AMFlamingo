@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import QuickLook
 
 /// 沙盒文件或目录项模型
 /// 用于表示应用沙盒中的文件或目录信息
@@ -23,13 +24,18 @@ struct SandboxItem {
     let modificationDate: Date
 }
 
-class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, UITableViewDelegate, QLPreviewControllerDataSource {
+
+    /// 沙盒根目录下不展示的文件夹
+    private static let hiddenRootFolderNames: Set<String> = ["StoreKit", "SystemData"]
     
     // MARK: - Properties
     private let tableView = UITableView()
 //    private var currentPath: String
     private var path: String?
     private var items: [SandboxItem] = []
+    private var previewFileURL: URL?
+    private var isSelectionMode = false
     private var currentPath: String {
         return self.path ?? NSHomeDirectory()
     }
@@ -61,6 +67,7 @@ class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, U
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableFooterView = UIView()
+        tableView.allowsMultipleSelectionDuringEditing = true
         
         // Register cell
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SandboxCell")
@@ -75,10 +82,35 @@ class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, U
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        // Add back button if not at root
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "选择", style: .plain, target: self, action: #selector(enterSelectionMode))
+        
         if self.path == nil {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeAction))
         }
+    }
+    
+    private func updateNavigationBarForSelectionMode() {
+        if isSelectionMode {
+            let deleteItem = UIBarButtonItem(title: "删除", style: .plain, target: self, action: #selector(deleteSelectedItems))
+            deleteItem.tintColor = .systemRed
+            deleteItem.isEnabled = false
+            navigationItem.leftBarButtonItem = deleteItem
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(exitSelectionMode))
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "选择", style: .plain, target: self, action: #selector(enterSelectionMode))
+            if path == nil {
+                navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeAction))
+            } else {
+                navigationItem.leftBarButtonItem = nil
+            }
+        }
+    }
+    
+    private func updateDeleteButtonState() {
+        guard isSelectionMode else { return }
+        let count = tableView.indexPathsForSelectedRows?.count ?? 0
+        navigationItem.leftBarButtonItem?.title = count > 0 ? "删除(\(count))" : "删除"
+        navigationItem.leftBarButtonItem?.isEnabled = count > 0
     }
     
     // MARK: - File Loading
@@ -90,6 +122,9 @@ class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, U
             
             // Process each item
             items = try contents.compactMap { itemName -> SandboxItem? in
+                if path == nil, Self.hiddenRootFolderNames.contains(itemName) {
+                    return nil
+                }
                 let itemPath = currentPath + "/" + itemName
                 var isDir: ObjCBool = false
                 guard fileManager.fileExists(atPath: itemPath, isDirectory: &isDir) else { return nil }
@@ -155,6 +190,73 @@ class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, U
         dismiss(animated: true)
     }
     
+    @objc private func enterSelectionMode() {
+        isSelectionMode = true
+        tableView.setEditing(true, animated: true)
+        updateNavigationBarForSelectionMode()
+        updateDeleteButtonState()
+        tableView.reloadData()
+    }
+    
+    @objc private func exitSelectionMode() {
+        isSelectionMode = false
+        if let selected = tableView.indexPathsForSelectedRows {
+            for indexPath in selected {
+                tableView.deselectRow(at: indexPath, animated: false)
+            }
+        }
+        tableView.setEditing(false, animated: true)
+        updateNavigationBarForSelectionMode()
+        tableView.reloadData()
+    }
+    
+    @objc private func deleteSelectedItems() {
+        guard let selectedIndexPaths = tableView.indexPathsForSelectedRows, !selectedIndexPaths.isEmpty else { return }
+        
+        let selectedItems = selectedIndexPaths.map { items[$0.row] }
+        let previewNames = selectedItems.prefix(5).map(\.name).joined(separator: "\n")
+        var message = "将删除 \(selectedItems.count) 项"
+        if !previewNames.isEmpty {
+            message += "：\n\(previewNames)"
+        }
+        if selectedItems.count > 5 {
+            message += "\n…等共 \(selectedItems.count) 项"
+        }
+        
+        let alert = UIAlertController(title: "确认删除", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
+        alert.addAction(UIAlertAction(title: "删除", style: .destructive) { [weak self] _ in
+            self?.performDelete(selectedItems: selectedItems)
+        })
+        present(alert, animated: true)
+    }
+    
+    private func performDelete(selectedItems: [SandboxItem]) {
+        let fileManager = FileManager.default
+        var failedItems: [String] = []
+        
+        for item in selectedItems {
+            do {
+                try fileManager.removeItem(atPath: item.path)
+            } catch {
+                failedItems.append(item.name)
+            }
+        }
+        
+        exitSelectionMode()
+        loadItems()
+        
+        if !failedItems.isEmpty {
+            let alert = UIAlertController(
+                title: "部分删除失败",
+                message: failedItems.joined(separator: "\n"),
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "确定", style: .default))
+            present(alert, animated: true)
+        }
+    }
+    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -168,7 +270,11 @@ class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, U
         cell.textLabel?.text = truncateFileName(item.name, maxLength: 50)
         cell.detailTextLabel?.text = item.isDirectory ? "目录" : "\(formatFileSize(item.size)) · \(formatDate(item.modificationDate))"
         cell.imageView?.image = item.isDirectory ? UIImage(systemName: "folder.fill") : UIImage(systemName: "doc.text.fill")
-        cell.accessoryType = item.isDirectory ? .disclosureIndicator : .none
+        if isSelectionMode {
+            cell.accessoryType = .none
+        } else {
+            cell.accessoryType = item.isDirectory ? .disclosureIndicator : .none
+        }
         
         // Setup detail text label
         if cell.detailTextLabel == nil {
@@ -182,6 +288,11 @@ class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, U
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if isSelectionMode {
+            updateDeleteButtonState()
+            return
+        }
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
         let item = items[indexPath.row]
@@ -190,24 +301,45 @@ class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, U
             let nextController = SandboxFilePreviewerController(path: item.path)
             navigationController?.pushViewController(nextController, animated: true)
         } else {
-            // File selected, can add file preview functionality later
-            print("File selected: \(item.name)")
+            openFileWithSystemPreview(at: indexPath)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if isSelectionMode {
+            updateDeleteButtonState()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .none
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        false
     }
     
     // MARK: - Context Menu Support
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        if isSelectionMode { return nil }
+        
         let item = items[indexPath.row]
         
         // 只有文件才显示导出选项
         if !item.isDirectory {
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                 // 创建导出动作
+                let previewAction = UIAction(title: "系统预览", image: UIImage(systemName: "eye")) { [weak self] _ in
+                    self?.openFileWithSystemPreview(at: indexPath)
+                }
+                let openAsTextAction = UIAction(title: "以纯文本打开", image: UIImage(systemName: "doc.plaintext")) { [weak self] _ in
+                    self?.openFileAsPlainText(at: indexPath)
+                }
                 let exportAction = UIAction(title: "导出", image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
                     self?.exportFile(at: indexPath)
                 }
                 
-                return UIMenu(title: "", children: [exportAction])
+                return UIMenu(title: "", children: [previewAction, openAsTextAction, exportAction])
             }
         }
         
@@ -218,6 +350,31 @@ class SandboxFilePreviewerController: UIViewController, UITableViewDataSource, U
         return 44.0
     }
     
+    // MARK: - System Preview (Quick Look)
+    private func openFileWithSystemPreview(at indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        previewFileURL = URL(fileURLWithPath: item.path)
+
+        let previewController = QLPreviewController()
+        previewController.dataSource = self
+        present(previewController, animated: true)
+    }
+
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        previewFileURL == nil ? 0 : 1
+    }
+
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        previewFileURL! as QLPreviewItem
+    }
+
+    // MARK: - Plain Text Preview
+    private func openFileAsPlainText(at indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        let textController = SandboxFileTextViewController(filePath: item.path)
+        navigationController?.pushViewController(textController, animated: true)
+    }
+
     // MARK: - File Export
     private func exportFile(at indexPath: IndexPath) {
         let item = items[indexPath.row]

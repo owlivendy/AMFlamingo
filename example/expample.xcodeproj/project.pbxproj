@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B831CF432F6CF11E00477971 /* AMFlamingo in Frameworks */ = {isa = PBXBuildFile; productRef = B831CF422F6CF11E00477971 /* AMFlamingo */; };
+		B875DA5E2FC547F1008561B2 /* AMFlamingo in Frameworks */ = {isa = PBXBuildFile; productRef = B875DA5D2FC547F1008561B2 /* AMFlamingo */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B831CF432F6CF11E00477971 /* AMFlamingo in Frameworks */,
+				B875DA5E2FC547F1008561B2 /* AMFlamingo in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				B831CF142F6CF02F00477971 /* expample */,
+				B875DA5C2FC547F1008561B2 /* Frameworks */,
 				B831CF132F6CF02F00477971 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,6 +62,13 @@
 				B831CF122F6CF02F00477971 /* expample.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B875DA5C2FC547F1008561B2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,7 +91,7 @@
 			);
 			name = expample;
 			packageProductDependencies = (
-				B831CF422F6CF11E00477971 /* AMFlamingo */,
+				B875DA5D2FC547F1008561B2 /* AMFlamingo */,
 			);
 			productName = expample;
 			productReference = B831CF122F6CF02F00477971 /* expample.app */;
@@ -365,8 +373,9 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B831CF422F6CF11E00477971 /* AMFlamingo */ = {
+		B875DA5D2FC547F1008561B2 /* AMFlamingo */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = B831CF412F6CF11E00477971 /* XCLocalSwiftPackageReference "../../AMFlamingo" */;
 			productName = AMFlamingo;
 		};
 /* End XCSwiftPackageProductDependency section */
