@@ -8,73 +8,142 @@
 import UIKit
 import Markdown
 
-struct AMMarkdownViewStyle {
-    var TableCellSpace: CGFloat = 1
-    
+public struct AMMarkdownViewStyle {
     // MARK: - Table style
     /// 表格斑马纹：偶数行背景色（不含表头）
-    var tableRowEvenBackgroundColor: UIColor = .white
+    public var tableRowEvenBackgroundColor: UIColor = .white
     /// 表格斑马纹：奇数行背景色（不含表头）
-    var tableRowOddBackgroundColor: UIColor = UIColor.hex(string: "#FFF7F4")
+    public var tableRowOddBackgroundColor: UIColor = UIColor.hex(string: "#FFF7F4")
     /// 表头背景色
-    var tableHeaderBackgroundColor: UIColor = .systemGray6
+    public var tableHeaderBackgroundColor: UIColor = .systemGray6
     /// 表头字体（会覆盖表头单元格内部 attributedText 的 font）
-    var tableHeaderFont: UIFont = .systemFont(ofSize: 16, weight: .semibold)
-    /// 通用段落样式：正文、标题、列表、表格文本等未单独覆盖时都会继承该样式。
-    var paragrahStyle: NSParagraphStyle
-    /// 列表首行缩进（包含 bullet/序号），用于控制列表项第一行的左侧起点。
-    var listItemFirstHeadIntent: CGFloat = 14
-    /// 列表后续行缩进（换行后的文本起点），通常应大于 `listItemFirstHeadIntent`。
-    var listItemHeadIntent: CGFloat = 24
-    /// 同一列表项内部（多段/多行）之间的垂直间距；建议为字体大小的 0.3~0.5 倍。
-    var listItemSpacing: CGFloat = 8
+    public var tableHeaderFont: UIFont = .systemFont(ofSize: 16, weight: .semibold)
+
+    // MARK: - paragrah style
+    /// 通用段落样式：正文、标题、表格文本等未单独覆盖时都会继承该样式。
+    public var paragrahStyle: NSParagraphStyle
+    /// 列表段落样式
+    public var listParagrahStyle: NSParagraphStyle
     /// 块级元素（段落、标题、列表、表格）之间的垂直间距；建议为行间距的 1.5~2 倍。
-    var blockSpacing: CGFloat = 16
-    
+    public var blockSpacing: CGFloat = 16
+
+    // MARK: font
     /// 正文基础字体：普通文本、列表文本、表格内容等默认使用该字体。
-    var baseFont: UIFont = .systemFont(ofSize: 16)
+    public var baseFont: UIFont = .systemFont(ofSize: 16)
     /// 代码字体：代码块与内联代码优先使用等宽字体，便于对齐与阅读。
-    var codeFont: UIFont = UIFont.monospacedSystemFont(ofSize: 14, weight: .regular)
-    
-    var isDebug = false
-    
-    static var `default`: AMMarkdownViewStyle = {
-        return AMMarkdownViewStyle()
-    }()
-    
-    init() {
+    public var codeFont: UIFont = UIFont.monospacedSystemFont(ofSize: 14, weight: .regular)
+
+    // MARK: - BlockQuote style
+    /// BlockQuote 背景色
+    public var blockQuoteBackgroundColor: UIColor = UIColor.systemGray6
+    /// BlockQuote 左侧竖线颜色
+    public var blockQuoteBarColor: UIColor = UIColor.systemGray3
+    /// BlockQuote 左侧竖线宽度
+    public var blockQuoteBarWidth: CGFloat = 3
+    /// BlockQuote 内边距（背景容器内 padding）
+    public var blockQuoteContentInset: UIEdgeInsets = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
+    /// BlockQuote 圆角
+    public var blockQuoteCornerRadius: CGFloat = 8
+    /// BlockQuote 竖线与正文间距
+    public var blockQuoteBarSpacing: CGFloat = 10
+
+    public var isDebug: Bool = false
+
+    public static var `default`: AMMarkdownViewStyle = AMMarkdownViewStyle()
+
+    public init() {
         let _paragrahstyle = NSMutableParagraphStyle()
-        _paragrahstyle.lineSpacing = 8
-        _paragrahstyle.paragraphSpacing = 16
+        _paragrahstyle.lineSpacing = 4
+        _paragrahstyle.paragraphSpacing = 8
         paragrahStyle = _paragrahstyle
+        
+        let _listParagrahstyle = NSMutableParagraphStyle()
+        _listParagrahstyle.lineSpacing = 4
+        _listParagrahstyle.paragraphSpacing = 4
+        _listParagrahstyle.firstLineHeadIndent = 14
+        _listParagrahstyle.headIndent = 24
+        listParagrahStyle = _listParagrahstyle
     }
 }
 
 /// 主视图：用于渲染 Markdown Document（不使用 UIStackView 版本）
-class AMMarkdownView: UIView {
+public class AMMarkdownView: UIView {
     private let container = UIView() // 用于承载所有子元素的容器
     private var lastSubview: UIView? // 记录上一个添加的子视图，用于约束布局
+    private var reuseTextView = [UITextView]()
+    private var renderedDocument: Markdown.Document?
+    private var lastRenderedWidth: CGFloat = 0
 
-    let markdownStyle: AMMarkdownViewStyle
-    
-    var onLinkTapped:((URL) -> Void)?
-    
-    init(frame: CGRect, markdownStyle: AMMarkdownViewStyle = .default) {
+    /// 渲染样式配置（初始化后不可变）
+    public let markdownStyle: AMMarkdownViewStyle
+
+    /// 链接点击回调
+    public var onLinkTapped: ((URL) -> Void)?
+
+    public convenience init(markdownStyle: AMMarkdownViewStyle = .default) {
+        self.init(frame: .zero, markdownStyle: markdownStyle)
+    }
+
+    public init(frame: CGRect, markdownStyle: AMMarkdownViewStyle = .default) {
         self.markdownStyle = markdownStyle
         super.init(frame: frame)
         setupContainer()
     }
-    
-    func update(document: Markdown.Document?) {
+
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        reloadContentIfNeeded()
+    }
+
+    /// 使用已解析的 `Document` 更新内容（需 `import Markdown`）
+    public func update(document: Markdown.Document?) {
+        renderedDocument = document
+        lastRenderedWidth = 0
+        clearRenderedContent()
+        reloadContentIfNeeded()
+    }
+
+    /// 使用 Markdown 字符串更新内容
+    public func update(markdown: String) {
+        update(document: Document(parsing: markdown))
+    }
+
+    /// 预处理 Markdown 后更新（ASCII 表格转 GFM、可选 optimize）
+    public func update(
+        markdown: String,
+        convertAsciiTables: Bool = false,
+        optimize: Bool = false
+    ) {
+        var source = markdown
+        if convertAsciiTables {
+            source = MarkDownOptimizer.convertAsciiTablesToMarkdown(source)
+        }
+        if optimize {
+            source = MarkDownOptimizer.optimizeMarkdown(source)
+        }
+        update(markdown: source)
+    }
+
+    private func clearRenderedContent() {
         lastSubview = nil
-        container.subviews.forEach { $0.removeFromSuperview() }
-        if let document = document {
-            render(document)
+        container.subviews.forEach { v in
+            if let tv = v as? UITextView {
+                reuseTextView.append(tv)
+            }
+            v.removeFromSuperview()
         }
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func reloadContentIfNeeded() {
+        guard let document = renderedDocument, bounds.width > 0 else { return }
+        guard abs(bounds.width - lastRenderedWidth) > 0.5 else { return }
+        lastRenderedWidth = bounds.width
+        clearRenderedContent()
+        render(document)
     }
 
     private func setupContainer() {
@@ -89,88 +158,136 @@ class AMMarkdownView: UIView {
         ])
     }
     
-    private func assignLabel(_ label:UILabel, markup: Markup, width: CGFloat, addCommonPragraphSyle: Bool = false) {
-        let attribute = AMMarkdownView.attributedText(for: markup, baseFont: markdownStyle.baseFont)
-        assignLabel(label, attribute: attribute, width: width, addCommonPragraphSyle: addCommonPragraphSyle)
-    }
-    
-    
-    private func assignLabel(_ label:UILabel, attribute: NSAttributedString, width: CGFloat, addCommonPragraphSyle: Bool = false) {
-        let finalAttri = NSMutableAttributedString(attributedString: attribute)
-        if addCommonPragraphSyle {
-            finalAttri.addAttribute(.paragraphStyle, value: markdownStyle.paragrahStyle, range: NSRange(location: 0, length: attribute.length))
-        }
-        label.attributedText = finalAttri
-        let labelHeight = AMMarkdownView.heightWithAttiribute(label.attributedText!, width: width, markdownStyle: markdownStyle, addCommonPragraph: addCommonPragraphSyle).height
-        label.heightAnchor.constraint(equalToConstant: labelHeight).isActive = true
-        
-        if let linkurl = AttributedStringLinkDetector.extractLinkUrls(from: attribute).first {
-            label.accessibilityIdentifier = linkurl.absoluteString
-            label.isUserInteractionEnabled = true
-            label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onLinkLabelPress)))
-        }
-    }
-    
     @objc func onLinkLabelPress(sender: UITapGestureRecognizer) {
         guard let accessibilityIdentifier = sender.view?.accessibilityIdentifier else {return}
         guard let linkUrl = URL.init(string: accessibilityIdentifier) else {return}
         print("\(linkUrl)")
         onLinkTapped?(linkUrl)
     }
-
+    
     // MARK: - 渲染入口
     private func render(_ document: Markdown.Document) {
         let width = bounds.width
         if markdownStyle.isDebug {
             print("[AMMarkdownView] document: \(document.debugDescription())")
         }
-        for block in document.children {
-            let subview: UIView?
-            switch block {
-            case let para as Paragraph:
-                let label = UILabel(frame: .zero)
-                label.numberOfLines = 0
-                assignLabel(label, markup: para, width: width, addCommonPragraphSyle: true)
-                subview = label
-
-            case let heading as Heading:
-                let font = UIFont.boldSystemFont(ofSize: CGFloat(22 - heading.level * 2))
-                let label = UILabel(frame: .zero)
-                label.numberOfLines = 0
-                let attr = AMMarkdownView.attributedText(for: heading, baseFont: font)
-                label.attributedText = attr
-                assignLabel(label, attribute: attr, width: width, addCommonPragraphSyle: true)
-                subview = label
-
-            case let code as CodeBlock:
-                let label = UILabel(frame: .zero)
-                label.numberOfLines = 0
-                label.font = UIFont.monospacedSystemFont(ofSize: 14, weight: .regular)
-                label.text = code.code
-                label.layer.cornerRadius = 6
-                label.layer.masksToBounds = true
-                label.textColor = UIColor.darkText
-                label.textAlignment = .left
-                subview = label
-
-            case let list as UnorderedList:
-                subview = makeListView(list: list, ordered: false)
-
-            case let list as OrderedList:
-                subview = makeListView(list: list, ordered: true)
-
-            case let table as Table:
-                subview = makeTableView(table: table)
-                
-            default:
-                subview = nil
-            }
-
-            // 添加子视图并设置约束
-            if let subview = subview {
-                addSubviewToContainer(subview)
+        
+        let pendingText = NSMutableAttributedString()
+        
+        func appendBlockSpacingIfNeeded() {
+            guard pendingText.length > 0 else { return }
+            // 注意：这里不要用 "\n\n"。我们已经通过 paragraphStyle 的 lineSpacing/paragraphSpacing 控制段落间距；
+            // 额外插入空行会让“行与行之间看起来多一行”。
+            pendingText.append(NSAttributedString(string: "\n"))
+        }
+        
+        func appendCommonParagraphStyle(_ attr: NSMutableAttributedString) {
+            guard attr.length > 0 else { return }
+            attr.addAttribute(.paragraphStyle, value: markdownStyle.paragrahStyle, range: NSRange(location: 0, length: attr.length))
+        }
+        
+        func flushPendingTextIfNeeded() {
+            guard pendingText.length > 0 else { return }
+            let tv = makeTextView(attribute: pendingText, width: width)
+            addSubviewToContainer(tv)
+            pendingText.setAttributedString(NSAttributedString())
+        }
+        
+        func appendBlockQuote(_ quote: BlockQuote) {
+            flushPendingTextIfNeeded()
+            let view = makeBlockQuoteView(quote: quote, width: width)
+            addSubviewToContainer(view)
+        }
+        
+        func appendParagraph(_ para: Paragraph) {
+            appendBlockSpacingIfNeeded()
+            let attr = NSMutableAttributedString(attributedString: AMMarkdownView.attributedText(for: para, baseFont: markdownStyle.baseFont))
+            appendCommonParagraphStyle(attr)
+            pendingText.append(attr)
+        }
+        
+        func appendHeading(_ heading: Heading) {
+            appendBlockSpacingIfNeeded()
+            let font = UIFont.boldSystemFont(ofSize: CGFloat(22 - heading.level * 2))
+            let attr = NSMutableAttributedString(attributedString: AMMarkdownView.attributedText(for: heading, baseFont: font))
+            appendCommonParagraphStyle(attr)
+            pendingText.append(attr)
+        }
+        
+        func appendCodeBlock(_ code: CodeBlock) {
+            appendBlockSpacingIfNeeded()
+            let attr = NSMutableAttributedString(string: code.code, attributes: [
+                .font: markdownStyle.codeFont,
+                .foregroundColor: UIColor.darkText
+            ])
+            appendCommonParagraphStyle(attr)
+            pendingText.append(attr)
+        }
+        
+        func appendList(_ list: ListItemContainer, ordered: Bool) {
+            appendBlockSpacingIfNeeded()
+            let items = Array(list.listItems)
+            for (idx, item) in items.enumerated() {
+                let bullet = ordered ? "\(idx+1). " : "• "
+                let lines = AMMarkdownView.attributedTextForListItem(for: item, baseFont: markdownStyle.baseFont)
+                for (jdx, line) in lines.enumerated() {
+                    let dealt: NSMutableAttributedString
+                    if jdx == 0 {
+                        dealt = AMMarkdownView.manipulateListItemAttribute(attribute: line, bullet: bullet, markdownStyle: markdownStyle)
+                    } else {
+                        dealt = AMMarkdownView.manipulateListItemAttribute(attribute: line, markdownStyle: markdownStyle)
+                    }
+                    pendingText.append(dealt)
+                    if jdx != lines.count - 1 {
+                        pendingText.append(NSAttributedString(string: "\n"))
+                    }
+                }
+                // 列表 item 之间只加一个换行，避免尾部多余空行
+                if idx != items.count - 1 {
+                    pendingText.append(NSAttributedString(string: "\n"))
+                }
             }
         }
+        
+        var previousElementIsList = false
+        for block in document.children {
+            if previousElementIsList {
+                previousElementIsList = false
+                appendBlockSpacingIfNeeded()
+            }
+            
+            switch block {
+            case let para as Paragraph:
+                appendParagraph(para)
+                
+            case let heading as Heading:
+                appendHeading(heading)
+                
+            case let code as CodeBlock:
+                appendCodeBlock(code)
+                
+            case let list as UnorderedList:
+                previousElementIsList = true
+                appendList(list, ordered: false)
+                
+            case let list as OrderedList:
+                previousElementIsList = true
+                appendList(list, ordered: true)
+                
+            case let quote as BlockQuote:
+                appendBlockQuote(quote)
+                
+            case let table as Table:
+                flushPendingTextIfNeeded()
+                let tableView = makeTableView(table: table)
+                addSubviewToContainer(tableView)
+                
+            default:
+                break
+            }
+        }
+        
+        flushPendingTextIfNeeded()
     }
 
     // 向容器添加子视图并设置布局约束
@@ -193,65 +310,38 @@ class AMMarkdownView: UIView {
         NSLayoutConstraint.activate([leading, trailing, top])
         lastSubview = subview
     }
-
-    // MARK: - 列表渲染（保持原有逻辑，仅布局方式改为直接添加）
-    private func makeListView(list: ListItemContainer,
-                              ordered: Bool) -> UIView {
-        let width = bounds.width
-        let container = UIView()
-        var lastItemView: UIView?
-
-        for (idx, item) in list.listItems.enumerated() {
-            let bullet = ordered ? "\(idx+1). " : "• "
-            
-            let lines = AMMarkdownView.attributedTextForListItem(for: item, baseFont: markdownStyle.baseFont)
-            for (jdx, line) in lines.enumerated() {
-                
-                let label = UILabel(frame: .zero)
-                label.numberOfLines = 0
-                
-                let attr: NSMutableAttributedString
-                if jdx == 0 {
-                    attr = AMMarkdownView.manipulateListItemAttribute(attribute: line, bullet: bullet, markdownStyle: markdownStyle)
-                } else {
-                    attr = AMMarkdownView.manipulateListItemAttribute(attribute: line, markdownStyle: markdownStyle)
-                }
-                assignLabel(label, attribute: attr, width: width)
-                let heigcon = label.constraints.first { con in
-                    con.firstAttribute == .height
-                }
-                if markdownStyle.isDebug {
-                    print("[AMMarkdownView] [listItem]: \(label.text ?? ""),  height: \(heigcon?.constant ?? 0)")
-                }
-                
-                container.addSubview(label)
-                label.translatesAutoresizingMaskIntoConstraints = false
-                
-                // 设置列表项约束
-                NSLayoutConstraint.activate([
-                    label.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-                    label.trailingAnchor.constraint(equalTo: container.trailingAnchor)
-                ])
-                
-                if let last = lastItemView {
-                    label.topAnchor.constraint(equalTo: last.bottomAnchor, constant: markdownStyle.listItemSpacing).isActive = true
-                } else {
-                    label.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-                }
-                lastItemView = label
-            }
-
-        }
+    
+    private func makeTextView(attribute: NSAttributedString, width: CGFloat) -> UITextView {
+        let textView: UITextView
         
-        // 确保容器底部与最后一个子视图对齐
-        if let last = lastItemView {
-            last.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        if let tv = self.reuseTextView.popLast() {
+            textView = tv
         } else {
-            // 空列表时设置最小高度
-            container.heightAnchor.constraint(equalToConstant: 0).isActive = true
+            textView = UITextView()
+            textView.backgroundColor = .clear
+            textView.isEditable = false
+            textView.isSelectable = true
+            textView.isScrollEnabled = false
+            textView.textContainerInset = .zero
+            textView.textContainer.lineFragmentPadding = 0
+            textView.delegate = self
+            textView.dataDetectorTypes = []
         }
         
-        return container
+        textView.attributedText = attribute
+        
+        return textView
+    }
+    
+    private func makeBlockQuoteView(quote: BlockQuote, width: CGFloat) -> UIView {
+        let attr = NSMutableAttributedString(attributedString: AMMarkdownView.attributedText(for: quote, baseFont: markdownStyle.baseFont))
+        if attr.length > 0 {
+            attr.addAttribute(.paragraphStyle, value: markdownStyle.paragrahStyle, range: NSRange(location: 0, length: attr.length))
+        }
+        
+        let view = AMMarkdownBlockQuoteView(frame: .zero, style: markdownStyle)
+        view.configure(text: attr, width: width, delegate: self)
+        return view
     }
 
     // MARK: - 表格渲染（保持原有逻辑，改为直接添加子视图）
@@ -497,56 +587,24 @@ private extension AMMarkdownView {
     }
 }
 
-private final class AMMarkdownTableCellView: UIView {
-    var lineColor: UIColor = UIColor.hex(string: "#E9E9E9")
-    var lineWidth: CGFloat = 1.0 / UIScreen.main.scale
+//MARK: UITextViewDelegate
+extension AMMarkdownView: UITextViewDelegate {
     
-    var drawTop: Bool = false
-    var drawLeft: Bool = false
-    var drawRight: Bool = true
-    var drawBottom: Bool = true
-    
-    private let topLayer = CALayer()
-    private let leftLayer = CALayer()
-    private let rightLayer = CALayer()
-    private let bottomLayer = CALayer()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        layer.addSublayer(topLayer)
-        layer.addSublayer(leftLayer)
-        layer.addSublayer(rightLayer)
-        layer.addSublayer(bottomLayer)
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        onLinkTapped?(URL)
+        return false
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        topLayer.backgroundColor = lineColor.cgColor
-        leftLayer.backgroundColor = lineColor.cgColor
-        rightLayer.backgroundColor = lineColor.cgColor
-        bottomLayer.backgroundColor = lineColor.cgColor
-        
-        topLayer.isHidden = !drawTop
-        leftLayer.isHidden = !drawLeft
-        rightLayer.isHidden = !drawRight
-        bottomLayer.isHidden = !drawBottom
-        
-        let w = bounds.width
-        let h = bounds.height
-        topLayer.frame = CGRect(x: 0, y: 0, width: w, height: lineWidth)
-        leftLayer.frame = CGRect(x: 0, y: 0, width: lineWidth, height: h)
-        rightLayer.frame = CGRect(x: w - lineWidth, y: 0, width: lineWidth, height: h)
-        bottomLayer.frame = CGRect(x: 0, y: h - lineWidth, width: w, height: lineWidth)
-    }
 }
 
 // MARK: - 内联文本处理（保持不变）
 extension AMMarkdownView {
+    static func extraSpacingAttributedString(_ height: CGFloat) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.bounds = CGRect(x: 0, y: 0, width: 1, height: max(0, height))
+        return NSAttributedString(attachment: attachment)
+    }
+    
     static func attributedTextForListItem(for block: Markup, baseFont: UIFont) -> [NSMutableAttributedString] {
         var lines = [NSMutableAttributedString]()
         let children = Array(block.children)
@@ -662,113 +720,169 @@ extension AMMarkdownView {
     }
 }
 
-// MARK: - 高度计算（保持不变）
-extension AMMarkdownView {
-    static func height(for document: Markdown.Document, width: CGFloat, markdownStyle: AMMarkdownViewStyle = .default) -> CGSize {
-        var total: CGFloat = 0
-        let padding: CGFloat = markdownStyle.blockSpacing
-        var maxWidth: CGFloat = 0
-        var stringCount = 0
+// MARK: - 高度计算
+public extension AMMarkdownView {
+    /// 根据 Markdown 字符串计算渲染高度
+    static func height(
+        for markdown: String,
+        width: CGFloat,
+        markdownStyle: AMMarkdownViewStyle = .default
+    ) -> CGSize {
+        height(for: Document(parsing: markdown), width: width, markdownStyle: markdownStyle)
+    }
 
+    /// 根据已解析的 `Document` 计算渲染高度
+    static func height(
+        for document: Markdown.Document,
+        width: CGFloat,
+        markdownStyle: AMMarkdownViewStyle = .default
+    ) -> CGSize {
+        var viewCount: Int = 0
+        var totalHeight: CGFloat = 0
+        let pendingText = NSMutableAttributedString()
+        
+        func appendBlockSpacingIfNeeded() {
+            guard pendingText.length > 0 else { return }
+            pendingText.append(NSAttributedString(string: "\n"))
+        }
+        
+        func appendCommonParagraphStyle(_ attr: NSMutableAttributedString) {
+            guard attr.length > 0 else { return }
+            attr.addAttribute(.paragraphStyle, value: markdownStyle.paragrahStyle, range: NSRange(location: 0, length: attr.length))
+        }
+        
+        func flushPendingTextIfNeeded() {
+            guard pendingText.length > 0 else { return }
+            let size = AMMarkdownView.heightWithAttiribute(pendingText, width: width, markdownStyle: markdownStyle, addCommonPragraph: false)
+            totalHeight += size.height
+            viewCount += 1
+            pendingText.setAttributedString(NSAttributedString())
+        }
+        
+        func appendParagraph(_ para: Paragraph) {
+            appendBlockSpacingIfNeeded()
+            let attr = NSMutableAttributedString(attributedString: AMMarkdownView.attributedText(for: para, baseFont: markdownStyle.baseFont))
+            appendCommonParagraphStyle(attr)
+            pendingText.append(attr)
+        }
+        
+        func appendHeading(_ heading: Heading) {
+            appendBlockSpacingIfNeeded()
+            let font = UIFont.boldSystemFont(ofSize: CGFloat(22 - heading.level * 2))
+            let attr = NSMutableAttributedString(attributedString: AMMarkdownView.attributedText(for: heading, baseFont: font))
+            appendCommonParagraphStyle(attr)
+            pendingText.append(attr)
+        }
+        
+        func appendCodeBlock(_ code: CodeBlock) {
+            appendBlockSpacingIfNeeded()
+            let attr = NSMutableAttributedString(string: code.code, attributes: [
+                .font: markdownStyle.codeFont,
+                .foregroundColor: UIColor.darkText
+            ])
+            appendCommonParagraphStyle(attr)
+            pendingText.append(attr)
+        }
+        
+        func appendList(_ list: ListItemContainer, ordered: Bool) {
+            appendBlockSpacingIfNeeded()
+            let items = Array(list.listItems)
+            for (idx, item) in items.enumerated() {
+                let bullet = ordered ? "\(idx+1). " : "• "
+                let lines = AMMarkdownView.attributedTextForListItem(for: item, baseFont: markdownStyle.baseFont)
+                for (jdx, line) in lines.enumerated() {
+                    let dealt: NSMutableAttributedString
+                    if jdx == 0 {
+                        dealt = AMMarkdownView.manipulateListItemAttribute(attribute: line, bullet: bullet, markdownStyle: markdownStyle)
+                    } else {
+                        dealt = AMMarkdownView.manipulateListItemAttribute(attribute: line, markdownStyle: markdownStyle)
+                    }
+                    pendingText.append(dealt)
+                    if jdx != lines.count - 1 {
+                        pendingText.append(NSAttributedString(string: "\n"))
+                    }
+                }
+                if idx != items.count - 1 {
+                    pendingText.append(NSAttributedString(string: "\n"))
+                }
+            }
+        }
+        
+        func appendTableHeight(_ table: Table) {
+            let layout = computeTableLayout(table: table, availableWidth: width, markdownStyle: markdownStyle)
+            let colWidths = layout.colWidths
+            let headColCount = table.head.cells.reduce(0) { acc, _ in acc + 1 }
+            let colCount = max(colWidths.count, headColCount)
+            
+            func rowHeight(for cells: [Table.Cell], rowIndex: Int) -> CGFloat {
+                var hMax: CGFloat = 0
+                for i in 0..<min(cells.count, colCount) {
+                    let attr = attributedText(for: cells[i], baseFont: markdownStyle.baseFont)
+                    let textWidth = max(1, (i < colWidths.count ? colWidths[i] : tableMinColWidth) - 20)
+                    let h = AMMarkdownView.heightWithAttiribute(attr, width: textWidth, markdownStyle: markdownStyle, addCommonPragraph: false).height
+                    hMax = max(hMax, h + 16) // top/bottom padding 8
+                }
+                return max(hMax, 16)
+            }
+            
+            var tableHeight: CGFloat = 0
+            tableHeight += rowHeight(for: Array(table.head.cells), rowIndex: 0)
+            var idx = 0
+            for row in table.body.rows {
+                idx += 1
+                tableHeight += rowHeight(for: Array(row.cells), rowIndex: idx)
+            }
+            
+            totalHeight += tableHeight
+            viewCount += 1
+        }
+        
+        func appendBlockQuoteHeight(_ quote: BlockQuote) {
+            flushPendingTextIfNeeded()
+            let attr = NSMutableAttributedString(attributedString: attributedText(for: quote, baseFont: markdownStyle.baseFont))
+            if attr.length > 0 {
+                attr.addAttribute(.paragraphStyle, value: markdownStyle.paragrahStyle, range: NSRange(location: 0, length: attr.length))
+            }
+            totalHeight += AMMarkdownBlockQuoteView.measuredHeight(text: attr, width: width, style: markdownStyle)
+            viewCount += 1
+        }
+        
+        var previousElementIsList = false
         for block in document.children {
+            if previousElementIsList {
+                appendBlockSpacingIfNeeded()
+                previousElementIsList = false
+            }
             switch block {
             case let para as Paragraph:
-                let attr = attributedText(for: para, baseFont: markdownStyle.baseFont)
-                
-                let size = AMMarkdownView.heightWithAttiribute(attr, width: width, markdownStyle: markdownStyle, addCommonPragraph: true)
-                maxWidth = max(size.width, maxWidth)
-                total += size.height + padding
-
-                stringCount += attr.length
+                appendParagraph(para)
             case let heading as Heading:
-                let font = UIFont.boldSystemFont(ofSize: CGFloat(22 - heading.level * 2))
-                let attr = attributedText(for: heading, baseFont: font)
-                total += AMMarkdownView.heightWithAttiribute(attr, width: width, markdownStyle: markdownStyle, addCommonPragraph: true).height + padding
-
-                stringCount += attr.length
+                appendHeading(heading)
             case let code as CodeBlock:
-                let attr = NSAttributedString(string: code.code,
-                                              attributes: [.font: markdownStyle.codeFont])
-                total += AMMarkdownView.heightWithAttiribute(attr, width: width, markdownStyle: markdownStyle, addCommonPragraph: false).height + padding
-
-                stringCount += attr.length
+                appendCodeBlock(code)
             case let list as UnorderedList:
-                total += listHeight(list, ordered: false, width: width, markdownStyle: markdownStyle, textLength: &stringCount) + padding
-
+                appendList(list, ordered: false)
+                previousElementIsList = true
             case let list as OrderedList:
-                total += listHeight(list, ordered: true, width: width, markdownStyle: markdownStyle, textLength: &stringCount) + padding
-
+                appendList(list, ordered: true)
+                previousElementIsList = true
             case let table as Table:
-                let layout = computeTableLayout(table: table, availableWidth: width, markdownStyle: markdownStyle)
-                let colWidths = layout.colWidths
-                let headColCount = table.head.cells.reduce(0) { acc, _ in acc + 1 }
-                let colCount = max(colWidths.count, headColCount)
-                
-                func rowHeight(for cells: [Table.Cell], rowIndex: Int) -> CGFloat {
-                    var hMax: CGFloat = 0
-                    for i in 0..<min(cells.count, colCount) {
-                        let attr = attributedText(for: cells[i], baseFont: markdownStyle.baseFont)
-                        let textWidth = max(1, (i < colWidths.count ? colWidths[i] : tableMinColWidth) - 20)
-                        let h = AMMarkdownView.heightWithAttiribute(attr, width: textWidth, markdownStyle: markdownStyle, addCommonPragraph: false).height
-                        hMax = max(hMax, h + 16) // top/bottom padding 8
-                        stringCount += attr.length
-                    }
-                    // 空列占位也要保证最小高度
-                    return max(hMax, 16)
-                }
-                
-                total += rowHeight(for: Array(table.head.cells), rowIndex: 0)
-                var idx = 0
-                for row in table.body.rows {
-                    idx += 1
-                    total += rowHeight(for: Array(row.cells), rowIndex: idx)
-                }
-                
-                total += padding
-
+                flushPendingTextIfNeeded()
+                appendTableHeight(table)
+            case let quote as BlockQuote:
+                appendBlockQuoteHeight(quote)
             default:
                 break
             }
         }
         
-        if stringCount > 20 {
-            maxWidth = width
+        flushPendingTextIfNeeded()
+        
+        if viewCount > 1 {
+            totalHeight += CGFloat(viewCount - 1) * markdownStyle.blockSpacing
         }
-
-        return CGSize(width: width, height: total - padding)
-    }
-    
-    private static func listHeight(_ list: ListItemContainer,
-                                   ordered: Bool,
-                                   width: CGFloat,
-                                   markdownStyle: AMMarkdownViewStyle,
-                                   textLength: inout Int) -> CGFloat {
-        var total: CGFloat = 0
-         
-        for (idx, item) in list.listItems.enumerated() {
-            let bullet = ordered ? "\(idx+1). " : "• "
-            let lines = attributedTextForListItem(for: item, baseFont: markdownStyle.baseFont)
-            
-            for (jdx, line) in lines.enumerated() {
-                let attr: NSMutableAttributedString
-                if jdx == 0 {
-                    attr = AMMarkdownView.manipulateListItemAttribute(attribute: line, bullet: bullet, markdownStyle: markdownStyle)
-                } else {
-                    attr = AMMarkdownView.manipulateListItemAttribute(attribute: line, markdownStyle: markdownStyle)
-                }
-                let h = AMMarkdownView.heightWithAttiribute(attr, width: width, markdownStyle: markdownStyle, addCommonPragraph: false).height
-                
-                if markdownStyle.isDebug {
-                    print("[AMMarkdownView] [listItem]_calculate_H: \(attr.string),  height: \(h)")
-                }
-                
-                total += h + markdownStyle.listItemSpacing
-                
-                textLength += attr.length
-            }
-
-        }
-        return total - markdownStyle.listItemSpacing
+        
+        return CGSize(width: width, height: ceil(totalHeight))
     }
     
     static func manipulateListItemAttribute(attribute: NSMutableAttributedString, bullet: String? = nil, markdownStyle: AMMarkdownViewStyle) -> NSMutableAttributedString {
@@ -778,17 +892,15 @@ extension AMMarkdownView {
             attr.append(attribute)
             
             let paragrahStyle = NSMutableParagraphStyle()
-            paragrahStyle.setParagraphStyle(markdownStyle.paragrahStyle)
-            paragrahStyle.firstLineHeadIndent = markdownStyle.listItemFirstHeadIntent
-            paragrahStyle.headIndent = markdownStyle.listItemHeadIntent
+            paragrahStyle.setParagraphStyle(markdownStyle.listParagrahStyle)
             attr.addAttribute(.paragraphStyle, value: paragrahStyle, range: NSRange(location: 0, length: attr.length))
         } else {
             attr.append(attribute)
             
             let paragrahStyle = NSMutableParagraphStyle()
-            paragrahStyle.setParagraphStyle(markdownStyle.paragrahStyle)
-            paragrahStyle.firstLineHeadIndent = markdownStyle.listItemFirstHeadIntent * 2
-            paragrahStyle.headIndent = paragrahStyle.firstLineHeadIndent + (markdownStyle.listItemHeadIntent - markdownStyle.listItemFirstHeadIntent)
+            paragrahStyle.setParagraphStyle(markdownStyle.listParagrahStyle)
+            paragrahStyle.firstLineHeadIndent = markdownStyle.listParagrahStyle.firstLineHeadIndent * 2
+            paragrahStyle.headIndent = paragrahStyle.firstLineHeadIndent + (markdownStyle.listParagrahStyle.headIndent - markdownStyle.listParagrahStyle.firstLineHeadIndent)
             attr.addAttribute(.paragraphStyle, value: paragrahStyle, range: NSRange(location: 0, length: attr.length))
         }
         return attr

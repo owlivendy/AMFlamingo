@@ -7,12 +7,12 @@
 
 import UIKit
 
-class MarkDownOptimizer: NSObject {
-    static func optimizeMarkdown(_ input: String) -> String {
+public final class MarkDownOptimizer: NSObject {
+    public static func optimizeMarkdown(_ input: String) -> String {
         return input
     }
-    
-    static func convertAsciiTablesToMarkdown(_ input: String) -> String {
+
+    public static func convertAsciiTablesToMarkdown(_ input: String) -> String {
         let lines = input.split(separator: "\n", omittingEmptySubsequences: false)
         var result = ""
         var tableBuffer: [String] = []
