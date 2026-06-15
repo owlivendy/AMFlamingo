@@ -1,7 +1,7 @@
 import UIKit
 
 class MainTableViewController: UITableViewController {
-    let items = ["标签演示", "AMPopupView 演示"]
+    let items = ["标签演示", "AMPopupView & AMPassthroughView 演示"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,6 +15,7 @@ class MainTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.textLabel?.text = items[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         return cell

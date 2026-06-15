@@ -4,12 +4,13 @@ import AMFlamingo
 class AMPopupDemoController: AMBaseController, UITextFieldDelegate {
 
     private let stackView = UIStackView()
-    
+
     private weak var popup: AMPopupView?
+    private weak var passthroughOverlay: AMPassthroughView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "AMPopupView 演示"
+        title = "AMPopupView & AMPassthroughView 演示"
         view.backgroundColor = .systemBackground
         setupButtons()
     }
@@ -32,6 +33,7 @@ class AMPopupDemoController: AMBaseController, UITextFieldDelegate {
         addDemoButton("底部弹窗 · 取消/确定", action: #selector(showBottomWithCancelAndSure))
         addDemoButton("底部弹窗 · 3/4 屏", action: #selector(showBottomThreeQuarter))
         addDemoButton("Alert 弹窗 · 登录表单", action: #selector(showAlertLogin))
+        addDemoButton("点击穿透 · AMPassthroughView", action: #selector(showPassthroughOverlay))
     }
 
     private func addDemoButton(_ title: String, action: Selector) {
@@ -161,6 +163,81 @@ class AMPopupDemoController: AMBaseController, UITextFieldDelegate {
     @objc private func alertLoginTapped() {
         view.endEditing(true)
         self.popup?.hide()
+    }
+
+    /// 演示 `AMPassthroughView` / `AMUIStackPassthroughView`：全屏半透明遮罩不拦截空白区域点击，下方按钮仍可点；遮罩上的浮动控件可正常响应。
+    @objc private func showPassthroughOverlay() {
+        if passthroughOverlay != nil {
+            removePassthroughOverlay()
+            return
+        }
+
+        let overlay = AMPassthroughView(frame: view.bounds)
+        overlay.allowHitTestPassthrough = true
+        overlay.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.12)
+        overlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(overlay)
+        passthroughOverlay = overlay
+
+        let hintLabel = UILabel(frame: .zero)
+        hintLabel.text = "空白区域点击会穿透到下方按钮\n上方「关闭穿透层」和右侧标签仍可点击"
+        hintLabel.numberOfLines = 0
+        hintLabel.font = .systemFont(ofSize: 14)
+        hintLabel.textColor = .secondaryLabel
+        hintLabel.textAlignment = .center
+        hintLabel.translatesAutoresizingMaskIntoConstraints = false
+        overlay.addSubview(hintLabel)
+
+        let closeButton = UIButton(type: .system)
+        closeButton.setTitle("关闭穿透层", for: .normal)
+        closeButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        closeButton.backgroundColor = .systemBlue
+        closeButton.setTitleColor(.white, for: .normal)
+        closeButton.layer.cornerRadius = 8
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.addTarget(self, action: #selector(removePassthroughOverlay), for: .touchUpInside)
+        overlay.addSubview(closeButton)
+
+        let stackPassthrough = AMUIStackPassthroughView()
+        stackPassthrough.axis = .horizontal
+        stackPassthrough.spacing = 8
+        stackPassthrough.alignment = .center
+        stackPassthrough.allowHitTestPassthrough = true
+        stackPassthrough.translatesAutoresizingMaskIntoConstraints = false
+        overlay.addSubview(stackPassthrough)
+
+        let tagTitles = ["可点 A", "可点 B", "可点 C"]
+        for title in tagTitles {
+            let tag = UIButton(type: .system)
+            tag.setTitle(title, for: .normal)
+            tag.titleLabel?.font = .systemFont(ofSize: 13, weight: .medium)
+            tag.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.2)
+            tag.layer.cornerRadius = 6
+            tag.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
+            tag.addAction(UIAction { _ in
+                print("AMUIStackPassthroughView 子按钮点击: \(title)")
+            }, for: .touchUpInside)
+            stackPassthrough.addArrangedSubview(tag)
+        }
+
+        NSLayoutConstraint.activate([
+            hintLabel.topAnchor.constraint(equalTo: overlay.safeAreaLayoutGuide.topAnchor, constant: 16),
+            hintLabel.leadingAnchor.constraint(equalTo: overlay.leadingAnchor, constant: 24),
+            hintLabel.trailingAnchor.constraint(equalTo: overlay.trailingAnchor, constant: -24),
+
+            closeButton.topAnchor.constraint(equalTo: hintLabel.bottomAnchor, constant: 16),
+            closeButton.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
+            closeButton.widthAnchor.constraint(equalToConstant: 140),
+            closeButton.heightAnchor.constraint(equalToConstant: 44),
+
+            stackPassthrough.trailingAnchor.constraint(equalTo: overlay.trailingAnchor, constant: -16),
+            stackPassthrough.centerYAnchor.constraint(equalTo: overlay.centerYAnchor),
+        ])
+    }
+
+    @objc private func removePassthroughOverlay() {
+        passthroughOverlay?.removeFromSuperview()
+        passthroughOverlay = nil
     }
 
     // MARK: - Helpers

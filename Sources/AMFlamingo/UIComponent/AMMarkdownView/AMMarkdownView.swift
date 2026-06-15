@@ -2,8 +2,8 @@
 //  AMMarkdownView.swift
 //  Flamingo
 //
-//  Created by xiaofei shen on 2025/8/30.
-//
+//  Created by shen xiaofei on 2025/8/15.
+//  Copyright © 2025 fei. All rights reserved.
 
 import UIKit
 import Markdown
@@ -590,7 +590,7 @@ private extension AMMarkdownView {
 //MARK: UITextViewDelegate
 extension AMMarkdownView: UITextViewDelegate {
     
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         onLinkTapped?(URL)
         return false
     }
