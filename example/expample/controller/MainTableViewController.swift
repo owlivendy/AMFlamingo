@@ -1,7 +1,7 @@
 import UIKit
 
 class MainTableViewController: UITableViewController {
-    let items = ["标签演示", "AMPopupView & AMPassthroughView 演示"]
+    let items = ["标签演示", "AMPopupView & AMPassthroughView 演示", "AMPopoverView 演示"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +29,9 @@ class MainTableViewController: UITableViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         case 1:
             let vc = AMPopupDemoController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        case 2:
+            let vc = AMPopoverDemoController()
             self.navigationController?.pushViewController(vc, animated: true)
         default:
             break
