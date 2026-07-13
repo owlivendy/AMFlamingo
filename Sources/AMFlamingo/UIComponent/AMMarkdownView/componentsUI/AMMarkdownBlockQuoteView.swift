@@ -14,7 +14,6 @@ final class AMMarkdownBlockQuoteView: UIView {
     private let textView = UITextView(frame: .zero)
     
     private let style: AMMarkdownViewStyle
-    private var heightConstraint: NSLayoutConstraint?
     
     init(frame: CGRect, style: AMMarkdownViewStyle) {
         self.style = style
@@ -50,34 +49,9 @@ final class AMMarkdownBlockQuoteView: UIView {
         ]
         
         addSubview(backgroundContainer)
-        backgroundContainer.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            backgroundContainer.topAnchor.constraint(equalTo: topAnchor),
-            backgroundContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
-            backgroundContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
-            backgroundContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
-        
-        backgroundContainer.addSubview(barView)
+        // 竖线直接挂在根视图，顶到内容前缘，不被背景 inset 挤进去
+        addSubview(barView)
         backgroundContainer.addSubview(textView)
-        barView.translatesAutoresizingMaskIntoConstraints = false
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            barView.leadingAnchor.constraint(equalTo: backgroundContainer.leadingAnchor, constant: style.blockQuoteContentInset.left),
-            barView.topAnchor.constraint(equalTo: backgroundContainer.topAnchor, constant: style.blockQuoteContentInset.top),
-            barView.bottomAnchor.constraint(equalTo: backgroundContainer.bottomAnchor, constant: -style.blockQuoteContentInset.bottom),
-            barView.widthAnchor.constraint(equalToConstant: style.blockQuoteBarWidth),
-            
-            textView.topAnchor.constraint(equalTo: backgroundContainer.topAnchor, constant: style.blockQuoteContentInset.top),
-            textView.bottomAnchor.constraint(equalTo: backgroundContainer.bottomAnchor, constant: -style.blockQuoteContentInset.bottom),
-            textView.leadingAnchor.constraint(equalTo: barView.trailingAnchor, constant: style.blockQuoteBarSpacing),
-            textView.trailingAnchor.constraint(equalTo: backgroundContainer.trailingAnchor, constant: -style.blockQuoteContentInset.right),
-        ])
-        
-        let hc = heightAnchor.constraint(equalToConstant: 0)
-        hc.isActive = true
-        heightConstraint = hc
     }
     
     func configure(text: NSAttributedString, width: CGFloat, delegate: UITextViewDelegate?) {
@@ -94,11 +68,36 @@ final class AMMarkdownBlockQuoteView: UIView {
         )
         
         let size = AMMarkdownView.heightWithAttiribute(text, width: contentWidth, markdownStyle: style, addCommonPragraph: false)
-        let totalHeight = ceil(size.height) + style.blockQuoteContentInset.top + style.blockQuoteContentInset.bottom
-        heightConstraint?.constant = totalHeight
+        let textHeight = ceil(size.height)
+        let totalHeight = textHeight
+            + style.blockQuoteContentInset.top
+            + style.blockQuoteContentInset.bottom
+        frame.size = CGSize(width: width, height: totalHeight)
+        
+        backgroundContainer.am.make { make in
+            make.size.equalToSize(size: CGSize(width: width, height: totalHeight))
+            make.top.equalToSuper(view: self.am.top)
+            make.leading.equalToSuper(view: self.am.leading)
+        }
+        
+        barView.am.make { make in
+            make.size.equalToSize(size: CGSize(
+                width: style.blockQuoteBarWidth,
+                height: textHeight
+            ))
+            make.top.equalToSuper(view: self.am.top).offset(style.blockQuoteContentInset.top)
+            make.leading.equalToSuper(view: self.am.leading).offset(style.blockQuoteContentInset.left)
+        }
+        
+        textView.am.make { make in
+            make.size.equalToSize(size: CGSize(width: contentWidth, height: textHeight))
+            make.top.equalToSuper(view: backgroundContainer.am.top).offset(style.blockQuoteContentInset.top)
+            make.leading.equalToSuper(view: backgroundContainer.am.leading)
+                .offset(style.blockQuoteContentInset.left + style.blockQuoteBarWidth + style.blockQuoteBarSpacing)
+        }
     }
     
-    static func measuredHeight(text: NSAttributedString, width: CGFloat, style: AMMarkdownViewStyle) -> CGFloat {
+    nonisolated static func measuredHeight(text: NSAttributedString, width: CGFloat, style: AMMarkdownViewStyle) -> CGFloat {
         let contentWidth = max(
             1,
             width
